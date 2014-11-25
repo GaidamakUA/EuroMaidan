@@ -17,7 +17,7 @@
         android:layout_gravity="center_horizontal" />
 
     <EditText
-        style="@style/EditTextStyle"
+        style="@style/editTextAndButtonDimensions"
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/name_edittext"
@@ -25,35 +25,35 @@
         android:hint="@string/name"/>
 
     <EditText
-        style="@style/EditTextStyle"
+        style="@style/editTextAndButtonDimensions"
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/surname_edittext"
         android:hint="@string/surname"/>
 
     <EditText
-        style="@style/EditTextStyle"
+        style="@style/editTextAndButtonDimensions"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/password_edittext"
         android:hint="@string/password"/>
 
     <EditText
-        style="@style/EditTextStyle"
+        style="@style/editTextAndButtonDimensions"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/confirm_password_edittext"
         android:hint="@string/confirm_password"/>
 
     <EditText
-        style="@style/EditTextStyle"
+        style="@style/editTextAndButtonDimensions"
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/email_edittext"
         android:hint="@string/email"/>
 
     <Button
-        style="@style/ButtonStyle"
+        style="@style/editTextAndButtonDimensions"
         android:text="@string/save"
         android:id="@+id/save_button"
         android:layout_gravity="center_horizontal" />

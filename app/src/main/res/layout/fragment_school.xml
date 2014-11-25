@@ -15,31 +15,31 @@
             android:id="@+id/imageView"
             android:layout_gravity="center_horizontal"/>
     <EditText
-        style="@style/EditTextStyle"
+        style="@style/editTextAndButtonDimensions"
         android:id="@+id/country_edittext"
         android:layout_gravity="center_horizontal"
         android:hint="@string/country"/>
 
     <EditText
-        style="@style/EditTextStyle"
+        style="@style/editTextAndButtonDimensions"
         android:id="@+id/city_edittext"
         android:layout_gravity="center_horizontal"
         android:hint="@string/city"/>
 
     <EditText
-        style="@style/EditTextStyle"
+        style="@style/editTextAndButtonDimensions"
         android:id="@+id/school_edittext"
         android:layout_gravity="center_horizontal"
         android:hint="@string/school"/>
 
     <Button
-        style="@style/ButtonStyle"
+        style="@style/editTextAndButtonDimensions"
         android:text="@string/save"
         android:id="@+id/save_button"
         android:layout_gravity="center_horizontal" />
 
     <Button
-        style="@style/ButtonStyle"
+        style="@style/editTextAndButtonDimensions"
         android:text="@string/skip"
         android:id="@+id/skip_button"
         android:layout_gravity="center_horizontal" />
