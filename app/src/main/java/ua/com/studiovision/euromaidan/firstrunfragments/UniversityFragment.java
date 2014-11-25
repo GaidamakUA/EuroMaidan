@@ -8,18 +8,18 @@ import org.androidannotations.annotations.EFragment;
 
 import ua.com.studiovision.euromaidan.R;
 
-@EFragment (R.layout.fragment_school)
-public class SchoolFragment extends Fragment {
+@EFragment (R.layout.fragment_university)
+public class UniversityFragment extends Fragment {
     FirstRunFragmentListener firstRunFragmentListener;
+
+    @Click(R.id.skip_button)
+    void skip() {
+        firstRunFragmentListener.changeFragment(this);
+    }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         firstRunFragmentListener = (FirstRunFragmentListener) activity;
-    }
-
-    @Click(R.id.skip_button)
-    void skip() {
-        firstRunFragmentListener.changeFragment(this);
     }
 }
