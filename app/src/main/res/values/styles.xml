@@ -1,8 +1,42 @@
 <resources>
-
-    <!-- Base application theme. -->
+    
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="topBotMargin">
+        <item name="android:layout_marginTop">@dimen/topBottomMargin</item>
+    </style>
+    
+    <style name="ButtonStyle" parent="topBotMargin">
+        <item name="android:layout_height">@dimen/loginComponentHeight</item>
+        <item name="android:layout_width">@dimen/loginComponentWidth</item>
+        <item name="android:background">@drawable/button_login_bg</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/textSize</item>
+    </style>
+
+    <style name="EditTextStyle" parent="topBotMargin">
+        <item name="android:layout_width">@dimen/loginComponentWidth</item>
+        <item name="android:layout_height">@dimen/loginComponentHeight</item>
+        <item name="android:background">@drawable/edit_text_bg</item>
+        <item name="android:textSize">@dimen/textSize</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/light_blue</item>
+        <item name="android:textColorHint">@color/light_blue</item>
+    </style>
+
+    <style name="TextViewForgotPassStyle" parent="topBotMargin">
+        <item name="android:text">@string/forgot_password</item>
+        <item name="android:textSize">@dimen/textSizeForgotPass</item>
+        <item name="android:textColor">@color/light_blue</item>
+    </style>
+
+    <style name="LogoStyle">
+        <item name="android:layout_height">@dimen/logoHeightWidth</item>
+        <item name="android:layout_width">@dimen/logoHeightWidth</item>
+        <item name="android:src">@drawable/em_logo</item>
+    </style>
+    
 
 </resources>
