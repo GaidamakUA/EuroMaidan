@@ -11,4 +11,9 @@ public class LoginActivity extends Activity {
     void register() {
         RegisterActivity_.intent(this).start();
     }
+
+    @Click(R.id.login_button)
+    void login() {
+        FirstRunActivity_.intent(this).start();
+    }
 }
