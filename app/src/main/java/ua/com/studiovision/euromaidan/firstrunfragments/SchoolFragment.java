@@ -6,7 +6,6 @@ import android.app.Fragment;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 
-import ua.com.studiovision.euromaidan.FirstRunFragmentListener;
 import ua.com.studiovision.euromaidan.R;
 
 @EFragment (R.layout.fragment_school)

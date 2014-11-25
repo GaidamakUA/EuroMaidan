@@ -9,6 +9,7 @@ import android.util.Log;
 
 import org.androidannotations.annotations.EActivity;
 
+import ua.com.studiovision.euromaidan.firstrunfragments.FirstRunFragmentListener;
 import ua.com.studiovision.euromaidan.firstrunfragments.SchoolFragment_;
 import ua.com.studiovision.euromaidan.firstrunfragments.UniversityFragment_;
 
@@ -19,7 +20,7 @@ public class FirstRunActivity extends Activity implements FirstRunFragmentListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_run);
+        setContentView(R.layout.activity_holder_only);
         Log.v(TAG, "First run activity");
         if (savedInstanceState == null) {
             SchoolFragment_ schoolFragment = new SchoolFragment_();
@@ -37,6 +38,9 @@ public class FirstRunActivity extends Activity implements FirstRunFragmentListen
                     .replace(R.id.fragment_holder, universityFragment, "UniversityFragment")
                     .addToBackStack(null)
                     .commit();
+        } else if (fragment instanceof UniversityFragment_) {
+            FeedActivity_.intent(this).start();
+            finish();
         }
     }
 }
