@@ -8,4 +8,12 @@
     <string name="password">Пароль</string>
     <string name="login">Вход</string>
     <string name="register">Регистрация</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="confirm_password">Повторить пароль</string>
+    <string name="save">Сохранить</string>
+    <string name="country">Страна</string>
+    <string name="city">Город</string>
+    <string name="school">Школа</string>
+    <string name="skip">Пропустить</string>
 </resources>

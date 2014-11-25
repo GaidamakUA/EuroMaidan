@@ -11,57 +11,50 @@
     tools:context=".LoginActivity" >
 
     <ImageView
+        style="@style/LogoStyle"
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:src="@drawable/em_logo"
         android:layout_gravity="center_horizontal" />
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/EditTextStyle"
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/name_edittext"
         android:layout_gravity="center_horizontal"
-        android:hint="name"/>
+        android:hint="@string/name"/>
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/EditTextStyle"
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/surname_edittext"
-        android:hint="surname"/>
+        android:hint="@string/surname"/>
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/email_edittext"
-        android:hint="email"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/EditTextStyle"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/password_edittext"
-        android:hint="password"/>
+        android:hint="@string/password"/>
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/EditTextStyle"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/confirm_password_edittext"
-        android:hint="confirm password"/>
+        android:hint="@string/confirm_password"/>
+
+    <EditText
+        style="@style/EditTextStyle"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/email_edittext"
+        android:hint="@string/email"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Сохранить"
+        style="@style/ButtonStyle"
+        android:text="@string/save"
         android:id="@+id/save_button"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
