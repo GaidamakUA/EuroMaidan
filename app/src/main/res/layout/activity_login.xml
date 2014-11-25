@@ -8,47 +8,44 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".LoginActivity" >
+    tools:context=".LoginActivity"
+    >
 
     <ImageView
+        style="@style/LogoStyle"
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/em_logo"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"/>
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/EditTextStyle"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/email_edittext" />
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/EditTextStyle"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/password_edittext" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Вход"
+        style="@style/ButtonStyle"
+        android:text="@string/login"
         android:id="@+id/login_button"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Регистрация"
-        android:id="@+id/register_button"
-        android:layout_gravity="center_horizontal" />
+            style="@style/ButtonStyle"
+            android:text="@string/register"
+            android:id="@+id/register_button"
+            android:layout_gravity="center_horizontal" />
 
     <TextView
+        style="@style/TextViewForgotPassStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Забыли пароль?"
         android:id="@+id/forget_password"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
