@@ -21,31 +21,31 @@
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/editText" />
+        android:id="@+id/email_edittext" />
 
     <EditText
         style="@style/EditTextStyle"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/editText2" />
+        android:id="@+id/password_edittext" />
 
     <Button
         style="@style/ButtonStyle"
         android:text="@string/login"
-        android:id="@+id/button"
+        android:id="@+id/login_button"
         android:layout_gravity="center_horizontal"/>
 
     <Button
-        style="@style/ButtonStyle"
-        android:text="@string/register"
-        android:id="@+id/button2"
-        android:layout_gravity="center_horizontal" />
+            style="@style/ButtonStyle"
+            android:text="@string/register"
+            android:id="@+id/register_button"
+            android:layout_gravity="center_horizontal" />
 
     <TextView
         style="@style/TextViewForgotPassStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
+        android:id="@+id/forget_password"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
