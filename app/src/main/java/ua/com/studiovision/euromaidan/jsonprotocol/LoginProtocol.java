@@ -7,9 +7,15 @@ public class LoginProtocol {
         public String key = "user_authorization";
         public String email;
         public String password;
+
+        public Request(String email, String password) {
+            this.email = email;
+            this.password = password;
+        }
     }
     public static class Response {
         public String status; // success
         public String token;
+        public String message;
     }
 }
