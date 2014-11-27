@@ -59,6 +59,12 @@ public class MainService extends ActivityServiceCommunicationService {
                 String confirmPassword = registrationData.getString(RegisterActivity.CONFIRM_PASSWORD);
                 String email = registrationData.getString(RegisterActivity.EMAIL);
                 doRegister(name, surname, password, confirmPassword, email);
+                break;
+            case AppProtocol.REQUEST_COUNTRIES:
+                Log.v(TAG, "Countries");
+                Bundle bundle = msg.getData();
+                String countryNamePart = bundle.getString(FirstRunActivity.COUNTRY_NAME);
+                Log.v(TAG, "countryNamePart=" + countryNamePart);
         }
     }
 
