@@ -12,14 +12,14 @@ import ua.com.studiovision.euromaidan.R;
 
 @EFragment (R.layout.fragment_school)
 public class SchoolFragment extends Fragment {
-    FirstRunFragmentListener firstRunFragmentListener;
-
-    @ViewById
-    AutoCompleteTextView countryACompleteTextView;
-    @ViewById
+    @ViewById(R.id.countryAutoCompleteTextView)
+    AutoCompleteTextView countryAutoCompleteTextView;
+    @ViewById(R.id.cityAutoCompleteTextView)
     AutoCompleteTextView cityAutoCompleteTextView;
-    @ViewById
-    AutoCompleteTextView schoolACompleteTextView;
+    @ViewById(R.id.schoolAutoCompleteTextView)
+    AutoCompleteTextView schoolAutoCompleteTextView;
+
+    FirstRunFragmentListener firstRunFragmentListener;
 
     @Override
     public void onAttach(Activity activity) {
@@ -30,7 +30,7 @@ public class SchoolFragment extends Fragment {
     @Click(R.id.saveButton)
     void onSaveButtonClick() {
         // XXX test content
-
+        firstRunFragmentListener.tryRequestCountries(countryAutoCompleteTextView.getText().toString());
     }
     @Click(R.id.skip_button)
     void skip() {
