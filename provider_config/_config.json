@@ -1,0 +1,12 @@
+{
+    "syntaxVersion": "2",
+    "projectPackageId": "ua.com.studiovision.euromaidan",
+    "authority": "ua.com.studiovision.euromaidan.provider",
+    "providerJavaPackage": "ua.com.studiovision.euromaidan.provider",
+    "providerClassName": "EmContentProvider",
+    "sqliteOpenHelperClassName": "EmSQLiteOpenHelper",
+    "sqliteOpenHelperCallbacksClassName": "EmSQLiteOpenHelperCallbacks",
+    "databaseFileName": "embase.db",
+    "databaseVersion": 1,
+    "enableForeignKeys": true,
+}

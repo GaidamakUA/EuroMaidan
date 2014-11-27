@@ -1,0 +1,22 @@
+{
+    "documentation": "Represents country entity",
+    "fields": [
+        {
+            "documentation": "Country id from server",
+            "name": "id",
+            "type": "Integer",
+        },
+        {
+            "documentation": "Country name",
+            "name": "country_name",
+            "type": "String",
+        }
+            ],
+
+    "constraints": [
+        {
+            "name": "unique_name",
+            "definition": "UNIQUE (server_id, country_name) ON CONFLICT REPLACE"
+        },
+    ]
+}
