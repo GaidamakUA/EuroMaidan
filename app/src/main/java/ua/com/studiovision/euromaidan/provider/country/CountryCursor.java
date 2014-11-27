@@ -1,9 +1,6 @@
 package ua.com.studiovision.euromaidan.provider.country;
 
-import java.util.Date;
-
 import android.database.Cursor;
-
 import ua.com.studiovision.euromaidan.provider.base.AbstractCursor;
 
 /**
@@ -18,8 +15,8 @@ public class CountryCursor extends AbstractCursor {
      * Country id from server
      * Can be {@code null}.
      */
-    public Integer getId() {
-        return getIntegerOrNull(CountryColumns.ID);
+    public Long getCountryId() {
+        return getLongOrNull(CountryColumns.COUNTRY_ID);
     }
 
     /**

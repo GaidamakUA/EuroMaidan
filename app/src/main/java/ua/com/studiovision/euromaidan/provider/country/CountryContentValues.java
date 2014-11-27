@@ -1,10 +1,7 @@
 package ua.com.studiovision.euromaidan.provider.country;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.net.Uri;
-
 import ua.com.studiovision.euromaidan.provider.base.AbstractContentValues;
 
 /**
@@ -29,13 +26,13 @@ public class CountryContentValues extends AbstractContentValues {
     /**
      * Country id from server
      */
-    public CountryContentValues putId(Integer value) {
-        mContentValues.put(CountryColumns.ID, value);
+    public CountryContentValues putCountryId(Long value) {
+        mContentValues.put(CountryColumns.COUNTRY_ID, value);
         return this;
     }
 
-    public CountryContentValues putIdNull() {
-        mContentValues.putNull(CountryColumns.ID);
+    public CountryContentValues putCountryIdNull() {
+        mContentValues.putNull(CountryColumns.COUNTRY_ID);
         return this;
     }
 

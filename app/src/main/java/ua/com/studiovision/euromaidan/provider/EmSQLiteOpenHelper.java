@@ -26,9 +26,9 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_TABLE_COUNTRY = "CREATE TABLE IF NOT EXISTS "
             + CountryColumns.TABLE_NAME + " ( "
             + CountryColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + CountryColumns.ID + " INTEGER, "
+            + CountryColumns.COUNTRY_ID + " INTEGER, "
             + CountryColumns.COUNTRY_NAME + " TEXT "
-            + ", CONSTRAINT unique_name UNIQUE (server_id, country_name) ON CONFLICT REPLACE"
+            + ", CONSTRAINT unique_name UNIQUE (country_id, country_name) ON CONFLICT REPLACE"
             + " );";
 
     // @formatter:on

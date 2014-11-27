@@ -2,9 +2,7 @@ package ua.com.studiovision.euromaidan.provider.country;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
-
 import ua.com.studiovision.euromaidan.provider.EmContentProvider;
-import ua.com.studiovision.euromaidan.provider.country.CountryColumns;
 
 /**
  * Represents country entity
@@ -21,7 +19,7 @@ public class CountryColumns implements BaseColumns {
     /**
      * Country id from server
      */
-    public static final String ID = "id";
+    public static final String COUNTRY_ID = "country_id";
 
     /**
      * Country name
@@ -34,7 +32,7 @@ public class CountryColumns implements BaseColumns {
     // @formatter:off
     public static final String[] ALL_COLUMNS = new String[] {
             _ID,
-            ID,
+            COUNTRY_ID,
             COUNTRY_NAME
     };
     // @formatter:on
@@ -42,7 +40,7 @@ public class CountryColumns implements BaseColumns {
     public static boolean hasColumns(String[] projection) {
         if (projection == null) return true;
         for (String c : projection) {
-            if (c == ID || c.contains("." + ID)) return true;
+            if (c == COUNTRY_ID || c.contains("." + COUNTRY_ID)) return true;
             if (c == COUNTRY_NAME || c.contains("." + COUNTRY_NAME)) return true;
         }
         return false;

@@ -1,11 +1,8 @@
 package ua.com.studiovision.euromaidan.provider.country;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
-
 import ua.com.studiovision.euromaidan.provider.base.AbstractSelection;
 
 /**
@@ -53,33 +50,33 @@ public class CountrySelection extends AbstractSelection<CountrySelection> {
     }
 
 
-    public CountrySelection id(Integer... value) {
-        addEquals(CountryColumns.ID, value);
+    public CountrySelection countryId(Long... value) {
+        addEquals(CountryColumns.COUNTRY_ID, value);
         return this;
     }
 
-    public CountrySelection idNot(Integer... value) {
-        addNotEquals(CountryColumns.ID, value);
+    public CountrySelection countryIdNot(Long... value) {
+        addNotEquals(CountryColumns.COUNTRY_ID, value);
         return this;
     }
 
-    public CountrySelection idGt(int value) {
-        addGreaterThan(CountryColumns.ID, value);
+    public CountrySelection countryIdGt(long value) {
+        addGreaterThan(CountryColumns.COUNTRY_ID, value);
         return this;
     }
 
-    public CountrySelection idGtEq(int value) {
-        addGreaterThanOrEquals(CountryColumns.ID, value);
+    public CountrySelection countryIdGtEq(long value) {
+        addGreaterThanOrEquals(CountryColumns.COUNTRY_ID, value);
         return this;
     }
 
-    public CountrySelection idLt(int value) {
-        addLessThan(CountryColumns.ID, value);
+    public CountrySelection countryIdLt(long value) {
+        addLessThan(CountryColumns.COUNTRY_ID, value);
         return this;
     }
 
-    public CountrySelection idLtEq(int value) {
-        addLessThanOrEquals(CountryColumns.ID, value);
+    public CountrySelection countryIdLtEq(long value) {
+        addLessThanOrEquals(CountryColumns.COUNTRY_ID, value);
         return this;
     }
 

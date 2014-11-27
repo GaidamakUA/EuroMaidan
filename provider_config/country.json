@@ -3,8 +3,8 @@
     "fields": [
         {
             "documentation": "Country id from server",
-            "name": "id",
-            "type": "Integer",
+            "name": "country_id",
+            "type": "Long",
         },
         {
             "documentation": "Country name",
@@ -16,7 +16,7 @@
     "constraints": [
         {
             "name": "unique_name",
-            "definition": "UNIQUE (server_id, country_name) ON CONFLICT REPLACE"
+            "definition": "UNIQUE (country_id, country_name) ON CONFLICT REPLACE"
         },
     ]
 }
