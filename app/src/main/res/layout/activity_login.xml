@@ -21,14 +21,16 @@
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/email_edittext" />
+        android:id="@+id/email_edittext"
+        android:text="q@q.q"/>
 
     <EditText
         style="@style/editTextAndButtonDimensions"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/password_edittext" />
+        android:id="@+id/password_edittext"
+        android:text="qqqqqq"/>
 
     <Button
             style="@style/editTextAndButtonDimensions"
