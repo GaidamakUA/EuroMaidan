@@ -1,7 +1,10 @@
 package ua.com.studiovision.euromaidan.provider.country;
 
+import java.util.Date;
+
 import android.content.ContentResolver;
 import android.net.Uri;
+
 import ua.com.studiovision.euromaidan.provider.base.AbstractContentValues;
 
 /**
@@ -26,28 +29,21 @@ public class CountryContentValues extends AbstractContentValues {
     /**
      * Country id from server
      */
-    public CountryContentValues putCountryId(Long value) {
+    public CountryContentValues putCountryId(long value) {
         mContentValues.put(CountryColumns.COUNTRY_ID, value);
         return this;
     }
 
-    public CountryContentValues putCountryIdNull() {
-        mContentValues.putNull(CountryColumns.COUNTRY_ID);
-        return this;
-    }
 
 
     /**
      * Country name
      */
     public CountryContentValues putCountryName(String value) {
+        if (value == null) throw new IllegalArgumentException("value for countryName must not be null");
         mContentValues.put(CountryColumns.COUNTRY_NAME, value);
         return this;
     }
 
-    public CountryContentValues putCountryNameNull() {
-        mContentValues.putNull(CountryColumns.COUNTRY_NAME);
-        return this;
-    }
 
 }

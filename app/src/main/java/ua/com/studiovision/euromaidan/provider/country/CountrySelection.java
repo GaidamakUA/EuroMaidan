@@ -1,8 +1,11 @@
 package ua.com.studiovision.euromaidan.provider.country;
 
+import java.util.Date;
+
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
+
 import ua.com.studiovision.euromaidan.provider.base.AbstractSelection;
 
 /**
@@ -50,13 +53,13 @@ public class CountrySelection extends AbstractSelection<CountrySelection> {
     }
 
 
-    public CountrySelection countryId(Long... value) {
-        addEquals(CountryColumns.COUNTRY_ID, value);
+    public CountrySelection countryId(long... value) {
+        addEquals(CountryColumns.COUNTRY_ID, toObjectArray(value));
         return this;
     }
 
-    public CountrySelection countryIdNot(Long... value) {
-        addNotEquals(CountryColumns.COUNTRY_ID, value);
+    public CountrySelection countryIdNot(long... value) {
+        addNotEquals(CountryColumns.COUNTRY_ID, toObjectArray(value));
         return this;
     }
 

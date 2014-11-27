@@ -35,6 +35,10 @@
             android:name=".MainService_"
             android:enabled="true"
             android:exported="false"></service>
+        <provider
+                android:name="ua.com.studiovision.euromaidan.provider.EmContentProvider"
+                android:authorities="ua.com.studiovision.euromaidan.provider"
+                android:exported="false" />
     </application>
 
 </manifest>
