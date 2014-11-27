@@ -14,28 +14,28 @@
             style="@style/LogoStyle"
             android:id="@+id/imageView"
             android:layout_gravity="center_horizontal"/>
-    <EditText
+    <AutoCompleteTextView
         style="@style/editTextAndButtonDimensions"
-        android:id="@+id/country_edittext"
+        android:id="@+id/countryAutoCompleteTextView"
         android:layout_gravity="center_horizontal"
         android:hint="@string/country"/>
 
-    <EditText
+    <AutoCompleteTextView
         style="@style/editTextAndButtonDimensions"
-        android:id="@+id/city_edittext"
+        android:id="@+id/cityAutoCompleteTextView"
         android:layout_gravity="center_horizontal"
         android:hint="@string/city"/>
 
-    <EditText
+    <AutoCompleteTextView
         style="@style/editTextAndButtonDimensions"
-        android:id="@+id/school_edittext"
+        android:id="@+id/schoolAutoCompleteTextView"
         android:layout_gravity="center_horizontal"
         android:hint="@string/school"/>
 
     <Button
         style="@style/editTextAndButtonDimensions"
         android:text="@string/save"
-        android:id="@+id/save_button"
+        android:id="@+id/saveButton"
         android:layout_gravity="center_horizontal" />
 
     <Button

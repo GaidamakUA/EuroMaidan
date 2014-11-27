@@ -2,7 +2,7 @@ package ua.com.studiovision.euromaidan.jsonprotocol;
 
 public class LoginProtocol {
     private LoginProtocol() {}
-    public static class Request {
+    public static class Request implements AbstractRequest<Request> {
         // TODO make final
         public String key = "user_authorization";
         public String email;
@@ -13,7 +13,7 @@ public class LoginProtocol {
             this.password = password;
         }
     }
-    public static class Response {
+    public static class Response implements AbstractResponse<Response> {
         public String status; // success
         public String token;
         public String message;

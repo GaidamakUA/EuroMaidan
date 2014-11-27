@@ -20,6 +20,8 @@ public class FirstRunActivity extends ActivityServiceCommunicationActivity
         implements FirstRunFragmentListener {
     private static final String TAG = "FirstRunActivity";
 
+    public static final String COUNTRY_NAME = "country_name";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,5 +57,29 @@ public class FirstRunActivity extends ActivityServiceCommunicationActivity
             FeedActivity_.intent(this).start();
             finish();
         }
+    }
+
+    @Override
+    public void tryRequestCountries(String countryName) {
+        Message msg = Message.obtain();
+        msg.what = AppProtocol.REQUEST_COUNTRIES;
+        Bundle bundle = new Bundle();
+        bundle.putString(COUNTRY_NAME, countryName);
+        sendMessage(msg);
+    }
+
+    @Override
+    public void tryRequestCities(String cityName) {
+
+    }
+
+    @Override
+    public void tryRequestUniversities(String universityName) {
+
+    }
+
+    @Override
+    public void tryRequestSchools(String schoolName) {
+
     }
 }

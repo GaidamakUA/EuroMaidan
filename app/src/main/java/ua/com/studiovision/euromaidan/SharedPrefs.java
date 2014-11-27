@@ -1,7 +1,10 @@
 package ua.com.studiovision.euromaidan;
 
-/**
- * Created by gaidamak on 26.11.14.
- */
+import org.androidannotations.annotations.sharedpreferences.DefaultString;
+import org.androidannotations.annotations.sharedpreferences.SharedPref;
+
+@SharedPref(value = SharedPref.Scope.APPLICATION_DEFAULT)
 public interface SharedPrefs {
+    @DefaultString("DEADBEEF")
+    String getToken();
 }

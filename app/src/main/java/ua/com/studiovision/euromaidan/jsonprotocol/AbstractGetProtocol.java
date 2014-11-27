@@ -2,11 +2,11 @@ package ua.com.studiovision.euromaidan.jsonprotocol;
 
 public class AbstractGetProtocol {
 
-    public static class AbstractRequest {
+    public static class AbstractArrayRequest {
         public String key;
         public String lotName;
 
-        public AbstractRequest(String key, String lotName) {
+        public AbstractArrayRequest(String key, String lotName) {
             this.key = key;
             this.lotName = lotName;
         }
@@ -21,19 +21,19 @@ public class AbstractGetProtocol {
         }
     }
 
-    public static AbstractRequest getCountries(String lotName) {
-        return new AbstractRequest("getCountries", lotName);
+    public static AbstractArrayRequest getCountries(String lotName) {
+        return new AbstractArrayRequest("getCountries", lotName);
     }
 
-    public static AbstractRequest getCities(String lotName) {
-        return new AbstractRequest("getCities", lotName);
+    public static AbstractArrayRequest getCities(String lotName) {
+        return new AbstractArrayRequest("getCities", lotName);
     }
 
-    public static AbstractRequest getUniversities(String lotName) {
-        return new AbstractRequest("getUniversities", lotName);
+    public static AbstractArrayRequest getUniversities(String lotName) {
+        return new AbstractArrayRequest("getUniversities", lotName);
     }
 
-    public static AbstractRequest getSchools(String lotName) {
-        return new AbstractRequest("getSchools", lotName);
+    public static AbstractArrayRequest getSchools(String lotName) {
+        return new AbstractArrayRequest("getSchools", lotName);
     }
 }
