@@ -79,12 +79,13 @@ public class MainService extends ActivityServiceCommunicationService {
             AbstractGetProtocol.Response response =
                     executeRequest(request, AbstractGetProtocol.Response.class);
             CountryContentValues contentValues;
-            for (AbstractGetProtocol.Response.AbstractItem item : response.array) {
-                contentValues = new CountryContentValues();
-                contentValues.putCountryId(item.id);
-                contentValues.putCountryName(item.name);
-                contentValues.insert(getContentResolver());
-            }
+            if (response.array != null)
+                for (AbstractGetProtocol.Response.AbstractItem item : response.array) {
+                    contentValues = new CountryContentValues();
+                    contentValues.putCountryId(item.id);
+                    contentValues.putCountryName(item.name);
+                    contentValues.insert(getContentResolver());
+                }
 
         } catch (IOException e) {
             Log.e(TAG, "", e);
@@ -93,7 +94,7 @@ public class MainService extends ActivityServiceCommunicationService {
 
     @Background
     void doRegister(String name, String surname, String password, String confirmPassword,
-                            String email) {
+                    String email) {
         Log.v(TAG, "MainService.doRegister(" + "name=" + name + ", surname=" + surname
                 + ", password=" + password + ", confirmPassword=" + confirmPassword + ", email="
                 + email + ")");
@@ -102,7 +103,7 @@ public class MainService extends ActivityServiceCommunicationService {
                     password, confirmPassword, email);
             RegistrationProtocol.Response response =
                     executeRequest(request, RegistrationProtocol.Response.class);
-            if(response.status.equals("success")) {
+            if (response.status.equals("success")) {
                 Message msg = Message.obtain();
                 msg.what = AppProtocol.REGISTRATION_SUCCESSFUL;
                 sendMessage(msg);
@@ -120,7 +121,7 @@ public class MainService extends ActivityServiceCommunicationService {
         }
     }
 
-    @Background(id=LoginActivity.LOGIN)
+    @Background(id = LoginActivity.LOGIN)
     void doLogIn(String login, String password) {
         Log.v(TAG, "MainService.doLogIn(" + "login=" + login + ", password=" + password + ")");
         try {
@@ -130,7 +131,7 @@ public class MainService extends ActivityServiceCommunicationService {
             assert (response.status != null);
 
             // XXX hardcode
-            if(response.status.equals("success")) {
+            if (response.status.equals("success")) {
                 Message msg = Message.obtain();
                 msg.what = AppProtocol.LOG_IN_SUCCESSFUL;
                 sendMessage(msg);
