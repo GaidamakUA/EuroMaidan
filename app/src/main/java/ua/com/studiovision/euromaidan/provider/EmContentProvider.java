@@ -1,18 +1,24 @@
 package ua.com.studiovision.euromaidan.provider;
 
-import android.content.*;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+
+import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
+import android.content.ContentValues;
+import android.content.OperationApplicationException;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.util.Log;
+
 import ua.com.studiovision.euromaidan.BuildConfig;
 import ua.com.studiovision.euromaidan.provider.country.CountryColumns;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 
 public class EmContentProvider extends ContentProvider {
     private static final String TAG = EmContentProvider.class.getSimpleName();

@@ -5,11 +5,13 @@
             "documentation": "Country id from server",
             "name": "country_id",
             "type": "Long",
+            "nullable": "false",
         },
         {
             "documentation": "Country name",
             "name": "country_name",
             "type": "String",
+            "nullable": "false",
         }
             ],
 
