@@ -23,10 +23,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import ua.com.studiovision.euromaidan.jsonprotocol.AbstractGetProtocol;
 import ua.com.studiovision.euromaidan.jsonprotocol.AbstractRequest;
 import ua.com.studiovision.euromaidan.jsonprotocol.AbstractResponse;
 import ua.com.studiovision.euromaidan.jsonprotocol.LoginProtocol;
 import ua.com.studiovision.euromaidan.jsonprotocol.RegistrationProtocol;
+import ua.com.studiovision.euromaidan.provider.country.CountryContentValues;
 
 @EService
 public class MainService extends ActivityServiceCommunicationService {
@@ -64,7 +66,28 @@ public class MainService extends ActivityServiceCommunicationService {
                 Log.v(TAG, "Countries");
                 Bundle bundle = msg.getData();
                 String countryNamePart = bundle.getString(FirstRunActivity.COUNTRY_NAME);
-                Log.v(TAG, "countryNamePart=" + countryNamePart);
+                doRequestCountries(countryNamePart);
+        }
+    }
+
+    @Background
+    void doRequestCountries(String countryName) {
+        Log.v(TAG, "MainService.doRequestCountries(" + "countryName=" + countryName + ")");
+        try {
+            AbstractGetProtocol.AbstractArrayRequest request =
+                    AbstractGetProtocol.getCountries(countryName);
+            AbstractGetProtocol.Response response =
+                    executeRequest(request, AbstractGetProtocol.Response.class);
+            CountryContentValues contentValues;
+            for (AbstractGetProtocol.Response.AbstractItem item : response.array) {
+                contentValues = new CountryContentValues();
+                contentValues.putCountryId(item.id);
+                contentValues.putCountryName(item.name);
+                contentValues.insert(getContentResolver());
+            }
+
+        } catch (IOException e) {
+            Log.e(TAG, "", e);
         }
     }
 

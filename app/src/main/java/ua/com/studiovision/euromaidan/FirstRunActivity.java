@@ -61,11 +61,11 @@ public class FirstRunActivity extends ActivityServiceCommunicationActivity
 
     @Override
     public void tryRequestCountries(String countryName) {
-        Log.v(TAG, "FirstRunActivity.tryRequestCountries(" + "countryName=" + countryName + ")");
         Message msg = Message.obtain();
         msg.what = AppProtocol.REQUEST_COUNTRIES;
         Bundle bundle = new Bundle();
         bundle.putString(COUNTRY_NAME, countryName);
+        msg.setData(bundle);
         sendMessage(msg);
     }
 
