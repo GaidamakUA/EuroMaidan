@@ -1,0 +1,22 @@
+{
+    "fields": [
+        {
+            "name": "city_id",
+            "type": "Long",
+            "nullable": "false",
+        },
+        {
+            "documentation": "City name",
+            "name": "city_name",
+            "type": "String",
+            "nullable": "false",
+        }
+            ],
+
+    "constraints": [
+        {
+            "name": "unique_name",
+            "definition": "UNIQUE (city_id, city_name) ON CONFLICT REPLACE"
+        },
+    ]
+}
