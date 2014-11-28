@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public abstract class AbstractCursor extends CursorWrapper {
-    private HashMap<String, Integer> mColumnIndexes = new HashMap<String, Integer>();
+	private HashMap<String, Integer> mColumnIndexes = new HashMap<String, Integer>();
 
     public AbstractCursor(Cursor cursor) {
         super(cursor);

@@ -28,7 +28,9 @@ import ua.com.studiovision.euromaidan.jsonprotocol.AbstractRequest;
 import ua.com.studiovision.euromaidan.jsonprotocol.AbstractResponse;
 import ua.com.studiovision.euromaidan.jsonprotocol.LoginProtocol;
 import ua.com.studiovision.euromaidan.jsonprotocol.RegistrationProtocol;
-import ua.com.studiovision.euromaidan.provider.country.CountryContentValues;
+import ua.com.studiovision.euromaidan.processstrategies.AbstractProcessResponseStrategy;
+import ua.com.studiovision.euromaidan.processstrategies.CityStrategy;
+import ua.com.studiovision.euromaidan.processstrategies.CountryStrategy;
 
 @EService
 public class MainService extends ActivityServiceCommunicationService {
@@ -64,29 +66,21 @@ public class MainService extends ActivityServiceCommunicationService {
                 break;
             case AppProtocol.REQUEST_COUNTRIES:
                 Log.v(TAG, "Countries");
-                Bundle bundle = msg.getData();
-                String countryNamePart = bundle.getString(FirstRunActivity.COUNTRY_NAME);
-                doRequestCountries(countryNamePart);
+                doRequest(new CountryStrategy(getContentResolver(), msg));
+                break;
+            case AppProtocol.REQUEST_CITIES:
+                Log.v(TAG, "Cities");
+                doRequest(new CityStrategy(getContentResolver(), msg));
+                break;
         }
     }
 
     @Background
-    void doRequestCountries(String countryName) {
-        Log.v(TAG, "MainService.doRequestCountries(" + "countryName=" + countryName + ")");
+    void doRequest(AbstractProcessResponseStrategy strategy) {
+        Log.v(TAG, "MainService.doRequest(strategy=" + strategy + ")");
         try {
-            AbstractGetProtocol.AbstractArrayRequest request =
-                    AbstractGetProtocol.getCountries(countryName);
-            AbstractGetProtocol.Response response =
-                    executeRequest(request, AbstractGetProtocol.Response.class);
-            CountryContentValues contentValues;
-            if (response.array != null)
-                for (AbstractGetProtocol.Response.AbstractItem item : response.array) {
-                    contentValues = new CountryContentValues();
-                    contentValues.putCountryId(item.id);
-                    contentValues.putCountryName(item.name);
-                    contentValues.insert(getContentResolver());
-                }
-
+            strategy.processResponse(
+                    executeRequest(strategy.getRequest(), AbstractGetProtocol.Response.class));
         } catch (IOException e) {
             Log.e(TAG, "", e);
         }

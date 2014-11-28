@@ -1,10 +1,5 @@
 package ua.com.studiovision.euromaidan.provider;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
@@ -17,7 +12,13 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+
 import ua.com.studiovision.euromaidan.BuildConfig;
+import ua.com.studiovision.euromaidan.provider.city.CityColumns;
 import ua.com.studiovision.euromaidan.provider.country.CountryColumns;
 
 public class EmContentProvider extends ContentProvider {
@@ -37,6 +38,9 @@ public class EmContentProvider extends ContentProvider {
     private static final int URI_TYPE_COUNTRY = 0;
     private static final int URI_TYPE_COUNTRY_ID = 1;
 
+    private static final int URI_TYPE_CITY = 2;
+    private static final int URI_TYPE_CITY_ID = 3;
+
 
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
@@ -44,6 +48,8 @@ public class EmContentProvider extends ContentProvider {
     static {
         URI_MATCHER.addURI(AUTHORITY, CountryColumns.TABLE_NAME, URI_TYPE_COUNTRY);
         URI_MATCHER.addURI(AUTHORITY, CountryColumns.TABLE_NAME + "/#", URI_TYPE_COUNTRY_ID);
+        URI_MATCHER.addURI(AUTHORITY, CityColumns.TABLE_NAME, URI_TYPE_CITY);
+        URI_MATCHER.addURI(AUTHORITY, CityColumns.TABLE_NAME + "/#", URI_TYPE_CITY_ID);
     }
 
     protected EmSQLiteOpenHelper mEmSQLiteOpenHelper;
@@ -79,6 +85,11 @@ public class EmContentProvider extends ContentProvider {
                 return TYPE_CURSOR_DIR + CountryColumns.TABLE_NAME;
             case URI_TYPE_COUNTRY_ID:
                 return TYPE_CURSOR_ITEM + CountryColumns.TABLE_NAME;
+
+            case URI_TYPE_CITY:
+                return TYPE_CURSOR_DIR + CityColumns.TABLE_NAME;
+            case URI_TYPE_CITY_ID:
+                return TYPE_CURSOR_ITEM + CityColumns.TABLE_NAME;
 
         }
         return null;
@@ -220,12 +231,20 @@ public class EmContentProvider extends ContentProvider {
                 res.orderBy = CountryColumns.DEFAULT_ORDER;
                 break;
 
+            case URI_TYPE_CITY:
+            case URI_TYPE_CITY_ID:
+                res.table = CityColumns.TABLE_NAME;
+                res.tablesWithJoins = CityColumns.TABLE_NAME;
+                res.orderBy = CityColumns.DEFAULT_ORDER;
+                break;
+
             default:
                 throw new IllegalArgumentException("The uri '" + uri + "' is not supported by this ContentProvider");
         }
 
         switch (matchedId) {
             case URI_TYPE_COUNTRY_ID:
+            case URI_TYPE_CITY_ID:
                 id = uri.getLastPathSegment();
         }
         if (id != null) {

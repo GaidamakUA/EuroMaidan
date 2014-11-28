@@ -29,7 +29,7 @@ abstract public class ActivityServiceCommunicationActivity extends Activity {
     protected Class<? extends ActivityServiceCommunicationService> mServiceClass;
 
     /**
-     * Note: invoke startService(...) in onResume() have the same effect as invoke
+     * Note: processResponse startService(...) in onResume() have the same effect as processResponse
      * startService(...) in onCreate() method (from time of receive response from
      * service point of view)
      *

@@ -11,6 +11,7 @@ import android.os.Build;
 import android.util.Log;
 
 import ua.com.studiovision.euromaidan.BuildConfig;
+import ua.com.studiovision.euromaidan.provider.city.CityColumns;
 import ua.com.studiovision.euromaidan.provider.country.CountryColumns;
 
 public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
@@ -29,6 +30,14 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
             + CountryColumns.COUNTRY_ID + " INTEGER NOT NULL, "
             + CountryColumns.COUNTRY_NAME + " TEXT NOT NULL "
             + ", CONSTRAINT unique_name UNIQUE (country_id, country_name) ON CONFLICT REPLACE"
+            + " );";
+
+    private static final String SQL_CREATE_TABLE_CITY = "CREATE TABLE IF NOT EXISTS "
+            + CityColumns.TABLE_NAME + " ( "
+            + CityColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + CityColumns.CITY_ID + " INTEGER NOT NULL, "
+            + CityColumns.CITY_NAME + " TEXT NOT NULL "
+            + ", CONSTRAINT unique_name UNIQUE (city_id, city_name) ON CONFLICT REPLACE"
             + " );";
 
     // @formatter:on
@@ -88,6 +97,7 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
         if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
         mOpenHelperCallbacks.onPreCreate(mContext, db);
         db.execSQL(SQL_CREATE_TABLE_COUNTRY);
+        db.execSQL(SQL_CREATE_TABLE_CITY);
         mOpenHelperCallbacks.onPostCreate(mContext, db);
     }
 

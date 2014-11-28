@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import ua.com.studiovision.euromaidan.provider.EmContentProvider;
-import ua.com.studiovision.euromaidan.provider.country.CountryColumns;
 
 /**
  * Represents country entity
