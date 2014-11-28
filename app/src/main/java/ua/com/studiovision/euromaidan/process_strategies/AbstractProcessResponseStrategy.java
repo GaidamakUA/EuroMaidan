@@ -1,8 +1,8 @@
-package ua.com.studiovision.euromaidan.processstrategies;
+package ua.com.studiovision.euromaidan.process_strategies;
 
 import android.content.ContentResolver;
 
-import ua.com.studiovision.euromaidan.jsonprotocol.AbstractGetProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.AbstractGetProtocol;
 
 public abstract class AbstractProcessResponseStrategy {
 

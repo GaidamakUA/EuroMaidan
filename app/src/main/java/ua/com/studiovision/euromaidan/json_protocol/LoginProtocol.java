@@ -1,4 +1,4 @@
-package ua.com.studiovision.euromaidan.jsonprotocol;
+package ua.com.studiovision.euromaidan.json_protocol;
 
 public class LoginProtocol {
     private LoginProtocol() {}

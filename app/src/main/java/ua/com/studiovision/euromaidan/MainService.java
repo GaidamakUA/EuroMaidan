@@ -23,14 +23,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import ua.com.studiovision.euromaidan.jsonprotocol.AbstractGetProtocol;
-import ua.com.studiovision.euromaidan.jsonprotocol.AbstractRequest;
-import ua.com.studiovision.euromaidan.jsonprotocol.AbstractResponse;
-import ua.com.studiovision.euromaidan.jsonprotocol.LoginProtocol;
-import ua.com.studiovision.euromaidan.jsonprotocol.RegistrationProtocol;
-import ua.com.studiovision.euromaidan.processstrategies.AbstractProcessResponseStrategy;
-import ua.com.studiovision.euromaidan.processstrategies.CityStrategy;
-import ua.com.studiovision.euromaidan.processstrategies.CountryStrategy;
+import ua.com.studiovision.euromaidan.json_protocol.AbstractGetProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.AbstractRequest;
+import ua.com.studiovision.euromaidan.json_protocol.AbstractResponse;
+import ua.com.studiovision.euromaidan.json_protocol.LoginProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.RegistrationProtocol;
+import ua.com.studiovision.euromaidan.process_strategies.AbstractProcessResponseStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.CityStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.CountryStrategy;
 
 @EService
 public class MainService extends ActivityServiceCommunicationService {
