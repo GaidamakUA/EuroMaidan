@@ -4,16 +4,19 @@ import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.softevol.activity_service_communication.ActivityServiceCommunicationService;
-
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EService;
 import org.androidannotations.annotations.SupposeBackground;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.api.BackgroundExecutor;
+import ua.com.studiovision.euromaidan.jsonprotocol.*;
+import ua.com.studiovision.euromaidan.processstrategies.AbstractProcessResponseStrategy;
+import ua.com.studiovision.euromaidan.processstrategies.CityStrategy;
+import ua.com.studiovision.euromaidan.processstrategies.CountryStrategy;
+import ua.com.studiovision.euromaidan.processstrategies.SchoolStrategy;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -22,15 +25,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import ua.com.studiovision.euromaidan.jsonprotocol.AbstractGetProtocol;
-import ua.com.studiovision.euromaidan.jsonprotocol.AbstractRequest;
-import ua.com.studiovision.euromaidan.jsonprotocol.AbstractResponse;
-import ua.com.studiovision.euromaidan.jsonprotocol.LoginProtocol;
-import ua.com.studiovision.euromaidan.jsonprotocol.RegistrationProtocol;
-import ua.com.studiovision.euromaidan.processstrategies.AbstractProcessResponseStrategy;
-import ua.com.studiovision.euromaidan.processstrategies.CityStrategy;
-import ua.com.studiovision.euromaidan.processstrategies.CountryStrategy;
 
 @EService
 public class MainService extends ActivityServiceCommunicationService {
@@ -71,6 +65,10 @@ public class MainService extends ActivityServiceCommunicationService {
             case AppProtocol.REQUEST_CITIES:
                 Log.v(TAG, "Cities");
                 doRequest(new CityStrategy(getContentResolver(), msg));
+                break;
+            case AppProtocol.REQUEST_SCHOOLS:
+                Log.v(TAG, "Schools");
+                doRequest(new SchoolStrategy(getContentResolver(),msg));
                 break;
         }
     }

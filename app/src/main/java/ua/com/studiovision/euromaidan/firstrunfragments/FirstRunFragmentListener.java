@@ -7,5 +7,5 @@ public interface FirstRunFragmentListener {
     void tryRequestCountries(String countryName);
     void tryRequestCities(String cityName, long countryId);
     void tryRequestUniversities(String universityName);
-    void tryRequestSchools(String schoolName);
+    void tryRequestSchools(String schoolName, long schoolId);
 }

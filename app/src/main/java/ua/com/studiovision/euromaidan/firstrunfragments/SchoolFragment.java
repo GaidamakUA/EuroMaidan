@@ -17,6 +17,8 @@ import ua.com.studiovision.euromaidan.provider.city.CityColumns;
 import ua.com.studiovision.euromaidan.provider.city.CityCursor;
 import ua.com.studiovision.euromaidan.provider.country.CountryColumns;
 import ua.com.studiovision.euromaidan.provider.country.CountryCursor;
+import ua.com.studiovision.euromaidan.provider.school.SchoolColumns;
+import ua.com.studiovision.euromaidan.provider.school.SchoolCursor;
 
 @EFragment(R.layout.fragment_school)
 public class SchoolFragment extends Fragment {
@@ -31,6 +33,7 @@ public class SchoolFragment extends Fragment {
     FirstRunFragmentListener firstRunFragmentListener;
     SimpleCursorAdapter countryCursorAdapter;
     SimpleCursorAdapter cityCursorAdapter;
+    SimpleCursorAdapter schoolCursorAdapter;
 
     private Long countryId = -1L;
     private Long cityId = -1L;
@@ -86,7 +89,6 @@ public class SchoolFragment extends Fragment {
             public Cursor runQuery(CharSequence str) {
                 if (str == null || str.length() <1 || countryId == -1L)
                     return null;
-                Log.v(TAG,"Country id from city adapter:"+ countryId);
                 firstRunFragmentListener.tryRequestCities(str.toString(),countryId);
                 return getCursor(str,CityColumns.CITY_NAME,CityColumns.CONTENT_URI,CityColumns.ALL_COLUMNS);
             }
@@ -98,6 +100,34 @@ public class SchoolFragment extends Fragment {
                 CityCursor cursor = new CityCursor(cur);
                 cityId = cursor.getCityId();
                 return cursor.getCityName();
+            }
+        });
+
+        //--------------School autoCompleteTextView adapter-------------------------//
+        schoolCursorAdapter = new SimpleCursorAdapter(getActivity().getBaseContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                null,
+                new String[] {SchoolColumns.SCHOOL_NAME},
+                new int[] {android.R.id.text1},
+                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        schoolAutoCompleteTextView.setAdapter(schoolCursorAdapter);
+
+        schoolCursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+            @Override
+            public Cursor runQuery(CharSequence str) {
+                if (str == null || str.length() <1 || cityId == -1L){
+                    return null;
+                }
+                firstRunFragmentListener.tryRequestSchools(str.toString(),cityId);
+                return getCursor(str,SchoolColumns.SCHOOL_NAME,SchoolColumns.CONTENT_URI,SchoolColumns.ALL_COLUMNS);
+            }
+        });
+
+        schoolCursorAdapter.setCursorToStringConverter(new SimpleCursorAdapter.CursorToStringConverter() {
+            @Override
+            public CharSequence convertToString(Cursor cur) {
+                SchoolCursor cursor = new SchoolCursor(cur);
+                return cursor.getSchoolName();
             }
         });
 
@@ -133,12 +163,6 @@ public class SchoolFragment extends Fragment {
     @Click(R.id.saveButton)
     void onSaveButtonClick() {
         // XXX test content
-        //firstRunFragmentListener.tryRequestCountries(countryAutoCompleteTextView.getText().toString());
-        Log.v(TAG, "CountryId=" + countryId);
-        if (countryId == -1) {
-            return;
-        }
-        firstRunFragmentListener.tryRequestCities(cityAutoCompleteTextView.getText().toString(), countryId);
     }
 
     @Click(R.id.skip_button)

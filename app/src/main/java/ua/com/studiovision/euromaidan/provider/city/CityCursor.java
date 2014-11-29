@@ -1,5 +1,7 @@
 package ua.com.studiovision.euromaidan.provider.city;
 
+import java.util.Date;
+
 import android.database.Cursor;
 
 import ua.com.studiovision.euromaidan.provider.base.AbstractCursor;
