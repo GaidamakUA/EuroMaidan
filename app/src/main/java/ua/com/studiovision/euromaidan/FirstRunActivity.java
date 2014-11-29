@@ -25,6 +25,7 @@ public class FirstRunActivity extends ActivityServiceCommunicationActivity
     public static final String CITY_NAME = "city_name";
     public static final String CITY_ID = "city_id";
     public static final String SCHOOL_NAME = "school_name";
+    public static final String UNIVERSITY_NAME = "university_name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +80,11 @@ public class FirstRunActivity extends ActivityServiceCommunicationActivity
     }
 
     @Override
-    public void tryRequestUniversities(String universityName) {
-
+    public void tryRequestUniversities(String universityName, long cityId) {
+        Bundle bundle = new Bundle();
+        bundle.putString(UNIVERSITY_NAME, universityName);
+        bundle.putLong(CITY_ID,cityId);
+        sendStuff(AppProtocol.REQUEST_UNIVERSITIES, bundle);
     }
 
     @Override

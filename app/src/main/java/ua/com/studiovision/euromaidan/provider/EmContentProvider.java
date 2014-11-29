@@ -10,6 +10,7 @@ import ua.com.studiovision.euromaidan.BuildConfig;
 import ua.com.studiovision.euromaidan.provider.city.CityColumns;
 import ua.com.studiovision.euromaidan.provider.country.CountryColumns;
 import ua.com.studiovision.euromaidan.provider.school.SchoolColumns;
+import ua.com.studiovision.euromaidan.provider.university.UniversityColumns;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -39,6 +40,9 @@ public class EmContentProvider extends ContentProvider {
     private static final int URI_TYPE_SCHOOL = 4;
     private static final int URI_TYPE_SCHOOL_ID = 5;
 
+    private static final int URI_TYPE_UNIVERSITY = 6;
+    private static final int URI_TYPE_UNIVERSITY_ID = 7;
+
 
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
@@ -50,6 +54,8 @@ public class EmContentProvider extends ContentProvider {
         URI_MATCHER.addURI(AUTHORITY, CountryColumns.TABLE_NAME + "/#", URI_TYPE_COUNTRY_ID);
         URI_MATCHER.addURI(AUTHORITY, SchoolColumns.TABLE_NAME, URI_TYPE_SCHOOL);
         URI_MATCHER.addURI(AUTHORITY, SchoolColumns.TABLE_NAME + "/#", URI_TYPE_SCHOOL_ID);
+        URI_MATCHER.addURI(AUTHORITY, UniversityColumns.TABLE_NAME, URI_TYPE_UNIVERSITY);
+        URI_MATCHER.addURI(AUTHORITY, UniversityColumns.TABLE_NAME + "/#", URI_TYPE_UNIVERSITY_ID);
     }
 
     protected EmSQLiteOpenHelper mEmSQLiteOpenHelper;
@@ -95,6 +101,11 @@ public class EmContentProvider extends ContentProvider {
                 return TYPE_CURSOR_DIR + SchoolColumns.TABLE_NAME;
             case URI_TYPE_SCHOOL_ID:
                 return TYPE_CURSOR_ITEM + SchoolColumns.TABLE_NAME;
+
+            case URI_TYPE_UNIVERSITY:
+                return TYPE_CURSOR_DIR + UniversityColumns.TABLE_NAME;
+            case URI_TYPE_UNIVERSITY_ID:
+                return TYPE_CURSOR_ITEM + UniversityColumns.TABLE_NAME;
 
         }
         return null;
@@ -250,6 +261,13 @@ public class EmContentProvider extends ContentProvider {
                 res.orderBy = SchoolColumns.DEFAULT_ORDER;
                 break;
 
+            case URI_TYPE_UNIVERSITY:
+            case URI_TYPE_UNIVERSITY_ID:
+                res.table = UniversityColumns.TABLE_NAME;
+                res.tablesWithJoins = UniversityColumns.TABLE_NAME;
+                res.orderBy = UniversityColumns.DEFAULT_ORDER;
+                break;
+
             default:
                 throw new IllegalArgumentException("The uri '" + uri + "' is not supported by this ContentProvider");
         }
@@ -258,6 +276,7 @@ public class EmContentProvider extends ContentProvider {
             case URI_TYPE_CITY_ID:
             case URI_TYPE_COUNTRY_ID:
             case URI_TYPE_SCHOOL_ID:
+            case URI_TYPE_UNIVERSITY_ID:
                 id = uri.getLastPathSegment();
         }
         if (id != null) {

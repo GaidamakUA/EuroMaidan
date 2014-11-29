@@ -42,6 +42,6 @@
     <Button
         style="@style/editTextAndButtonDimensions"
         android:text="@string/skip"
-        android:id="@+id/skip_button"
+        android:id="@+id/skipButton"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

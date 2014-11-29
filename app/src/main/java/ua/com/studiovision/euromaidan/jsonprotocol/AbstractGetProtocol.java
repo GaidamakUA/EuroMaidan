@@ -35,9 +35,10 @@ public class AbstractGetProtocol {
         return request;
     }
 
-    // TODO set city ID
-    public static AbstractArrayRequest getUniversities(String lotName) {
-        return new AbstractArrayRequest("getUniversities", lotName);
+    public static AbstractArrayRequest getUniversities(String lotName, long cityId) {
+        AbstractArrayRequest request = new AbstractArrayRequest("getUniversities", lotName);
+        request.id_city = cityId;
+        return request;
     }
 
     public static AbstractArrayRequest getSchools(String lotName, long cityId) {

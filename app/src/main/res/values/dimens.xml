@@ -7,7 +7,7 @@
     <dimen name="loginComponentWidth">300dp</dimen>
     <dimen name="loginComponentHeight">35dp</dimen>
     <dimen name="rectangleStrokeWidth">1dp</dimen>
-    <dimen name="rectangleCornerRadius">20dp</dimen>
+    <dimen name="rectangleCornerRadius">7dp</dimen>
     <dimen name="topBottomMargin">30dp</dimen>
     <dimen name="logoHeightWidth">100dp</dimen>
 </resources>

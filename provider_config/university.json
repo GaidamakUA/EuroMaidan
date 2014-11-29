@@ -1,0 +1,24 @@
+{
+  "documentation": "Represents university entity",
+  "fields": [
+    {
+      "documentation": "University id from server",
+      "name": "university_id",
+      "type": "Long",
+      "nullable": "false",
+    },
+    {
+      "documentation": "University name",
+      "name": "university_name",
+      "type": "String",
+      "nullable": "false",
+    }
+  ],
+
+  "constraints": [
+    {
+      "name": "unique_name",
+      "definition": "UNIQUE (university_id, university_name) ON CONFLICT REPLACE"
+    },
+  ]
+}

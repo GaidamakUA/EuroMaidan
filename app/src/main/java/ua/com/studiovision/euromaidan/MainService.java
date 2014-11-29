@@ -13,10 +13,7 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.api.BackgroundExecutor;
 import ua.com.studiovision.euromaidan.jsonprotocol.*;
-import ua.com.studiovision.euromaidan.processstrategies.AbstractProcessResponseStrategy;
-import ua.com.studiovision.euromaidan.processstrategies.CityStrategy;
-import ua.com.studiovision.euromaidan.processstrategies.CountryStrategy;
-import ua.com.studiovision.euromaidan.processstrategies.SchoolStrategy;
+import ua.com.studiovision.euromaidan.processstrategies.*;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -69,6 +66,10 @@ public class MainService extends ActivityServiceCommunicationService {
             case AppProtocol.REQUEST_SCHOOLS:
                 Log.v(TAG, "Schools");
                 doRequest(new SchoolStrategy(getContentResolver(),msg));
+                break;
+            case AppProtocol.REQUEST_UNIVERSITIES:
+                Log.v(TAG, "Universities");
+                doRequest(new UniversityStrategy(getContentResolver(),msg));
                 break;
         }
     }

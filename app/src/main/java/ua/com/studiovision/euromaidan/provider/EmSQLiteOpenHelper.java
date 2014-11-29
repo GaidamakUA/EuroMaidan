@@ -14,6 +14,7 @@ import ua.com.studiovision.euromaidan.BuildConfig;
 import ua.com.studiovision.euromaidan.provider.city.CityColumns;
 import ua.com.studiovision.euromaidan.provider.country.CountryColumns;
 import ua.com.studiovision.euromaidan.provider.school.SchoolColumns;
+import ua.com.studiovision.euromaidan.provider.university.UniversityColumns;
 
 public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = EmSQLiteOpenHelper.class.getSimpleName();
@@ -47,6 +48,14 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
             + SchoolColumns.SCHOOL_ID + " INTEGER NOT NULL, "
             + SchoolColumns.SCHOOL_NAME + " TEXT NOT NULL "
             + ", CONSTRAINT unique_name UNIQUE (school_id, school_name) ON CONFLICT REPLACE"
+            + " );";
+
+    private static final String SQL_CREATE_TABLE_UNIVERSITY = "CREATE TABLE IF NOT EXISTS "
+            + UniversityColumns.TABLE_NAME + " ( "
+            + UniversityColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + UniversityColumns.UNIVERSITY_ID + " INTEGER NOT NULL, "
+            + UniversityColumns.UNIVERSITY_NAME + " TEXT NOT NULL "
+            + ", CONSTRAINT unique_name UNIQUE (university_id, university_name) ON CONFLICT REPLACE"
             + " );";
 
     // @formatter:on
@@ -108,6 +117,7 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TABLE_CITY);
         db.execSQL(SQL_CREATE_TABLE_COUNTRY);
         db.execSQL(SQL_CREATE_TABLE_SCHOOL);
+        db.execSQL(SQL_CREATE_TABLE_UNIVERSITY);
         mOpenHelperCallbacks.onPostCreate(mContext, db);
     }
 

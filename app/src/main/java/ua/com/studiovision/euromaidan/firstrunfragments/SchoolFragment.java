@@ -23,6 +23,7 @@ import ua.com.studiovision.euromaidan.provider.school.SchoolCursor;
 @EFragment(R.layout.fragment_school)
 public class SchoolFragment extends Fragment {
     private static final String TAG = "SchoolFragment";
+
     @ViewById(R.id.countryAutoCompleteTextView)
     AutoCompleteTextView countryAutoCompleteTextView;
     @ViewById(R.id.cityAutoCompleteTextView)
@@ -137,7 +138,7 @@ public class SchoolFragment extends Fragment {
      * Get cursor from DB
      * @param str User input
      * @param columnName Column for selection
-     * @param columnsContentURI Uri to all columns
+     * @param columnsContentURI Uri for all columns
      * @param projection Table projection for query
      * @return  Cursor with selected data or empty cursor if data is not found
      */
@@ -162,10 +163,9 @@ public class SchoolFragment extends Fragment {
 
     @Click(R.id.saveButton)
     void onSaveButtonClick() {
-        // XXX test content
     }
 
-    @Click(R.id.skip_button)
+    @Click(R.id.skipButton)
     void skip() {
         firstRunFragmentListener.changeFragment(this);
     }

@@ -3,6 +3,7 @@
     <style name="AppTheme" parent="android:Theme.Holo.Light">
         <item name="android:buttonStyle">@style/ButtonStyle</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
+        <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextView</item>
     </style>
     
     <style name="ButtonStyle">
@@ -13,6 +14,14 @@
     </style>
 
     <style name="EditTextStyle" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/edit_text_bg</item>
+        <item name="android:textSize">@dimen/textSize</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/light_blue</item>
+        <item name="android:textColorHint">@color/light_blue</item>
+    </style>
+
+    <style name="AutoCompleteTextView" parent="android:Widget.AutoCompleteTextView">
         <item name="android:background">@drawable/edit_text_bg</item>
         <item name="android:textSize">@dimen/textSize</item>
         <item name="android:gravity">center</item>
