@@ -23,7 +23,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import ua.com.studiovision.euromaidan.json_protocol.AbstractGetProtocol;
 import ua.com.studiovision.euromaidan.json_protocol.AbstractRequest;
 import ua.com.studiovision.euromaidan.json_protocol.AbstractResponse;
 import ua.com.studiovision.euromaidan.json_protocol.LoginProtocol;
@@ -32,6 +31,8 @@ import ua.com.studiovision.euromaidan.process_strategies.AbstractProcessResponse
 import ua.com.studiovision.euromaidan.process_strategies.CityStrategy;
 import ua.com.studiovision.euromaidan.process_strategies.CountryStrategy;
 import ua.com.studiovision.euromaidan.process_strategies.SchoolStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.SendSchoolStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.SendUnivercityStrategy;
 import ua.com.studiovision.euromaidan.process_strategies.UniversityStrategy;
 
 @EService
@@ -75,12 +76,20 @@ public class MainService extends ActivityServiceCommunicationService {
                 doRequest(new CityStrategy(getContentResolver(), msg));
                 break;
             case AppProtocol.REQUEST_SCHOOLS:
-                Log.v(TAG, "Schools");
+                Log.v(TAG, "Request Schools");
                 doRequest(new SchoolStrategy(getContentResolver(),msg));
                 break;
             case AppProtocol.REQUEST_UNIVERSITIES:
-                Log.v(TAG, "Universities");
+                Log.v(TAG, "Request Universities");
                 doRequest(new UniversityStrategy(getContentResolver(),msg));
+                break;
+            case AppProtocol.SEND_SCHOOL:
+                Log.v(TAG, "Send schools");
+                doRequest(new SendSchoolStrategy(getContentResolver(), msg));
+                break;
+            case AppProtocol.SEND_UNIVERSITY:
+                Log.v(TAG, "Send universities");
+                doRequest(new SendUnivercityStrategy(getContentResolver(), msg));
                 break;
         }
     }
@@ -90,7 +99,7 @@ public class MainService extends ActivityServiceCommunicationService {
         Log.v(TAG, "MainService.doRequest(strategy=" + strategy + ")");
         try {
             strategy.processResponse(
-                    executeRequest(strategy.getRequest(), AbstractGetProtocol.Response.class));
+                    executeRequest(strategy.getRequest(), strategy.getResponseClass()));
         } catch (IOException e) {
             Log.e(TAG, "", e);
         }

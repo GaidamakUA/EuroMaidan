@@ -9,9 +9,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CursorAdapter;
 import android.widget.FilterQueryProvider;
 import android.widget.SimpleCursorAdapter;
+
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.provider.city.CityColumns;
 import ua.com.studiovision.euromaidan.provider.city.CityCursor;
@@ -163,6 +165,12 @@ public class SchoolFragment extends Fragment {
 
     @Click(R.id.saveButton)
     void onSaveButtonClick() {
+        firstRunFragmentListener
+                .sendSchoolDataToServer(countryAutoCompleteTextView.getText().toString(),
+                        cityAutoCompleteTextView.getText().toString(),
+                        schoolAutoCompleteTextView.getText().toString());
+        // TODO check whether request was successful
+        skip();
     }
 
     @Click(R.id.skipButton)

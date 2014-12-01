@@ -13,9 +13,12 @@ public class AppProtocol extends Protocol {
     public static final int REGISTRATION_SUCCESSFUL = 4;
     public static final int REGISTRATION_UNSUCCESSFUL = 5;
 
-    // First run activity
+    // First run activity search
     public static final int REQUEST_COUNTRIES = 6;
     public static final int REQUEST_CITIES = 7;
     public static final int REQUEST_SCHOOLS = 8;
     public static final int REQUEST_UNIVERSITIES = 9;
+    // First run activity send data
+    public static final int SEND_SCHOOL = 10;
+    public static final int SEND_UNIVERSITY = 11;
 }
