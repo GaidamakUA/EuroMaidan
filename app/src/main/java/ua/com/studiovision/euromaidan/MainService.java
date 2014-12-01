@@ -4,16 +4,16 @@ import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.softevol.activity_service_communication.ActivityServiceCommunicationService;
+
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EService;
 import org.androidannotations.annotations.SupposeBackground;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.api.BackgroundExecutor;
-import ua.com.studiovision.euromaidan.jsonprotocol.*;
-import ua.com.studiovision.euromaidan.processstrategies.*;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -22,6 +22,17 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import ua.com.studiovision.euromaidan.json_protocol.AbstractGetProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.AbstractRequest;
+import ua.com.studiovision.euromaidan.json_protocol.AbstractResponse;
+import ua.com.studiovision.euromaidan.json_protocol.LoginProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.RegistrationProtocol;
+import ua.com.studiovision.euromaidan.process_strategies.AbstractProcessResponseStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.CityStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.CountryStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.SchoolStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.UniversityStrategy;
 
 @EService
 public class MainService extends ActivityServiceCommunicationService {

@@ -1,10 +1,11 @@
-package ua.com.studiovision.euromaidan.processstrategies;
+package ua.com.studiovision.euromaidan.process_strategies;
 
 import android.content.ContentResolver;
 import android.os.Bundle;
 import android.os.Message;
+
 import ua.com.studiovision.euromaidan.FirstRunActivity;
-import ua.com.studiovision.euromaidan.jsonprotocol.AbstractGetProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.AbstractGetProtocol;
 import ua.com.studiovision.euromaidan.provider.school.SchoolContentValues;
 
 public class SchoolStrategy extends AbstractProcessResponseStrategy {

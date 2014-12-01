@@ -1,4 +1,4 @@
-package ua.com.studiovision.euromaidan.firstrunfragments;
+package ua.com.studiovision.euromaidan.first_run_fragments;
 
 import android.app.Activity;
 import android.app.Fragment;

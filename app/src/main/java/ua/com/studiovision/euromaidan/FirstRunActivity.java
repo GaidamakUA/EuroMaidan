@@ -11,9 +11,9 @@ import com.softevol.activity_service_communication.ActivityServiceCommunicationA
 
 import org.androidannotations.annotations.EActivity;
 
-import ua.com.studiovision.euromaidan.firstrunfragments.FirstRunFragmentListener;
-import ua.com.studiovision.euromaidan.firstrunfragments.SchoolFragment_;
-import ua.com.studiovision.euromaidan.firstrunfragments.UniversityFragment_;
+import ua.com.studiovision.euromaidan.first_run_fragments.FirstRunFragmentListener;
+import ua.com.studiovision.euromaidan.first_run_fragments.SchoolFragment_;
+import ua.com.studiovision.euromaidan.first_run_fragments.UniversityFragment_;
 
 @EActivity
 public class FirstRunActivity extends ActivityServiceCommunicationActivity
