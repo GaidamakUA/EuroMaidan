@@ -3,9 +3,10 @@ package ua.com.studiovision.euromaidan.feed_activity_fragments;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import com.viewpagerindicator.IconPagerAdapter;
+import com.viewpagerindicator.TabPageIndicator;
+import com.viewpagerindicator.UnderlinePageIndicator;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -17,58 +18,34 @@ import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments
 
 @EFragment(R.layout.fragment_settings)
 public class SettingsFragment extends Fragment {
-    @ViewById(R.id.viewpager)
+    @ViewById(R.id.view_pager)
     ViewPager viewPager;
+    @ViewById(R.id.tab_indicator)
+    TabPageIndicator tabPageIndicator;
+    @ViewById(R.id.underline_indicator)
+    UnderlinePageIndicator underlineIndicator;
 
     private final static String TAG = "Settings fragment";
-    public final static String PAGE_NAME = "page_name";
     private final static int PAGE_COUNT = 4;
 
-    private PagerAdapter mPagerAdapter;
     private FragmentPagerAdapter fragmentPagerAdapter;
 
     @AfterViews
     void initPager() {
-//        mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
-//        mPager.setAdapter(mPagerAdapter);
         fragmentPagerAdapter = new SettingsFragmentPagerAdapter(getFragmentManager());
         viewPager.setAdapter(fragmentPagerAdapter);
-
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                Log.v(TAG, "onPageSelected, position = " + i);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
+        tabPageIndicator.setViewPager(viewPager);
+        underlineIndicator.setViewPager(viewPager);
     }
 
-    private static class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
-        public ScreenSlidePagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-        }
+    private static class SettingsFragmentPagerAdapter extends FragmentPagerAdapter implements IconPagerAdapter{
 
-        @Override
-        public Fragment getItem(int i) {
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return 4;
-        }
-    }
-
-    private static class SettingsFragmentPagerAdapter extends FragmentPagerAdapter{
+        protected static final int[] ICONS = new int[] {
+                R.drawable.settings_profile_icon,
+                R.drawable.settings_picture_icon,
+                R.drawable.settings_education_icon,
+                R.drawable.settings_password_icon
+        };
 
         public SettingsFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -90,13 +67,18 @@ public class SettingsFragment extends Fragment {
         }
 
         @Override
-        public int getCount() {
-            return PAGE_COUNT;
+        public int getIconResId(int i) {
+            return ICONS[i];
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return getItem(position).getArguments().getString(PAGE_NAME);
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return PAGE_COUNT;
         }
     }
 }
