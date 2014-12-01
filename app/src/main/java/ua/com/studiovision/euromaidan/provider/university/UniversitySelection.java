@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.provider.university;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -95,6 +93,21 @@ public class UniversitySelection extends AbstractSelection<UniversitySelection> 
 
     public UniversitySelection universityNameLike(String... value) {
         addLike(UniversityColumns.UNIVERSITY_NAME, value);
+        return this;
+    }
+
+    public UniversitySelection universityNameLowercase(String... value) {
+        addEquals(UniversityColumns.UNIVERSITY_NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public UniversitySelection universityNameLowercaseNot(String... value) {
+        addNotEquals(UniversityColumns.UNIVERSITY_NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public UniversitySelection universityNameLowercaseLike(String... value) {
+        addLike(UniversityColumns.UNIVERSITY_NAME_LOWERCASE, value);
         return this;
     }
 }
