@@ -8,4 +8,6 @@ public interface FirstRunFragmentListener {
     void tryRequestCities(String cityName, long countryId);
     void tryRequestUniversities(String universityName, long cityId);
     void tryRequestSchools(String schoolName, long cityId);
+    void sendSchoolDataToServer(String country, String city, String name);
+    void sendUniversityDataToServer(String country, String city, String name);
 }

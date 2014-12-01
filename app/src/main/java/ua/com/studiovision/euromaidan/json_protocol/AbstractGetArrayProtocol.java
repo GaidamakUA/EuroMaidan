@@ -1,6 +1,6 @@
 package ua.com.studiovision.euromaidan.json_protocol;
 
-public class AbstractGetProtocol {
+public class AbstractGetArrayProtocol {
 
     public static class AbstractArrayRequest implements AbstractRequest<AbstractArrayRequest> {
         public String key;

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.softevol.activity_service_communication.ActivityServiceCommunicationActivity;
 
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import ua.com.studiovision.euromaidan.first_run_fragments.FirstRunFragmentListener;
 import ua.com.studiovision.euromaidan.first_run_fragments.SchoolFragment_;
@@ -26,6 +27,10 @@ public class FirstRunActivity extends ActivityServiceCommunicationActivity
     public static final String CITY_ID = "city_id";
     public static final String SCHOOL_NAME = "school_name";
     public static final String UNIVERSITY_NAME = "university_name";
+    public static final String TOKEN = "token";
+
+    @Pref
+    SharedPrefs_ preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +98,26 @@ public class FirstRunActivity extends ActivityServiceCommunicationActivity
         bundle.putString(SCHOOL_NAME, schoolName);
         bundle.putLong(CITY_ID,cityId);
         sendStuff(AppProtocol.REQUEST_SCHOOLS, bundle);
+    }
+
+    @Override
+    public void sendSchoolDataToServer(String country, String city, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(COUNTRY_NAME, country);
+        bundle.putString(CITY_NAME, city);
+        bundle.putString(SCHOOL_NAME, name);
+        bundle.putString(TOKEN, preferences.getToken().get());
+        sendStuff(AppProtocol.SEND_SCHOOL, bundle);
+    }
+
+    @Override
+    public void sendUniversityDataToServer(String country, String city, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(COUNTRY_NAME, country);
+        bundle.putString(CITY_NAME, city);
+        bundle.putString(SCHOOL_NAME, name);
+        bundle.putString(TOKEN, preferences.getToken().get());
+        sendStuff(AppProtocol.SEND_UNIVERSITY, bundle);
     }
 
     private void sendStuff(int what, Bundle parameters) {
