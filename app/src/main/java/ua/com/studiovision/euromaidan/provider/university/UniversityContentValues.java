@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.provider.university;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.net.Uri;
 
@@ -42,6 +40,18 @@ public class UniversityContentValues extends AbstractContentValues {
     public UniversityContentValues putUniversityName(String value) {
         if (value == null) throw new IllegalArgumentException("value for universityName must not be null");
         mContentValues.put(UniversityColumns.UNIVERSITY_NAME, value);
+        putUniversityNameLowercase(value.toLowerCase());
+        return this;
+    }
+
+
+
+    /**
+     * University name lowercase
+     */
+    public UniversityContentValues putUniversityNameLowercase(String value) {
+        if (value == null) throw new IllegalArgumentException("value for universityNameLowercase must not be null");
+        mContentValues.put(UniversityColumns.UNIVERSITY_NAME_LOWERCASE, value);
         return this;
     }
 

@@ -120,7 +120,18 @@ public class UniversityFragment extends Fragment {
                     return null;
                 }
                 firstRunFragmentListener.tryRequestUniversities(str.toString(), cityId);
-                return getCursor(str, UniversityColumns.UNIVERSITY_NAME, UniversityColumns.CONTENT_URI, UniversityColumns.ALL_COLUMNS);
+
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(UniversityColumns.UNIVERSITY_NAME_LOWERCASE);
+                stringBuilder.append(" LIKE '%");
+                stringBuilder.append(str.toString().toLowerCase());
+                stringBuilder.append("%'");
+                Log.v(TAG, "str=" + str + "; select=" + stringBuilder.toString());
+                Cursor cursor = getActivity().getBaseContext().getContentResolver()
+                        .query(UniversityColumns.CONTENT_URI, null,
+                                stringBuilder.toString(), null, null);
+                Log.v(TAG, "Cursor=" + cursor.getCount());
+                return cursor;
             }
         });
 

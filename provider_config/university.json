@@ -12,6 +12,12 @@
       "name": "university_name",
       "type": "String",
       "nullable": "false",
+    },
+    {
+      "documentation": "University name lowercase",
+      "name": "university_name_lowercase",
+      "type": "String",
+      "nullable": "false",
     }
   ],
 

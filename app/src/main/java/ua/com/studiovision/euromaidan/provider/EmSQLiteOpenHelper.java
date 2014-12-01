@@ -26,22 +26,6 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
     private final EmSQLiteOpenHelperCallbacks mOpenHelperCallbacks;
 
     // @formatter:off
-    private static final String SQL_CREATE_TABLE_CITY = "CREATE TABLE IF NOT EXISTS "
-            + CityColumns.TABLE_NAME + " ( "
-            + CityColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + CityColumns.CITY_ID + " INTEGER NOT NULL, "
-            + CityColumns.CITY_NAME + " TEXT NOT NULL "
-            + ", CONSTRAINT unique_name UNIQUE (city_id, city_name) ON CONFLICT REPLACE"
-            + " );";
-
-    private static final String SQL_CREATE_TABLE_COUNTRY = "CREATE TABLE IF NOT EXISTS "
-            + CountryColumns.TABLE_NAME + " ( "
-            + CountryColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + CountryColumns.COUNTRY_ID + " INTEGER NOT NULL, "
-            + CountryColumns.COUNTRY_NAME + " TEXT NOT NULL "
-            + ", CONSTRAINT unique_name UNIQUE (country_id, country_name) ON CONFLICT REPLACE"
-            + " );";
-
     private static final String SQL_CREATE_TABLE_SCHOOL = "CREATE TABLE IF NOT EXISTS "
             + SchoolColumns.TABLE_NAME + " ( "
             + SchoolColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -54,8 +38,25 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
             + UniversityColumns.TABLE_NAME + " ( "
             + UniversityColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + UniversityColumns.UNIVERSITY_ID + " INTEGER NOT NULL, "
-            + UniversityColumns.UNIVERSITY_NAME + " TEXT NOT NULL "
+            + UniversityColumns.UNIVERSITY_NAME + " TEXT NOT NULL, "
+            + UniversityColumns.UNIVERSITY_NAME_LOWERCASE + " TEXT NOT NULL "
             + ", CONSTRAINT unique_name UNIQUE (university_id, university_name) ON CONFLICT REPLACE"
+            + " );";
+
+    private static final String SQL_CREATE_TABLE_COUNTRY = "CREATE TABLE IF NOT EXISTS "
+            + CountryColumns.TABLE_NAME + " ( "
+            + CountryColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + CountryColumns.COUNTRY_ID + " INTEGER NOT NULL, "
+            + CountryColumns.COUNTRY_NAME + " TEXT NOT NULL "
+            + ", CONSTRAINT unique_name UNIQUE (country_id, country_name) ON CONFLICT REPLACE"
+            + " );";
+
+    private static final String SQL_CREATE_TABLE_CITY = "CREATE TABLE IF NOT EXISTS "
+            + CityColumns.TABLE_NAME + " ( "
+            + CityColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + CityColumns.CITY_ID + " INTEGER NOT NULL, "
+            + CityColumns.CITY_NAME + " TEXT NOT NULL "
+            + ", CONSTRAINT unique_name UNIQUE (city_id, city_name) ON CONFLICT REPLACE"
             + " );";
 
     // @formatter:on
@@ -114,10 +115,10 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
         mOpenHelperCallbacks.onPreCreate(mContext, db);
-        db.execSQL(SQL_CREATE_TABLE_CITY);
-        db.execSQL(SQL_CREATE_TABLE_COUNTRY);
         db.execSQL(SQL_CREATE_TABLE_SCHOOL);
         db.execSQL(SQL_CREATE_TABLE_UNIVERSITY);
+        db.execSQL(SQL_CREATE_TABLE_COUNTRY);
+        db.execSQL(SQL_CREATE_TABLE_CITY);
         mOpenHelperCallbacks.onPostCreate(mContext, db);
     }
 
