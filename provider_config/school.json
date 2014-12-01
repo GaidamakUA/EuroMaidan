@@ -1,0 +1,24 @@
+{
+  "documentation": "Represents school entity",
+  "fields": [
+    {
+      "documentation": "School id from server",
+      "name": "school_id",
+      "type": "Long",
+      "nullable": "false",
+    },
+    {
+      "documentation": "School name",
+      "name": "school_name",
+      "type": "String",
+      "nullable": "false",
+    }
+  ],
+
+  "constraints": [
+    {
+      "name": "unique_name",
+      "definition": "UNIQUE (school_id, school_name) ON CONFLICT REPLACE"
+    },
+  ]
+}

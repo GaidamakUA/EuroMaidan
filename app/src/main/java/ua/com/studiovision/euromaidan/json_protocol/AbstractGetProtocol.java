@@ -29,20 +29,21 @@ public class AbstractGetProtocol {
         return new AbstractArrayRequest("getCountries", lotName);
     }
 
-    // TODO set country ID
     public static AbstractArrayRequest getCities(String lotName, long countryId) {
         AbstractArrayRequest request = new AbstractArrayRequest("getCities", lotName);
         request.id_country = countryId;
         return request;
     }
 
-    // TODO set city ID
-    public static AbstractArrayRequest getUniversities(String lotName) {
-        return new AbstractArrayRequest("getUniversities", lotName);
+    public static AbstractArrayRequest getUniversities(String lotName, long cityId) {
+        AbstractArrayRequest request = new AbstractArrayRequest("getUniversities", lotName);
+        request.id_city = cityId;
+        return request;
     }
 
-    // TODO set city ID
-    public static AbstractArrayRequest getSchools(String lotName) {
-        return new AbstractArrayRequest("getSchools", lotName);
+    public static AbstractArrayRequest getSchools(String lotName, long cityId) {
+        AbstractArrayRequest request = new AbstractArrayRequest("getSchools", lotName);
+        request.id_city = cityId;
+        return request;
     }
 }

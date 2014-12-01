@@ -1,4 +1,4 @@
-package ua.com.studiovision.euromaidan.provider.country;
+package ua.com.studiovision.euromaidan.provider.university;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -10,10 +10,10 @@ import ua.com.studiovision.euromaidan.provider.school.SchoolColumns;
 import ua.com.studiovision.euromaidan.provider.university.UniversityColumns;
 
 /**
- * Represents country entity
+ * Represents university entity
  */
-public class CountryColumns implements BaseColumns {
-    public static final String TABLE_NAME = "country";
+public class UniversityColumns implements BaseColumns {
+    public static final String TABLE_NAME = "university";
     public static final Uri CONTENT_URI = Uri.parse(EmContentProvider.CONTENT_URI_BASE + "/" + TABLE_NAME);
 
     /**
@@ -22,14 +22,14 @@ public class CountryColumns implements BaseColumns {
     public static final String _ID = new String(BaseColumns._ID);
 
     /**
-     * Country id from server
+     * University id from server
      */
-    public static final String COUNTRY_ID = "country_id";
+    public static final String UNIVERSITY_ID = "university_id";
 
     /**
-     * Country name
+     * University name
      */
-    public static final String COUNTRY_NAME = "country_name";
+    public static final String UNIVERSITY_NAME = "university_name";
 
 
     public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
@@ -37,16 +37,16 @@ public class CountryColumns implements BaseColumns {
     // @formatter:off
     public static final String[] ALL_COLUMNS = new String[] {
             _ID,
-            COUNTRY_ID,
-            COUNTRY_NAME
+            UNIVERSITY_ID,
+            UNIVERSITY_NAME
     };
     // @formatter:on
 
     public static boolean hasColumns(String[] projection) {
         if (projection == null) return true;
         for (String c : projection) {
-            if (c == COUNTRY_ID || c.contains("." + COUNTRY_ID)) return true;
-            if (c == COUNTRY_NAME || c.contains("." + COUNTRY_NAME)) return true;
+            if (c == UNIVERSITY_ID || c.contains("." + UNIVERSITY_ID)) return true;
+            if (c == UNIVERSITY_NAME || c.contains("." + UNIVERSITY_NAME)) return true;
         }
         return false;
     }

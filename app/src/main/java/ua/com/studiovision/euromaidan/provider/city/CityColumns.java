@@ -4,6 +4,10 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import ua.com.studiovision.euromaidan.provider.EmContentProvider;
+import ua.com.studiovision.euromaidan.provider.city.CityColumns;
+import ua.com.studiovision.euromaidan.provider.country.CountryColumns;
+import ua.com.studiovision.euromaidan.provider.school.SchoolColumns;
+import ua.com.studiovision.euromaidan.provider.university.UniversityColumns;
 
 /**
  * Columns for the {@code city} table.
