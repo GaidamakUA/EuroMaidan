@@ -3,6 +3,9 @@ package ua.com.studiovision.euromaidan;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.util.Patterns;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.softevol.activity_service_communication.ActivityServiceCommunicationActivity;
@@ -22,10 +25,13 @@ public class LoginActivity extends ActivityServiceCommunicationActivity {
     @ViewById(R.id.password_edittext)
     TextView passwordEditText;
 
+    private Animation shake;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mServiceClass = MainService_.class;
+        shake = AnimationUtils.loadAnimation(this, R.anim.shake);
     }
 
     @Override
@@ -52,12 +58,27 @@ public class LoginActivity extends ActivityServiceCommunicationActivity {
 
     @Click(R.id.login_button)
     void login() {
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+
+        boolean inputProblem = false;
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailEditText.startAnimation(shake);
+            inputProblem = true;
+        }
+        if(password.length() < 6) {
+            passwordEditText.startAnimation(shake);
+            passwordEditText.setText("");
+            inputProblem = true;
+        }
+        if(inputProblem) return;
+
         Message msg = Message.obtain();
         msg.what = AppProtocol.DO_LOG_IN;
 
         Bundle loginData = new Bundle();
-        loginData.putString(LOGIN, emailEditText.getText().toString());
-        loginData.putString(PASSWORD, passwordEditText.getText().toString());
+        loginData.putString(LOGIN, email);
+        loginData.putString(PASSWORD, password);
         msg.setData(loginData);
 
         sendMessage(msg);

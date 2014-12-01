@@ -5,6 +5,8 @@ import android.app.Fragment;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AutoCompleteTextView;
 import android.widget.CursorAdapter;
 import android.widget.FilterQueryProvider;
@@ -41,10 +43,14 @@ public class UniversityFragment extends Fragment {
     private long countryId = -1L;
     private long cityId = -1L;
 
+    private Animation shake;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         firstRunFragmentListener = (FirstRunFragmentListener) activity;
+
+        shake = AnimationUtils.loadAnimation(activity, R.anim.shake);
     }
 
     @Override
@@ -174,10 +180,28 @@ public class UniversityFragment extends Fragment {
 
     @Click(R.id.saveButton)
     void onSaveButtonClick() {
+        String country = countryAutoCompleteTextView.getText().toString();
+        String city = cityAutoCompleteTextView.getText().toString();
+        String university = universityAutoCompleteTextView.getText().toString();
+
+        boolean inputProblem = false;
+        if(country.length() < 2) {
+            countryAutoCompleteTextView.startAnimation(shake);
+            inputProblem = true;
+        }
+        if(city.length() < 2) {
+            cityAutoCompleteTextView.startAnimation(shake);
+            inputProblem = true;
+        }
+        if(university.length() < 2) {
+            universityAutoCompleteTextView.startAnimation(shake);
+            inputProblem = true;
+        }
+
+        if(inputProblem)
+            return;
         firstRunFragmentListener
-                .sendUniversityDataToServer(countryAutoCompleteTextView.getText().toString(),
-                        cityAutoCompleteTextView.getText().toString(),
-                        universityAutoCompleteTextView.getText().toString());
+                .sendUniversityDataToServer(country, city, university);
         // TODO check whether request was successful
         skip();
     }

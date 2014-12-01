@@ -22,6 +22,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import ua.com.studiovision.euromaidan.json_protocol.AbstractRequest;
 import ua.com.studiovision.euromaidan.json_protocol.AbstractResponse;
@@ -168,6 +169,8 @@ public class MainService extends ActivityServiceCommunicationService {
     @SupposeBackground
     <T extends AbstractResponse<T>> T executeRequest(AbstractRequest request, Class<T> tClass) throws IOException {
         String requestString = "data=" + gson.toJson(request);
+        Log.v(TAG, "beforeEncode=" + requestString);
+        requestString = URLEncoder.encode(requestString, "UTF-8");
         return gson.fromJson(doPost(requestString), tClass);
     }
 

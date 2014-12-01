@@ -5,6 +5,8 @@ import android.app.Fragment;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AutoCompleteTextView;
 import android.widget.CursorAdapter;
 import android.widget.FilterQueryProvider;
@@ -41,10 +43,14 @@ public class SchoolFragment extends Fragment {
     private Long countryId = -1L;
     private Long cityId = -1L;
 
+    private Animation shake;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         firstRunFragmentListener = (FirstRunFragmentListener) activity;
+
+        shake = AnimationUtils.loadAnimation(activity, R.anim.shake);
     }
 
     @Override
@@ -133,7 +139,6 @@ public class SchoolFragment extends Fragment {
                 return cursor.getSchoolName();
             }
         });
-
     }
 
     /**
@@ -165,10 +170,28 @@ public class SchoolFragment extends Fragment {
 
     @Click(R.id.saveButton)
     void onSaveButtonClick() {
-        firstRunFragmentListener
-                .sendSchoolDataToServer(countryAutoCompleteTextView.getText().toString(),
-                        cityAutoCompleteTextView.getText().toString(),
-                        schoolAutoCompleteTextView.getText().toString());
+        String country = countryAutoCompleteTextView.getText().toString();
+        String city = cityAutoCompleteTextView.getText().toString();
+        String school = schoolAutoCompleteTextView.getText().toString();
+
+        boolean inputProblem = false;
+        if(country.length() < 2) {
+            countryAutoCompleteTextView.startAnimation(shake);
+            inputProblem = true;
+        }
+        if(city.length() < 2) {
+            cityAutoCompleteTextView.startAnimation(shake);
+            inputProblem = true;
+        }
+        if(school.length() < 2) {
+            schoolAutoCompleteTextView.startAnimation(shake);
+            inputProblem = true;
+        }
+
+        if(inputProblem)
+            return;
+
+        firstRunFragmentListener.sendSchoolDataToServer(country, city, school);
         // TODO check whether request was successful
         skip();
     }
