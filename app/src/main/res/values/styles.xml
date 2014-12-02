@@ -47,4 +47,10 @@
         <item name="android:layout_marginTop">@dimen/topBottomMargin</item>
     </style>
 
+    <style name="HomeButton">
+        <item name="android:background">@drawable/menu_icon</item>
+        <!--<item name="android:layout_gravity">center_vertical</item>-->
+        <item name="android:padding">8dp</item>
+    </style>
+
 </resources>

@@ -3,16 +3,17 @@ package ua.com.studiovision.euromaidan;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
-
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-
-import java.util.HashMap;
-
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
+
+import java.util.HashMap;
 
 @EActivity (R.layout.activity_feed)
 public class FeedActivity extends Activity {
@@ -24,6 +25,7 @@ public class FeedActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         fragments.put(R.id.news_textview, new FeedFragment_());
         fragments.put(R.id.settings_textview, new SettingsFragment_());
+
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             FeedFragment_ feedFragment = new FeedFragment_();
@@ -39,5 +41,14 @@ public class FeedActivity extends Activity {
 
     private void replace(Fragment fragment) {
         getFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.openDrawer(Gravity.START);
+        }
+        return true;
     }
 }
