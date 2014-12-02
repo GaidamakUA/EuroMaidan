@@ -16,7 +16,9 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.ChangePasswordFragment_;
@@ -35,6 +37,7 @@ public class SettingsFragment extends Fragment {
     private final static int PAGE_COUNT = 4;
 
     private static List<Fragment> fragments = new ArrayList<Fragment>();
+    private Set<Fragment> disposableFragment = new HashSet<Fragment>();
 
     private FragmentPagerAdapter fragmentPagerAdapter;
 
@@ -48,7 +51,7 @@ public class SettingsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         Log.v(TAG, "SettingsFragment.onDetach(" + ")");
-        for (Fragment fragment : fragments) {
+        for (Fragment fragment : disposableFragment) {
             getFragmentManager().beginTransaction().detach(fragment).commit();
         }
         ;
@@ -81,9 +84,9 @@ public class SettingsFragment extends Fragment {
         actionBar.setHomeButtonEnabled(true);
     }
 
-    private static class SettingsFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
+    private class SettingsFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
 
-        protected static final int[] ICONS = new int[]{
+        protected final int[] ICONS = new int[]{
                 R.drawable.settings_profile_icon,
                 R.drawable.settings_picture_icon,
                 R.drawable.settings_education_icon,
@@ -97,7 +100,9 @@ public class SettingsFragment extends Fragment {
         @Override
         public Fragment getItem(int i) {
             Log.v(TAG, "Getting item in position " + i + "; fragment=" + fragments.get(i));
-            return fragments.get(i);
+            Fragment fragment = fragments.get(i);
+            disposableFragment.add(fragment);
+            return fragment;
         }
 
         @Override
