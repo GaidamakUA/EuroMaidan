@@ -30,7 +30,13 @@ public class SettingsFragment extends Fragment {
     void initPager() {
         fragmentPagerAdapter = new SettingsFragmentPagerAdapter(getFragmentManager());
         viewPager.setAdapter(fragmentPagerAdapter);
+        pagerSlidingTabStrip.setShouldExpand(true);
+        pagerSlidingTabStrip.setUnderlineHeight((int) getResources().getDimension(R.dimen.invisibleUnderline));
+        pagerSlidingTabStrip.setIndicatorColorResource(R.color.light_blue);
+        pagerSlidingTabStrip.setIndicatorHeight((int) getResources().getDimension(R.dimen.slidingIndicatorHeight));
+        pagerSlidingTabStrip.setDividerColorResource(android.R.color.transparent);
         pagerSlidingTabStrip.setViewPager(viewPager);
+
     }
 
     private static class SettingsFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider{
