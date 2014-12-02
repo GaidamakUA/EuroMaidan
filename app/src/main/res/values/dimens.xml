@@ -10,4 +10,6 @@
     <dimen name="rectangleCornerRadius">7dp</dimen>
     <dimen name="topBottomMargin">30dp</dimen>
     <dimen name="logoHeightWidth">100dp</dimen>
+    <dimen name="slidingIndicatorHeight">3dp</dimen>
+    <dimen name="invisibleUnderline">0dp</dimen>
 </resources>
