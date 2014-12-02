@@ -4,9 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import com.viewpagerindicator.IconPagerAdapter;
-import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.UnderlinePageIndicator;
+import com.astuetz.PagerSlidingTabStrip;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -20,10 +18,8 @@ import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments
 public class SettingsFragment extends Fragment {
     @ViewById(R.id.view_pager)
     ViewPager viewPager;
-    @ViewById(R.id.tab_indicator)
-    TabPageIndicator tabPageIndicator;
-    @ViewById(R.id.underline_indicator)
-    UnderlinePageIndicator underlineIndicator;
+    @ViewById(R.id.pager_tabs)
+    PagerSlidingTabStrip pagerSlidingTabStrip;
 
     private final static String TAG = "Settings fragment";
     private final static int PAGE_COUNT = 4;
@@ -34,11 +30,10 @@ public class SettingsFragment extends Fragment {
     void initPager() {
         fragmentPagerAdapter = new SettingsFragmentPagerAdapter(getFragmentManager());
         viewPager.setAdapter(fragmentPagerAdapter);
-        tabPageIndicator.setViewPager(viewPager);
-        underlineIndicator.setViewPager(viewPager);
+        pagerSlidingTabStrip.setViewPager(viewPager);
     }
 
-    private static class SettingsFragmentPagerAdapter extends FragmentPagerAdapter implements IconPagerAdapter{
+    private static class SettingsFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider{
 
         protected static final int[] ICONS = new int[] {
                 R.drawable.settings_profile_icon,
@@ -67,11 +62,6 @@ public class SettingsFragment extends Fragment {
         }
 
         @Override
-        public int getIconResId(int i) {
-            return ICONS[i];
-        }
-
-        @Override
         public CharSequence getPageTitle(int position) {
             return null;
         }
@@ -79,6 +69,11 @@ public class SettingsFragment extends Fragment {
         @Override
         public int getCount() {
             return PAGE_COUNT;
+        }
+
+        @Override
+        public int getPageIconResId(int i) {
+            return ICONS[i];
         }
     }
 }
