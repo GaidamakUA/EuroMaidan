@@ -36,7 +36,6 @@ public class SettingsFragment extends Fragment {
         pagerSlidingTabStrip.setIndicatorHeight((int) getResources().getDimension(R.dimen.slidingIndicatorHeight));
         pagerSlidingTabStrip.setDividerColorResource(android.R.color.transparent);
         pagerSlidingTabStrip.setViewPager(viewPager);
-
     }
 
     private static class SettingsFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider{
@@ -64,11 +63,6 @@ public class SettingsFragment extends Fragment {
                 case 3:
                     return ChangePasswordFragment.newInstance();
             }
-            return null;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
             return null;
         }
 
