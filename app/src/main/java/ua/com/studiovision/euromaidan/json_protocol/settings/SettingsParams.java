@@ -3,7 +3,9 @@ package ua.com.studiovision.euromaidan.json_protocol.settings;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import ua.com.studiovision.euromaidan.json_protocol.education_places.SendEducationPlaceProtocol;
+import java.util.Arrays;
+
+import ua.com.studiovision.euromaidan.json_protocol.education_places.EducationPlace;
 
 public class SettingsParams implements Parcelable {
     public String name;
@@ -16,10 +18,10 @@ public class SettingsParams implements Parcelable {
     public String native_city;
     public String dob; // date of birth
     public String avatar;
-    public SendEducationPlaceProtocol.EducationPlace[] schools;
-    public SendEducationPlaceProtocol.EducationPlace[] colleges;
+    public EducationPlace[] schools;
+    public EducationPlace[] colleges;
 
-    public SettingsParams(String name, String surname, Genders gender, RelationshipStatus family_status, Long family_person_id, String family_person_name, String family_person_surname, String native_city, String dob, String avatar, SendEducationPlaceProtocol.EducationPlace[] schools, SendEducationPlaceProtocol.EducationPlace[] colleges) {
+    public SettingsParams(String name, String surname, Genders gender, RelationshipStatus family_status, Long family_person_id, String family_person_name, String family_person_surname, String native_city, String dob, String avatar, EducationPlace[] schools, EducationPlace[] colleges) {
         this.name = name;
         this.surname = surname;
         this.gender = gender;
@@ -51,8 +53,8 @@ public class SettingsParams implements Parcelable {
         dest.writeString(this.native_city);
         dest.writeString(this.dob);
         dest.writeString(this.avatar);
-//        dest.writeParcelable(this.schools, flags);
-//        dest.writeParcelable(this.colleges, flags);
+        dest.writeParcelableArray(this.schools, flags);
+        dest.writeParcelableArray(this.colleges, flags);
     }
 
     private SettingsParams(Parcel in) {
@@ -68,8 +70,18 @@ public class SettingsParams implements Parcelable {
         this.native_city = in.readString();
         this.dob = in.readString();
         this.avatar = in.readString();
-//        this.schools = in.readParcelable(SendEducationPlaceProtocol.EducationPlace[].class.getClassLoader());
-//        this.colleges = in.readParcelable(SendEducationPlaceProtocol.EducationPlace[].class.getClassLoader());
+        Parcelable[] schools = in.readParcelableArray(EducationPlace.class.getClassLoader());
+        if (schools != null) {
+            this.schools = Arrays.copyOf(schools, schools.length, EducationPlace[].class);
+        } else {
+            this.schools = null;
+        }
+        Parcelable[] colleges = in.readParcelableArray(EducationPlace.class.getClassLoader());
+        if (colleges != null) {
+            this.colleges = Arrays.copyOf(colleges, colleges.length, EducationPlace[].class);
+        } else {
+            this.colleges = null;
+        }
     }
 
     public static final Parcelable.Creator<SettingsParams> CREATOR = new Parcelable.Creator<SettingsParams>() {

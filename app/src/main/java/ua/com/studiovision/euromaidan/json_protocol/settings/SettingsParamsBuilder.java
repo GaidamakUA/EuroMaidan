@@ -1,6 +1,6 @@
 package ua.com.studiovision.euromaidan.json_protocol.settings;
 
-import ua.com.studiovision.euromaidan.json_protocol.education_places.SendEducationPlaceProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.education_places.EducationPlace;
 
 public class SettingsParamsBuilder {
     private String name;
@@ -13,8 +13,8 @@ public class SettingsParamsBuilder {
     private String native_city;
     private String dob;
     private String avatar;
-    private SendEducationPlaceProtocol.EducationPlace[] schools;
-    private SendEducationPlaceProtocol.EducationPlace[] colleges;
+    private EducationPlace[] schools;
+    private EducationPlace[] colleges;
 
     public SettingsParamsBuilder setName(String name) {
         this.name = name;
@@ -66,12 +66,12 @@ public class SettingsParamsBuilder {
         return this;
     }
 
-    public SettingsParamsBuilder setSchools(SendEducationPlaceProtocol.EducationPlace[] schools) {
+    public SettingsParamsBuilder setSchools(EducationPlace[] schools) {
         this.schools = schools;
         return this;
     }
 
-    public SettingsParamsBuilder setColleges(SendEducationPlaceProtocol.EducationPlace[] colleges) {
+    public SettingsParamsBuilder setColleges(EducationPlace[] colleges) {
         this.colleges = colleges;
         return this;
     }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Message;
 
 import ua.com.studiovision.euromaidan.FirstRunActivity;
+import ua.com.studiovision.euromaidan.json_protocol.education_places.EducationPlace;
 import ua.com.studiovision.euromaidan.json_protocol.education_places.SendEducationPlaceProtocol;
 
 public class SendSchoolStrategy extends AbstractProcessResponseStrategy<SendEducationPlaceProtocol.SendEducationPlaceResponse> {
@@ -14,13 +15,13 @@ public class SendSchoolStrategy extends AbstractProcessResponseStrategy<SendEduc
         Bundle bundle = msg.getData();
         String universityNamePart = bundle.getString(FirstRunActivity.UNIVERSITY_NAME);
         long cityId = bundle.getLong(FirstRunActivity.CITY_ID);
-        SendEducationPlaceProtocol.EducationPlace educationPlace =
-                new SendEducationPlaceProtocol.EducationPlace(bundle.getString(FirstRunActivity.COUNTRY_NAME),
+        EducationPlace educationPlace =
+                new EducationPlace(bundle.getString(FirstRunActivity.COUNTRY_NAME),
                         bundle.getString(FirstRunActivity.CITY_NAME),
                         bundle.getString(FirstRunActivity.SCHOOL_NAME));
         request = SendEducationPlaceProtocol.
                 getSendSchoolRequest(bundle.getString(FirstRunActivity.TOKEN),
-                        new SendEducationPlaceProtocol.EducationPlace[]{educationPlace});
+                        new EducationPlace[]{educationPlace});
         responseClass = SendEducationPlaceProtocol.SendEducationPlaceResponse.class;
     }
 

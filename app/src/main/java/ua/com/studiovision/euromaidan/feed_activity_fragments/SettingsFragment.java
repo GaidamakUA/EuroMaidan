@@ -3,22 +3,26 @@ package ua.com.studiovision.euromaidan.feed_activity_fragments;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
 import com.astuetz.PagerSlidingTabStrip;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.ChangePasswordFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserDetailsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserEducationPlacesFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserPictureFragment_;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @EFragment(R.layout.fragment_settings)
 public class SettingsFragment extends Fragment {
@@ -32,7 +36,7 @@ public class SettingsFragment extends Fragment {
 
     private static List<Fragment> fragments = new ArrayList<Fragment>();
 
-    private FragmentStatePagerAdapter fragmentPagerAdapter;
+    private FragmentPagerAdapter fragmentPagerAdapter;
 
     @Override
     public void onStart() {
@@ -41,13 +45,18 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        fragmentPagerAdapter.saveState();
+    public void onDetach() {
+        super.onDetach();
+        Log.v(TAG, "SettingsFragment.onDetach(" + ")");
+        for (Fragment fragment : fragments) {
+            getFragmentManager().beginTransaction().detach(fragment).commit();
+        }
+        ;
     }
 
     @AfterViews
     void initPager() {
+        Log.v(TAG, "SettingsFragment.initPager(" + (fragmentPagerAdapter == null) + ")");
         fragments.add(new UserDetailsFragment_());
         fragments.add(new UserPictureFragment_());
         fragments.add(new UserEducationPlacesFragment_());
@@ -72,7 +81,7 @@ public class SettingsFragment extends Fragment {
         actionBar.setHomeButtonEnabled(true);
     }
 
-    private static class SettingsFragmentPagerAdapter extends FragmentStatePagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
+    private static class SettingsFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
 
         protected static final int[] ICONS = new int[]{
                 R.drawable.settings_profile_icon,
@@ -87,7 +96,7 @@ public class SettingsFragment extends Fragment {
 
         @Override
         public Fragment getItem(int i) {
-            Log.v(TAG,"Getting item in position "+i);
+            Log.v(TAG, "Getting item in position " + i + "; fragment=" + fragments.get(i));
             return fragments.get(i);
         }
 
@@ -99,6 +108,12 @@ public class SettingsFragment extends Fragment {
         @Override
         public int getPageIconResId(int i) {
             return ICONS[i];
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+
+            super.destroyItem(container, position, object);
         }
     }
 }

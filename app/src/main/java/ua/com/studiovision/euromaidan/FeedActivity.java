@@ -8,12 +8,15 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
 
 import java.util.HashMap;
+
+import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
 
 @EActivity (R.layout.activity_feed)
 public class FeedActivity extends Activity {
@@ -40,6 +43,8 @@ public class FeedActivity extends Activity {
     }
 
     private void replace(Fragment fragment) {
+        if (fragment instanceof SettingsFragment)
+            fragment = new SettingsFragment_();
         getFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
     }
 
