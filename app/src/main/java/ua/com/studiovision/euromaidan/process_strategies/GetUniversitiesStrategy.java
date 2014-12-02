@@ -8,9 +8,9 @@ import ua.com.studiovision.euromaidan.FirstRunActivity;
 import ua.com.studiovision.euromaidan.json_protocol.AbstractGetArrayProtocol;
 import ua.com.studiovision.euromaidan.provider.university.UniversityContentValues;
 
-public class UniversityStrategy extends AbstractProcessResponseStrategy<AbstractGetArrayProtocol.Response> {
+public class GetUniversitiesStrategy extends AbstractProcessResponseStrategy<AbstractGetArrayProtocol.Response> {
 
-    public UniversityStrategy(ContentResolver resolver, Message msg) {
+    public GetUniversitiesStrategy(ContentResolver resolver, Message msg) {
         this.resolver = resolver;
         Bundle bundle = msg.getData();
         String universityNamePart = bundle.getString(FirstRunActivity.UNIVERSITY_NAME);
@@ -21,7 +21,7 @@ public class UniversityStrategy extends AbstractProcessResponseStrategy<Abstract
 
     @Override
     public void processResponse(AbstractGetArrayProtocol.Response response) {
-        if(response.array == null)
+        if (response.array == null)
             return;
         UniversityContentValues contentValues;
         for (AbstractGetArrayProtocol.Response.AbstractItem item : response.array) {

@@ -1,17 +1,22 @@
 package ua.com.studiovision.euromaidan.process_strategies;
 
-import android.content.ContentResolver;
 import android.os.Bundle;
 import android.os.Message;
 
 import ua.com.studiovision.euromaidan.FirstRunActivity;
 import ua.com.studiovision.euromaidan.json_protocol.education_places.SendEducationPlaceProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.settings.SetSettingProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.settings.SettingsParamsBuilder;
 
-public class SendUnivercityStrategy extends AbstractProcessResponseStrategy<SendEducationPlaceProtocol.SendEducationPlaceResponse> {
+public class SendProfileStrategy extends AbstractProcessResponseStrategy<SetSettingProtocol.SetSettingsResponse> {
 
-    public SendUnivercityStrategy(ContentResolver resolver, Message msg) {
-        this.resolver = resolver;
+    public SendProfileStrategy(Message msg) {
         Bundle bundle = msg.getData();
+
+        SettingsParamsBuilder builder = new SettingsParamsBuilder();
+//        builder.setName(bundle.getString())
+
+
         String universityNamePart = bundle.getString(FirstRunActivity.UNIVERSITY_NAME);
         long cityId = bundle.getLong(FirstRunActivity.CITY_ID);
         SendEducationPlaceProtocol.EducationPlace educationPlace =
@@ -21,11 +26,11 @@ public class SendUnivercityStrategy extends AbstractProcessResponseStrategy<Send
         request = SendEducationPlaceProtocol.
                 getSendUniversityRequest(bundle.getString(FirstRunActivity.TOKEN),
                         new SendEducationPlaceProtocol.EducationPlace[]{educationPlace});
-        responseClass = SendEducationPlaceProtocol.SendEducationPlaceResponse.class;
+        responseClass = SetSettingProtocol.SetSettingsResponse.class;
     }
 
     @Override
-    public void processResponse(SendEducationPlaceProtocol.SendEducationPlaceResponse response) {
+    public void processResponse(SetSettingProtocol.SetSettingsResponse response) {
         if (!"success".equals(response.status)) {
             throw new RuntimeException("Not success");
         }

@@ -4,15 +4,14 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+
 import com.astuetz.PagerSlidingTabStrip;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+
 import ua.com.studiovision.euromaidan.R;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.ChangePasswordFragment;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserDetailesFragment;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserEducationPlacesFragment;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserPictureFragment;
 
 @EFragment(R.layout.fragment_settings)
 public class SettingsFragment extends Fragment {
@@ -53,16 +52,6 @@ public class SettingsFragment extends Fragment {
 
         @Override
         public Fragment getItem(int i) {
-            switch (i){
-                case 0:
-                    return UserDetailesFragment.newInstance();
-                case 1:
-                    return UserPictureFragment.newInstance();
-                case 2:
-                    return UserEducationPlacesFragment.newInstance();
-                case 3:
-                    return ChangePasswordFragment.newInstance();
-            }
             return null;
         }
 

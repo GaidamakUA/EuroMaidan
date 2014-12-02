@@ -1,4 +1,7 @@
-package ua.com.studiovision.euromaidan.json_protocol;
+package ua.com.studiovision.euromaidan.json_protocol.education_places;
+
+import ua.com.studiovision.euromaidan.json_protocol.AbstractRequest;
+import ua.com.studiovision.euromaidan.json_protocol.AbstractResponse;
 
 /**
  * Created by gaidamak on 01.12.14.

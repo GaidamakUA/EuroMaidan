@@ -6,29 +6,28 @@ import android.os.Message;
 
 import ua.com.studiovision.euromaidan.FirstRunActivity;
 import ua.com.studiovision.euromaidan.json_protocol.AbstractGetArrayProtocol;
-import ua.com.studiovision.euromaidan.provider.city.CityContentValues;
+import ua.com.studiovision.euromaidan.provider.school.SchoolContentValues;
 
-public class CityStrategy extends AbstractProcessResponseStrategy<AbstractGetArrayProtocol.Response> {
+public class GetSchoolsStrategy extends AbstractProcessResponseStrategy<AbstractGetArrayProtocol.Response> {
 
-    public CityStrategy(ContentResolver resolver, Message msg) {
+    public GetSchoolsStrategy(ContentResolver resolver, Message msg) {
         this.resolver = resolver;
         Bundle bundle = msg.getData();
-        String cityNamePart = bundle.getString(FirstRunActivity.CITY_NAME);
-        long countryId = bundle.getLong(FirstRunActivity.COUNTRY_ID);
-        request = AbstractGetArrayProtocol.getCities(cityNamePart, countryId);
+        String schoolNamePart = bundle.getString(FirstRunActivity.SCHOOL_NAME);
+        long cityId = bundle.getLong(FirstRunActivity.CITY_ID);
+        request = AbstractGetArrayProtocol.getSchools(schoolNamePart, cityId);
         responseClass = AbstractGetArrayProtocol.Response.class;
     }
 
     @Override
     public void processResponse(AbstractGetArrayProtocol.Response response) {
-        // TODO implement insertion to DB
         if(response.array == null)
             return;
-        CityContentValues contentValues;
+        SchoolContentValues contentValues;
         for (AbstractGetArrayProtocol.Response.AbstractItem item : response.array) {
-            contentValues = new CityContentValues();
-            contentValues.putCityId(item.id);
-            contentValues.putCityName(item.name);
+            contentValues = new SchoolContentValues();
+            contentValues.putSchoolId(item.id);
+            contentValues.putSchoolName(item.name);
             contentValues.insert(resolver);
         }
     }

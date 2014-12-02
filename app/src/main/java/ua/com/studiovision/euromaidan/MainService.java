@@ -29,12 +29,12 @@ import ua.com.studiovision.euromaidan.json_protocol.AbstractResponse;
 import ua.com.studiovision.euromaidan.json_protocol.LoginProtocol;
 import ua.com.studiovision.euromaidan.json_protocol.RegistrationProtocol;
 import ua.com.studiovision.euromaidan.process_strategies.AbstractProcessResponseStrategy;
-import ua.com.studiovision.euromaidan.process_strategies.CityStrategy;
-import ua.com.studiovision.euromaidan.process_strategies.CountryStrategy;
-import ua.com.studiovision.euromaidan.process_strategies.SchoolStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.GetCitiesStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.GetCountriesStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.GetSchoolsStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.GetUniversitiesStrategy;
 import ua.com.studiovision.euromaidan.process_strategies.SendSchoolStrategy;
 import ua.com.studiovision.euromaidan.process_strategies.SendUnivercityStrategy;
-import ua.com.studiovision.euromaidan.process_strategies.UniversityStrategy;
 
 @EService
 public class MainService extends ActivityServiceCommunicationService {
@@ -70,19 +70,19 @@ public class MainService extends ActivityServiceCommunicationService {
                 break;
             case AppProtocol.REQUEST_COUNTRIES:
                 Log.v(TAG, "Countries");
-                doRequest(new CountryStrategy(getContentResolver(), msg));
+                doRequest(new GetCountriesStrategy(getContentResolver(), msg));
                 break;
             case AppProtocol.REQUEST_CITIES:
                 Log.v(TAG, "Cities");
-                doRequest(new CityStrategy(getContentResolver(), msg));
+                doRequest(new GetCitiesStrategy(getContentResolver(), msg));
                 break;
             case AppProtocol.REQUEST_SCHOOLS:
                 Log.v(TAG, "Request Schools");
-                doRequest(new SchoolStrategy(getContentResolver(),msg));
+                doRequest(new GetSchoolsStrategy(getContentResolver(), msg));
                 break;
             case AppProtocol.REQUEST_UNIVERSITIES:
                 Log.v(TAG, "Request Universities");
-                doRequest(new UniversityStrategy(getContentResolver(),msg));
+                doRequest(new GetUniversitiesStrategy(getContentResolver(), msg));
                 break;
             case AppProtocol.SEND_SCHOOL:
                 Log.v(TAG, "Send schools");
@@ -92,6 +92,8 @@ public class MainService extends ActivityServiceCommunicationService {
                 Log.v(TAG, "Send universities");
                 doRequest(new SendUnivercityStrategy(getContentResolver(), msg));
                 break;
+            case AppProtocol.SEND_PROFILE:
+                Log.v(TAG, "Send profile");
         }
     }
 
@@ -168,9 +170,9 @@ public class MainService extends ActivityServiceCommunicationService {
 
     @SupposeBackground
     <T extends AbstractResponse<T>> T executeRequest(AbstractRequest request, Class<T> tClass) throws IOException {
-        String requestString = "data=" + gson.toJson(request);
+        String requestString = "data=" + URLEncoder.encode(gson.toJson(request), "UTF-8");
         Log.v(TAG, "beforeEncode=" + requestString);
-        requestString = URLEncoder.encode(requestString, "UTF-8");
+//        requestString = URLEncoder.encode(requestString, "UTF-8");
         return gson.fromJson(doPost(requestString), tClass);
     }
 

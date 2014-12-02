@@ -8,9 +8,9 @@ import ua.com.studiovision.euromaidan.FirstRunActivity;
 import ua.com.studiovision.euromaidan.json_protocol.AbstractGetArrayProtocol;
 import ua.com.studiovision.euromaidan.provider.country.CountryContentValues;
 
-public class CountryStrategy extends AbstractProcessResponseStrategy<AbstractGetArrayProtocol.Response> {
+public class GetCountriesStrategy extends AbstractProcessResponseStrategy<AbstractGetArrayProtocol.Response> {
 
-    public CountryStrategy(ContentResolver resolver, Message msg) {
+    public GetCountriesStrategy(ContentResolver resolver, Message msg) {
         this.resolver = resolver;
         Bundle bundle = msg.getData();
         String countryNamePart = bundle.getString(FirstRunActivity.COUNTRY_NAME);

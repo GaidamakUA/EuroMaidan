@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.os.Message;
 
 import ua.com.studiovision.euromaidan.FirstRunActivity;
-import ua.com.studiovision.euromaidan.json_protocol.SendEducationPlaceProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.education_places.SendEducationPlaceProtocol;
 
 public class SendSchoolStrategy extends AbstractProcessResponseStrategy<SendEducationPlaceProtocol.SendEducationPlaceResponse> {
 
@@ -20,13 +20,13 @@ public class SendSchoolStrategy extends AbstractProcessResponseStrategy<SendEduc
                         bundle.getString(FirstRunActivity.SCHOOL_NAME));
         request = SendEducationPlaceProtocol.
                 getSendSchoolRequest(bundle.getString(FirstRunActivity.TOKEN),
-                        new SendEducationPlaceProtocol.EducationPlace[] {educationPlace});
+                        new SendEducationPlaceProtocol.EducationPlace[]{educationPlace});
         responseClass = SendEducationPlaceProtocol.SendEducationPlaceResponse.class;
     }
 
     @Override
     public void processResponse(SendEducationPlaceProtocol.SendEducationPlaceResponse response) {
-        if(!"success".equals(response.status)) {
+        if (!"success".equals(response.status)) {
             throw new RuntimeException("Not success");
         }
     }

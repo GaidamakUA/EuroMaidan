@@ -21,4 +21,7 @@ public class AppProtocol extends Protocol {
     // First run activity send data
     public static final int SEND_SCHOOL = 10;
     public static final int SEND_UNIVERSITY = 11;
+
+    // Settings activity send data
+    public static final int SEND_PROFILE = 12;
 }
