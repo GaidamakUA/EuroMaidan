@@ -1,8 +1,8 @@
 package ua.com.studiovision.euromaidan;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,11 +15,10 @@ import org.androidannotations.annotations.EActivity;
 import java.util.HashMap;
 
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
 
-@EActivity (R.layout.activity_feed)
-public class FeedActivity extends Activity {
+@EActivity(R.layout.activity_feed)
+public class FeedActivity extends FragmentActivity {
     private static final String TAG = "FeedActivity";
 
     HashMap<Integer, Fragment> fragments = new HashMap<Integer, Fragment>();
@@ -32,7 +31,7 @@ public class FeedActivity extends Activity {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             FeedFragment_ feedFragment = new FeedFragment_();
-            getFragmentManager().beginTransaction().add(R.id.fragment_holder, feedFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_holder, feedFragment).commit();
         }
     }
 
@@ -43,9 +42,7 @@ public class FeedActivity extends Activity {
     }
 
     private void replace(Fragment fragment) {
-        if (fragment instanceof SettingsFragment)
-            fragment = new SettingsFragment_();
-        getFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
     }
 
     @Override

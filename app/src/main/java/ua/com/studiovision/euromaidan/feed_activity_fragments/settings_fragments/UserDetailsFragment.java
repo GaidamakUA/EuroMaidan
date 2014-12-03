@@ -1,6 +1,6 @@
 package ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 import org.androidannotations.annotations.EFragment;
 
