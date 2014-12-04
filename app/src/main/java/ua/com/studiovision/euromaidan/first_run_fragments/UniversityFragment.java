@@ -24,7 +24,7 @@ import ua.com.studiovision.euromaidan.provider.country.CountryCursor;
 import ua.com.studiovision.euromaidan.provider.university.UniversityColumns;
 import ua.com.studiovision.euromaidan.provider.university.UniversityCursor;
 
-@EFragment (R.layout.fragment_university)
+@EFragment(R.layout.fragment_university)
 public class UniversityFragment extends Fragment {
     private static final String TAG = "UniversityFragment";
 
@@ -60,8 +60,8 @@ public class UniversityFragment extends Fragment {
         countryCursorAdapter = new SimpleCursorAdapter(getActivity().getBaseContext(),
                 android.R.layout.simple_dropdown_item_1line,
                 null,
-                new String[] {CountryColumns.COUNTRY_NAME},
-                new int[] {android.R.id.text1},
+                new String[]{CountryColumns.COUNTRY_NAME},
+                new int[]{android.R.id.text1},
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         countryAutoCompleteTextView.setAdapter(countryCursorAdapter);
 
@@ -70,7 +70,7 @@ public class UniversityFragment extends Fragment {
                 if (str == null || str.length() < 1)
                     return null;
                 firstRunFragmentListener.tryRequestCountries(str.toString());
-                return getCursor(str,CountryColumns.COUNTRY_NAME,CountryColumns.CONTENT_URI,CountryColumns.ALL_COLUMNS);
+                return getCursor(str, CountryColumns.COUNTRY_NAME, CountryColumns.CONTENT_URI, CountryColumns.ALL_COLUMNS);
             }
         });
 
@@ -86,18 +86,18 @@ public class UniversityFragment extends Fragment {
         cityCursorAdapter = new SimpleCursorAdapter(getActivity().getBaseContext(),
                 android.R.layout.simple_dropdown_item_1line,
                 null,
-                new String[] {CityColumns.CITY_NAME},
-                new int[] {android.R.id.text1},
+                new String[]{CityColumns.CITY_NAME},
+                new int[]{android.R.id.text1},
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         cityAutoCompleteTextView.setAdapter(cityCursorAdapter);
 
         cityCursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
             public Cursor runQuery(CharSequence str) {
-                if (str == null || str.length() <1 || countryId == -1L)
+                if (str == null || str.length() < 1 || countryId == -1L)
                     return null;
-                firstRunFragmentListener.tryRequestCities(str.toString(),countryId);
-                return getCursor(str,CityColumns.CITY_NAME,CityColumns.CONTENT_URI,CityColumns.ALL_COLUMNS);
+                firstRunFragmentListener.tryRequestCities(str.toString(), countryId);
+                return getCursor(str, CityColumns.CITY_NAME, CityColumns.CONTENT_URI, CityColumns.ALL_COLUMNS);
             }
         });
 
@@ -114,8 +114,8 @@ public class UniversityFragment extends Fragment {
         universityCursorAdapter = new SimpleCursorAdapter(getActivity().getBaseContext(),
                 android.R.layout.simple_dropdown_item_1line,
                 null,
-                new String[] {UniversityColumns.UNIVERSITY_NAME},
-                new int[] {android.R.id.text1},
+                new String[]{UniversityColumns.UNIVERSITY_NAME},
+                new int[]{android.R.id.text1},
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         universityAutoCompleteTextView.setAdapter(universityCursorAdapter);
 
@@ -153,13 +153,14 @@ public class UniversityFragment extends Fragment {
 
     /**
      * Get cursor from DB
-     * @param str User input
-     * @param columnName Column for selection
+     *
+     * @param str               User input
+     * @param columnName        Column for selection
      * @param columnsContentURI Uri for all columns
-     * @param projection Table projection for query
-     * @return  Cursor with selected data or empty cursor if data is not found
+     * @param projection        Table projection for query
+     * @return Cursor with selected data or empty cursor if data is not found
      */
-    private Cursor getCursor(CharSequence str, String columnName, Uri columnsContentURI, String[] projection){
+    private Cursor getCursor(CharSequence str, String columnName, Uri columnsContentURI, String[] projection) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(columnName);
         stringBuilder.append(" LIKE '%");
@@ -178,27 +179,27 @@ public class UniversityFragment extends Fragment {
         return cursor;
     }
 
-    @Click(R.id.saveButton)
+    @Click(R.id.save_button)
     void onSaveButtonClick() {
         String country = countryAutoCompleteTextView.getText().toString();
         String city = cityAutoCompleteTextView.getText().toString();
         String university = universityAutoCompleteTextView.getText().toString();
 
         boolean inputProblem = false;
-        if(country.length() < 2) {
+        if (country.length() < 2) {
             countryAutoCompleteTextView.startAnimation(shake);
             inputProblem = true;
         }
-        if(city.length() < 2) {
+        if (city.length() < 2) {
             cityAutoCompleteTextView.startAnimation(shake);
             inputProblem = true;
         }
-        if(university.length() < 2) {
+        if (university.length() < 2) {
             universityAutoCompleteTextView.startAnimation(shake);
             inputProblem = true;
         }
 
-        if(inputProblem)
+        if (inputProblem)
             return;
         firstRunFragmentListener
                 .sendUniversityDataToServer(country, city, university);

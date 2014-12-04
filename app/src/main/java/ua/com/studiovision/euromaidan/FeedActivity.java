@@ -1,25 +1,35 @@
 package ua.com.studiovision.euromaidan;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.softevol.activity_service_communication.ActivityServiceCommunicationFragmentActivity;
+
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.HashMap;
 
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.SettingsFragmentListener;
+import ua.com.studiovision.euromaidan.json_protocol.settings.SetSettingProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.settings.SettingsParams;
 
 @EActivity(R.layout.activity_feed)
-public class FeedActivity extends FragmentActivity {
+public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
+        implements SettingsFragmentListener {
     private static final String TAG = "FeedActivity";
+
+    @Pref
+    SharedPrefs_ preferences;
 
     HashMap<Integer, Fragment> fragments = new HashMap<Integer, Fragment>();
 
@@ -33,6 +43,8 @@ public class FeedActivity extends FragmentActivity {
             FeedFragment_ feedFragment = new FeedFragment_();
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_holder, feedFragment).commit();
         }
+
+        mServiceClass = MainService_.class;
     }
 
     @Click({R.id.news_textview, R.id.settings_textview})
@@ -52,5 +64,26 @@ public class FeedActivity extends FragmentActivity {
             drawer.openDrawer(Gravity.START);
         }
         return true;
+    }
+
+    @Override
+    public void sendProfileDataToServer(SettingsParams settingsParams) {
+        Log.v(TAG, "FeedActivity.sendProfileDataToServer(" + "settingsParams=" + settingsParams + ")");
+        Bundle bundle = new Bundle();
+        bundle.putString(SetSettingProtocol.TOKEN, preferences.getToken().get());
+        bundle.putParcelable(SetSettingProtocol.SETTINGS_PARAMS, settingsParams);
+        Message message = Message.obtain();
+        message.setData(bundle);
+        message.what = AppProtocol.SEND_PROFILE;
+        sendMessage(message);
+    }
+
+    @Override
+    protected void handleMessage(Message msg) {
+        switch (msg.what) {
+            case AppProtocol.ON_SERVICE_CONNECTED:
+                Log.v(TAG, "Service connected");
+                break;
+        }
     }
 }

@@ -1,25 +1,25 @@
 package com.softevol.activity_service_communication;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 /**
- * <b>Before starting this tutorial read carefully 
- * <a href=http://developer.android.com/reference/android/app/Service.html>Service ref</a> and 
+ * <b>Before starting this tutorial read carefully
+ * <a href=http://developer.android.com/reference/android/app/Service.html>Service ref</a> and
  * <a href = http://developer.android.com/guide/components/services.html>Service guide </a></b>
  * In this example Activity and Service plases in one process.
- *
+ * <p/>
  * To provide communication between Service and Activity, both of this instances
  * create {@link android.os.Messenger} from Handler and send own Messengers each
  * other. <br>
  */
 
-abstract public class ActivityServiceCommunicationFragmentActivity extends Activity {
+abstract public class ActivityServiceCommunicationFragmentActivity extends FragmentActivity {
 
     private final static String TAG = "ActivityServiceCommunicationActivity";
 
@@ -32,8 +32,8 @@ abstract public class ActivityServiceCommunicationFragmentActivity extends Activ
      * Note: processResponse startService(...) in onResume() have the same effect as processResponse
      * startService(...) in onCreate() method (from time of receive response from
      * service point of view)
-     *
-     * Note: The startService() [is asynchronus or non blocking method] method 
+     * <p/>
+     * Note: The startService() [is asynchronus or non blocking method] method
      */
 
     @Override
@@ -70,11 +70,9 @@ abstract public class ActivityServiceCommunicationFragmentActivity extends Activ
     /**
      * sening message to Service.
      *
-     * @return true
-     *      if message was sent successful
      * @return false
-     *      if message was not sent (while orientation changed, or when service
-     *      is not created yet) 
+     * if message was not sent (while orientation changed, or when service
+     * is not created yet)
      */
     final protected boolean sendMessage(Message msg) {
 

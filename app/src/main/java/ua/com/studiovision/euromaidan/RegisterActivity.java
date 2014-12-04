@@ -42,7 +42,7 @@ public class RegisterActivity extends ActivityServiceCommunicationActivity {
         shake = AnimationUtils.loadAnimation(this, R.anim.shake);
     }
 
-    @Click (R.id.saveButton)
+    @Click(R.id.save_button)
     void onSaveButtonClick() {
         String name = nameEditText.getText().toString();
         String surname = surnameEditText.getText().toString();
@@ -51,25 +51,25 @@ public class RegisterActivity extends ActivityServiceCommunicationActivity {
         String email = emailEditText.getText().toString();
 
         boolean inputProblem = false;
-        if(name.length() < 2) {
+        if (name.length() < 2) {
             nameEditText.startAnimation(shake);
             inputProblem = true;
         }
-        if(surname.length() < 2) {
+        if (surname.length() < 2) {
             surnameEditText.startAnimation(shake);
             inputProblem = true;
         }
-        if(password.length() < 6) {
+        if (password.length() < 6) {
             passwordEditText.startAnimation(shake);
             passwordEditText.setText("");
             inputProblem = true;
         }
-        if(passwordConfirmation.length() < 6 || !passwordConfirmation.equals(password)) {
+        if (passwordConfirmation.length() < 6 || !passwordConfirmation.equals(password)) {
             confirmPasswordEditText.startAnimation(shake);
             confirmPasswordEditText.setText("");
             inputProblem = true;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditText.startAnimation(shake);
             inputProblem = true;
         }

@@ -1,34 +1,31 @@
 package ua.com.studiovision.euromaidan.process_strategies;
 
-import android.content.ContentResolver;
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 
-import ua.com.studiovision.euromaidan.FirstRunActivity;
-import ua.com.studiovision.euromaidan.json_protocol.education_places.EducationPlace;
-import ua.com.studiovision.euromaidan.json_protocol.education_places.SendEducationPlaceProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.settings.SetSettingProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.settings.SettingsParams;
 
-public class SendSettingsStrategy extends AbstractProcessResponseStrategy<SendEducationPlaceProtocol.SendEducationPlaceResponse> {
+public class SendSettingsStrategy extends AbstractProcessResponseStrategy<SetSettingProtocol.SetSettingsResponse> {
 
-    public SendSettingsStrategy(ContentResolver resolver, Message msg) {
-        this.resolver = resolver;
+    private static final String TAG = "SendSettingsStrategy";
+
+    public SendSettingsStrategy(Message msg) {
         Bundle bundle = msg.getData();
-        String universityNamePart = bundle.getString(FirstRunActivity.UNIVERSITY_NAME);
-        long cityId = bundle.getLong(FirstRunActivity.CITY_ID);
-        EducationPlace educationPlace =
-                new EducationPlace(bundle.getString(FirstRunActivity.COUNTRY_NAME),
-                        bundle.getString(FirstRunActivity.CITY_NAME),
-                        bundle.getString(FirstRunActivity.SCHOOL_NAME));
-        request = SendEducationPlaceProtocol.
-                getSendUniversityRequest(bundle.getString(FirstRunActivity.TOKEN),
-                        new EducationPlace[]{educationPlace});
-        responseClass = SendEducationPlaceProtocol.SendEducationPlaceResponse.class;
+        String token = bundle.getString(SetSettingProtocol.TOKEN);
+        SettingsParams settingsParams =
+                bundle.getParcelable(SetSettingProtocol.SETTINGS_PARAMS);
+        request = new SetSettingProtocol.SetSettingsRequest(token, settingsParams);
+        responseClass = SetSettingProtocol.SetSettingsResponse.class;
     }
 
     @Override
-    public void processResponse(SendEducationPlaceProtocol.SendEducationPlaceResponse response) {
+    public void processResponse(SetSettingProtocol.SetSettingsResponse response) {
         if (!"success".equals(response.status)) {
             throw new RuntimeException("Not success");
+        } else {
+            Log.v(TAG, "SendSettingsStrategy");
         }
     }
 }

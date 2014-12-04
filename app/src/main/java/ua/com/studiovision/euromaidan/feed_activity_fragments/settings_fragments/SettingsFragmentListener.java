@@ -1,7 +1,7 @@
 package ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments;
 
-/**
- * Created by gaidamak on 03.12.14.
- */
+import ua.com.studiovision.euromaidan.json_protocol.settings.SettingsParams;
+
 public interface SettingsFragmentListener {
+    void sendProfileDataToServer(SettingsParams settingsParams);
 }
