@@ -28,4 +28,15 @@
     <string name="in_love">Влюблена</string>
     <string name="its_complicated">Все сложно</string>
     <string name="in_active_search">В активном поиске</string>
+
+    <string name="search">Поиск</string>
+    <string name="news">Новости</string>
+    <string name="message">Сообщения</string>
+    <string name="friends">Друзья</string>
+    <string name="groups">Группы</string>
+    <string name="photos">Фотографии</string>
+    <string name="video">Видеозаписи</string>
+    <string name="audio">Аудиозаписи</string>
+    <string name="settings">Натройки</string>
+
 </resources>

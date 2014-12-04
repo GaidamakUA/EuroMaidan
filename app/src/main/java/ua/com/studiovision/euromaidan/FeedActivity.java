@@ -1,32 +1,48 @@
 package ua.com.studiovision.euromaidan;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v8.renderscript.Allocation;
+import android.support.v8.renderscript.Element;
+import android.support.v8.renderscript.RenderScript;
+import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import com.softevol.activity_service_communication.ActivityServiceCommunicationFragmentActivity;
-
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
-
-import java.util.HashMap;
-
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.SettingsFragmentListener;
 import ua.com.studiovision.euromaidan.json_protocol.settings.SetSettingProtocol;
 import ua.com.studiovision.euromaidan.json_protocol.settings.SettingsParams;
 
+import java.util.HashMap;
+
 @EActivity(R.layout.activity_feed)
 public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
         implements SettingsFragmentListener {
     private static final String TAG = "FeedActivity";
+
+    @ViewById(R.id.avatar)
+    ImageView avatar;
+    @ViewById(R.id.left_drawer)
+    LinearLayout drawer;
 
     @Pref
     SharedPrefs_ preferences;
@@ -85,5 +101,29 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
                 Log.v(TAG, "Service connected");
                 break;
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    @AfterViews
+    void init(){
+        avatar.setImageBitmap(ImageProcessor.getRoundedCornersImage(BitmapFactory.decodeResource(getResources(),R.drawable.fail_avatar)));
+        Bitmap overlay = Bitmap.createBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.fail_background_user));
+        final RenderScript rs =RenderScript.create(getApplicationContext());
+        final Allocation input = Allocation.createFromBitmapResource(rs, getResources(), R.drawable.fail_background_user, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
+        final Allocation output = Allocation.createTyped( rs, input.getType() );
+        final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create( rs, Element.U8_4(rs) );
+        script.setRadius( 5.f );
+        script.setInput(input);
+        script.forEach(output);
+        output.copyTo(overlay);
+        rs.finish();
+
+        ShapeDrawable blackCover = new ShapeDrawable();
+        blackCover.getPaint().setColor(getResources().getColor(R.color.black_50_opacity));
+
+        Drawable[] layers = {new BitmapDrawable(getResources(),overlay),blackCover};
+        LayerDrawable layerDrawable = new LayerDrawable(layers);
+
+        drawer.setBackgroundDrawable(layerDrawable);
     }
 }

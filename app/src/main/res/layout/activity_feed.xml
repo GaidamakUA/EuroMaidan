@@ -14,56 +14,83 @@
         android:id="@+id/left_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:orientation="vertical">
+        android:layout_gravity="start"
+        android:orientation="vertical"
+            android:background="@drawable/fail_background_user">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_launcher"
+            android:id="@+id/avatar"
+            android:layout_gravity="center_horizontal"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Катя Наумова"/>
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/textSize"
+            android:text="Дарт Вейдер"/>
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="search"/>
+            style="@style/SearchStyle"
+            android:text="@string/search"/>
         <TextView
             android:id="@+id/news_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:text="News"/>
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:drawableStart="@drawable/news_icon"
+            android:drawableLeft="@drawable/news_icon"
+            android:text="@string/news"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Message"/>
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:drawableStart="@drawable/message_icon"
+            android:drawableLeft="@drawable/message_icon"
+            android:text="@string/message"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Friends"/>
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:drawableStart="@drawable/friends_icon"
+            android:drawableLeft="@drawable/friends_icon"
+            android:text="@string/friends"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Groups"/>
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:drawableStart="@drawable/groups_icon"
+            android:drawableLeft="@drawable/groups_icon"
+            android:text="@string/groups"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Photos"/>
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:drawableStart="@drawable/photo_icon"
+            android:drawableLeft="@drawable/photo_icon"
+            android:text="@string/photos"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Videos"/>
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:drawableStart="@drawable/video_icon"
+            android:drawableLeft="@drawable/video_icon"
+            android:text="@string/video"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Audio"/>
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:drawableStart="@drawable/audio_icon"
+            android:drawableLeft="@drawable/audio_icon"
+            android:text="@string/audio"/>
         <TextView
             android:id="@+id/settings_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:textAppearance="?android:textAppearanceLarge"
-            android:text="Settings"/>
+            android:drawableStart="@drawable/settings_icon"
+            android:drawableLeft="@drawable/settings_icon"
+            android:text="@string/settings"/>
     </LinearLayout>
-</android.support.v4.widget.DrawerLayout><!--<FrameLayout -->
+</android.support.v4.widget.DrawerLayout>
