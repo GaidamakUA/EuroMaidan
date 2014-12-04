@@ -2,19 +2,21 @@ package ua.com.studiovision.euromaidan;
 
 import android.os.Bundle;
 import android.os.Message;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.softevol.activity_service_communication.ActivityServiceCommunicationService;
-
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EService;
 import org.androidannotations.annotations.SupposeBackground;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.api.BackgroundExecutor;
+import ua.com.studiovision.euromaidan.json_protocol.AbstractRequest;
+import ua.com.studiovision.euromaidan.json_protocol.AbstractResponse;
+import ua.com.studiovision.euromaidan.json_protocol.LoginProtocol;
+import ua.com.studiovision.euromaidan.json_protocol.RegistrationProtocol;
+import ua.com.studiovision.euromaidan.process_strategies.*;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -23,19 +25,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import ua.com.studiovision.euromaidan.json_protocol.AbstractRequest;
-import ua.com.studiovision.euromaidan.json_protocol.AbstractResponse;
-import ua.com.studiovision.euromaidan.json_protocol.LoginProtocol;
-import ua.com.studiovision.euromaidan.json_protocol.RegistrationProtocol;
-import ua.com.studiovision.euromaidan.process_strategies.AbstractProcessResponseStrategy;
-import ua.com.studiovision.euromaidan.process_strategies.GetCitiesStrategy;
-import ua.com.studiovision.euromaidan.process_strategies.GetCountriesStrategy;
-import ua.com.studiovision.euromaidan.process_strategies.GetSchoolsStrategy;
-import ua.com.studiovision.euromaidan.process_strategies.GetUniversitiesStrategy;
-import ua.com.studiovision.euromaidan.process_strategies.SendSchoolStrategy;
-import ua.com.studiovision.euromaidan.process_strategies.SendSettingsStrategy;
-import ua.com.studiovision.euromaidan.process_strategies.SendUnivercityStrategy;
+import java.net.URLEncoder;
 
 @EService
 public class MainService extends ActivityServiceCommunicationService {
@@ -95,7 +85,8 @@ public class MainService extends ActivityServiceCommunicationService {
                 break;
             case AppProtocol.SEND_PROFILE:
                 Log.v(TAG, "Send profile");
-                doRequest(new SendSettingsStrategy(msg));
+                doRequest(new SendProfileStrategy(msg));
+                break;
         }
     }
 
@@ -172,9 +163,8 @@ public class MainService extends ActivityServiceCommunicationService {
 
     @SupposeBackground
     <T extends AbstractResponse<T>> T executeRequest(AbstractRequest request, Class<T> tClass) throws IOException {
-        String requestString = gson.toJson(request);
+        String requestString = "data=" + URLEncoder.encode(gson.toJson(request), "UTF-8");
         Log.v(TAG, "beforeEncode=" + requestString);
-        requestString = "data=" + Base64.encodeToString(requestString.getBytes("UTF-8"), Base64.DEFAULT);
 //        requestString = URLEncoder.encode(requestString, "UTF-8");
         return gson.fromJson(doPost(requestString), tClass);
     }

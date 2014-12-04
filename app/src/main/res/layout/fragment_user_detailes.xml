@@ -22,14 +22,14 @@
             <EditText
                 style="@style/editTextAndButtonDimensionsLowSpacing"
                 android:layout_gravity="center_horizontal"
-                android:hint="@string/name"/>
+                android:hint="@string/name" android:id="@+id/nameDetails"/>
             <EditText
                 style="@style/editTextAndButtonDimensionsLowSpacing"
                 android:layout_gravity="center_horizontal"
-                android:hint="@string/surname"/>
+                android:hint="@string/surname" android:id="@+id/surnameDetails"/>
             <RadioGroup
                     android:orientation="horizontal" android:gravity="center_horizontal"
-                    style="@style/sexRadioGroup" android:weightSum="1">
+                    style="@style/sexRadioGroup" android:weightSum="1" android:id="@+id/genderGroup">
                 <RadioButton
                         android:layout_width="wrap_content"
                         android:text="Женский"
@@ -48,11 +48,12 @@
             <EditText
                 style="@style/editTextAndButtonDimensionsLowSpacing"
                 android:layout_gravity="center_horizontal"
-                android:hint="@string/native_city"/>
+                android:hint="@string/native_city" android:id="@+id/native_city"/>
             <RadioGroup
                     android:layout_width="@dimen/loginComponentWidth"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/topBottomMarginLow" android:layout_gravity="center_horizontal">
+                    android:layout_marginTop="@dimen/topBottomMarginLow" android:layout_gravity="center_horizontal"
+                    android:id="@+id/relationshipGroup">
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -65,38 +66,38 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/single"
-                        android:id="@+id/radioButton" android:checked="true"
+                        android:id="@+id/relationSingle" android:checked="true"
                         style="@style/familyStatusRadioButton"/>
                 <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/dating"
-                        android:id="@+id/radioButton2" style="@style/familyStatusRadioButton"/>
+                        android:id="@+id/relationDating" style="@style/familyStatusRadioButton"/>
                 <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/engaged"
-                        android:id="@+id/radioButton3" style="@style/familyStatusRadioButton"/>
+                        android:id="@+id/relationEngaged" style="@style/familyStatusRadioButton"/>
                 <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/married"
-                        android:id="@+id/radioButton4" style="@style/familyStatusRadioButton"/>
+                        android:id="@+id/relationMarried" style="@style/familyStatusRadioButton"/>
                 <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/in_love"
-                        android:id="@+id/radioButton5" style="@style/familyStatusRadioButton"/>
+                        android:id="@+id/relationInLove" style="@style/familyStatusRadioButton"/>
                 <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/its_complicated"
-                        android:id="@+id/radioButton6" style="@style/familyStatusRadioButton"/>
+                        android:id="@+id/relationComplicated" style="@style/familyStatusRadioButton"/>
                 <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/in_active_search"
-                        android:id="@+id/radioButton7" style="@style/familyStatusRadioButton"/>
+                        android:id="@+id/relationActiveSearch" style="@style/familyStatusRadioButton"/>
             </RadioGroup>
         </LinearLayout>
     </ScrollView>
