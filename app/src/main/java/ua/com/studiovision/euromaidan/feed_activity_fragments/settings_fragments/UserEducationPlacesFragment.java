@@ -9,7 +9,4 @@ import ua.com.studiovision.euromaidan.R;
 @EFragment(R.layout.fragment_user_education_places)
 public class UserEducationPlacesFragment extends Fragment {
 
-    public static UserEducationPlacesFragment_ newInstance() {
-        return new UserEducationPlacesFragment_();
-    }
 }
