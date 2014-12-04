@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,33 +10,103 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LoginActivity" >
 
-    <EditText
-        style="@style/editTextAndButtonDimensions"
-        android:layout_gravity="center_horizontal"
-        android:hint="Name"/>
-
-    <EditText
-        style="@style/editTextAndButtonDimensions"
-        android:layout_gravity="center_horizontal"
-        android:hint="Surname"/>
-
-    <EditText
-        style="@style/editTextAndButtonDimensions"
-        android:layout_gravity="center_horizontal"
-        android:hint="Sex"/>
-    <EditText
-        style="@style/editTextAndButtonDimensions"
-        android:layout_gravity="center_horizontal"
-        android:hint="Native city"/>
-    <EditText
-        style="@style/editTextAndButtonDimensions"
-        android:layout_gravity="center_horizontal"
-        android:hint="Relationship status"/>
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mainContainer" android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="true" android:layout_above="@+id/save_button">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+            <EditText
+                style="@style/editTextAndButtonDimensionsLowSpacing"
+                android:layout_gravity="center_horizontal"
+                android:hint="@string/name"/>
+            <EditText
+                style="@style/editTextAndButtonDimensionsLowSpacing"
+                android:layout_gravity="center_horizontal"
+                android:hint="@string/surname"/>
+            <RadioGroup
+                    android:orientation="horizontal" android:gravity="center_horizontal"
+                    style="@style/sexRadioGroup" android:weightSum="1">
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:text="Женский"
+                        android:id="@+id/rb_female" android:checked="true" style="@style/sexRadioButton"
+                        android:layout_weight=".5" android:gravity="center"/>
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:text="Мужской"
+                        android:id="@+id/rb_male" style="@style/sexRadioButton" android:layout_weight=".5"
+                        android:gravity="center"/>
+            </RadioGroup>
+            <Button
+                    android:layout_height="wrap_content"
+                    android:text="@string/pickBirthDate"
+                    android:id="@+id/btn_birthday" style="@style/datePickerButton"/>
+            <EditText
+                style="@style/editTextAndButtonDimensionsLowSpacing"
+                android:layout_gravity="center_horizontal"
+                android:hint="@string/native_city"/>
+            <RadioGroup
+                    android:layout_width="@dimen/loginComponentWidth"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/topBottomMarginLow" android:layout_gravity="center_horizontal">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/family_status"
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/textView"
+                        android:textSize="@dimen/textSize"
+                        android:textColor="@color/light_blue"/>
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/single"
+                        android:id="@+id/radioButton" android:checked="true"
+                        style="@style/familyStatusRadioButton"/>
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dating"
+                        android:id="@+id/radioButton2" style="@style/familyStatusRadioButton"/>
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/engaged"
+                        android:id="@+id/radioButton3" style="@style/familyStatusRadioButton"/>
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/married"
+                        android:id="@+id/radioButton4" style="@style/familyStatusRadioButton"/>
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/in_love"
+                        android:id="@+id/radioButton5" style="@style/familyStatusRadioButton"/>
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/its_complicated"
+                        android:id="@+id/radioButton6" style="@style/familyStatusRadioButton"/>
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/in_active_search"
+                        android:id="@+id/radioButton7" style="@style/familyStatusRadioButton"/>
+            </RadioGroup>
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         style="@style/editTextAndButtonDimensions"
-        android:text="Сохранить"
+        android:text="@string/save"
         android:id="@+id/save_button"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal" android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false" android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
 
-</LinearLayout>
+</RelativeLayout>

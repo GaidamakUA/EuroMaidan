@@ -9,8 +9,4 @@ import ua.com.studiovision.euromaidan.R;
 @EFragment(R.layout.fragment_user_picture)
 public class UserPictureFragment extends Fragment {
 
-    public static UserPictureFragment_ newInstance() {
-        return new UserPictureFragment_();
-    }
-
 }

@@ -47,10 +47,31 @@
         <item name="android:layout_marginTop">@dimen/topBottomMargin</item>
     </style>
 
-    <style name="HomeButton">
-        <item name="android:background">@drawable/menu_icon</item>
-        <!--<item name="android:layout_gravity">center_vertical</item>-->
-        <item name="android:padding">8dp</item>
+    <style name="editTextAndButtonDimensionsLowSpacing">
+        <item name="android:layout_height">@dimen/loginComponentHeight</item>
+        <item name="android:layout_width">@dimen/loginComponentWidth</item>
+        <item name="android:layout_marginTop">@dimen/topBottomMarginLow</item>
+    </style>
+
+    <style name="datePickerButton" parent="editTextAndButtonDimensionsLowSpacing">
+        <item name="android:layout_width">@dimen/loginComponentWidth</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="sexRadioGroup" parent="editTextAndButtonDimensionsLowSpacing">
+        <item name="android:background">@drawable/edit_text_bg</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="sexRadioButton">
+        <item name="android:layout_height">@dimen/loginComponentHeight</item>
+        <item name="android:background">@drawable/sex_radio_button</item>
+        <item name="android:button">@android:color/transparent</item>
+    </style>
+
+    <style name="familyStatusRadioButton">
+        <item name="android:button">@drawable/family_status_radio_button</item>
+        <item name="android:textColor">@color/light_blue</item>
     </style>
 
 </resources>

@@ -17,4 +17,15 @@
     <string name="school">Школа</string>
     <string name="university">Университет</string>
     <string name="skip">Пропустить</string>
+    <string name="family_status">Семейное положение</string>
+    <string name="native_city">Родной город</string>
+    <string name="pickBirthDate">Дата рождения</string>
+
+    <string name="single">Не замужем</string>
+    <string name="dating">Встречаюсь</string>
+    <string name="engaged">Помолвлена</string>
+    <string name="married">Замужем</string>
+    <string name="in_love">Влюблена</string>
+    <string name="its_complicated">Все сложно</string>
+    <string name="in_active_search">В активном поиске</string>
 </resources>
