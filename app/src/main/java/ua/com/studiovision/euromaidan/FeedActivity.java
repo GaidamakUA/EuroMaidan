@@ -42,7 +42,7 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
 
     @ViewById(R.id.avatar)
     ImageView avatar;
-    @ViewById(R.id.left_drawer)
+    @ViewById(R.id.drawer_scrollable_container)
     LinearLayout drawer;
 
     @Pref

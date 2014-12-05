@@ -15,4 +15,5 @@
     <dimen name="invisibleUnderline">0dp</dimen>
     <dimen name="radioButtonRingThickness">5dp</dimen>
     <dimen name="radioButtonFamilyStatusSize">20dp</dimen>
+    <dimen name="avatarBorderSize">3dp</dimen>
 </resources>

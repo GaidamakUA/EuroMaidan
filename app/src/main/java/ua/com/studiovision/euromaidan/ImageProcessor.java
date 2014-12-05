@@ -1,6 +1,7 @@
 package ua.com.studiovision.euromaidan;
 
 import android.graphics.*;
+import android.graphics.drawable.ShapeDrawable;
 
 public class ImageProcessor {
     private ImageProcessor() {}
@@ -29,8 +30,6 @@ public class ImageProcessor {
 
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(source, 0, 0, paint);
-
-
 
         return output;
     }
