@@ -29,7 +29,7 @@ abstract public class ActivityServiceCommunicationFragmentActivity extends Fragm
     protected Class<? extends ActivityServiceCommunicationService> mServiceClass;
 
     /**
-     * Note: processResponse startService(...) in onResume() have the same effect as processResponse
+     * Note: onResponse startService(...) in onResume() have the same effect as onResponse
      * startService(...) in onCreate() method (from time of receive response from
      * service point of view)
      * <p/>

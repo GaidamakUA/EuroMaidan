@@ -1,29 +1,34 @@
 package ua.com.studiovision.euromaidan.feed_activity_fragments;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+
 import com.astuetz.PagerSlidingTabStrip;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-import ua.com.studiovision.euromaidan.R;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.ChangePasswordFragment_;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserDetailsFragment_;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserEducationPlacesFragment_;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserPictureFragment_;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ua.com.studiovision.euromaidan.R;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.ChangePasswordFragment_;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.SettingsFragmentListener;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserDetailsFragment_;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserEducationPlacesFragment_;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserPictureFragment_;
+
 @EFragment(R.layout.fragment_settings)
-public class SettingsFragment extends Fragment{
+public class SettingsFragment extends Fragment {
     @ViewById(R.id.view_pager)
     ViewPager viewPager;
 
@@ -38,9 +43,16 @@ public class SettingsFragment extends Fragment{
     private FragmentPagerAdapter fragmentPagerAdapter;
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         getActivity().getActionBar().show();
+        // XXX may be dangerous
+        ((SettingsFragmentListener) getActivity()).requestProfileDataFromServer();
     }
 
     @Override

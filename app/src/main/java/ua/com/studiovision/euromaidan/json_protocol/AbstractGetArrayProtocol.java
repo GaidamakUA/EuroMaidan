@@ -16,7 +16,7 @@ public class AbstractGetArrayProtocol {
         }
     }
 
-    public static class Response implements AbstractResponse<Response> {
+    public static class AbstractArrayResponse extends AbstractResponse<AbstractArrayResponse> {
         public AbstractItem[] array;
 
         public class AbstractItem {

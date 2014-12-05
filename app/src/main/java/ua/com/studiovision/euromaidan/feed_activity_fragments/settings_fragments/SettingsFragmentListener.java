@@ -4,4 +4,10 @@ import ua.com.studiovision.euromaidan.json_protocol.settings.SettingsParams;
 
 public interface SettingsFragmentListener {
     void sendProfileDataToServer(SettingsParams settingsParams);
+
+    // synchronized
+    void requestProfileDataFromServer();
+
+    // synchronized
+    void pullProfileData();
 }

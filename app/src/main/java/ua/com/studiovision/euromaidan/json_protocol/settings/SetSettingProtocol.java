@@ -6,6 +6,7 @@ import ua.com.studiovision.euromaidan.json_protocol.AbstractResponse;
 public class SetSettingProtocol {
     public static final String TOKEN = "token";
     public static final String SETTINGS_PARAMS = "settings_params";
+
     private SetSettingProtocol() {
     }
 
@@ -21,8 +22,6 @@ public class SetSettingProtocol {
         }
     }
 
-    public static class SetSettingsResponse implements AbstractResponse<SetSettingsResponse> {
-        public String status;
-        public String message;
+    public static class SetSettingsResponse extends AbstractResponse<SetSettingsResponse> {
     }
 }

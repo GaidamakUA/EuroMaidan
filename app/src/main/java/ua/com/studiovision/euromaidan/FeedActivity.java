@@ -20,6 +20,7 @@ import java.util.HashMap;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.SettingsFragmentListener;
+import ua.com.studiovision.euromaidan.json_protocol.settings.GetSettingProtocol;
 import ua.com.studiovision.euromaidan.json_protocol.settings.SetSettingProtocol;
 import ua.com.studiovision.euromaidan.json_protocol.settings.SettingsParams;
 
@@ -35,16 +36,16 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mServiceClass = MainService_.class;
+
         fragments.put(R.id.news_textview, new FeedFragment_());
         fragments.put(R.id.settings_textview, new SettingsFragment_());
 
-        super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             FeedFragment_ feedFragment = new FeedFragment_();
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_holder, feedFragment).commit();
         }
-
-        mServiceClass = MainService_.class;
     }
 
     @Click({R.id.news_textview, R.id.settings_textview})
@@ -68,7 +69,6 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
 
     @Override
     public void sendProfileDataToServer(SettingsParams settingsParams) {
-        Log.v(TAG, "FeedActivity.sendProfileDataToServer(" + "settingsParams=" + settingsParams + ")");
         Bundle bundle = new Bundle();
         bundle.putString(SetSettingProtocol.TOKEN, preferences.getToken().get());
         bundle.putParcelable(SetSettingProtocol.SETTINGS_PARAMS, settingsParams);
@@ -79,10 +79,29 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     }
 
     @Override
+    public void requestProfileDataFromServer() {
+        Log.v(TAG, "FeedActivity.requestProfileDataFromServer(" + ")");
+        Bundle bundle = new Bundle();
+        bundle.putString(GetSettingProtocol.TOKEN, preferences.getToken().get());
+        Message message = Message.obtain();
+        message.setData(bundle);
+        message.what = AppProtocol.REQUEST_USER_SETTINGS;
+        sendMessage(message);
+    }
+
+    @Override
+    public void pullProfileData() {
+
+    }
+
+    @Override
     protected void handleMessage(Message msg) {
         switch (msg.what) {
             case AppProtocol.ON_SERVICE_CONNECTED:
                 Log.v(TAG, "Service connected");
+                break;
+            case AppProtocol.RESPONSE_USER_SETTINGS:
+                Log.v(TAG, "Response:" + msg.getData());
                 break;
         }
     }

@@ -29,13 +29,7 @@ public class SendEducationPlaceProtocol {
         }
     }
 
-    public static class SendEducationPlaceResponse implements AbstractResponse<SendEducationPlaceResponse> {
-        public SendEducationPlaceResponse(String status) {
-            this.status = status;
-        }
-
-        public String status; // success
-        public String message;
+    public static class SendEducationPlaceResponse extends AbstractResponse<SendEducationPlaceResponse> {
     }
 
     public static SendEducationPlaceRequest getSendSchoolRequest(String token, EducationPlace[] schools) {

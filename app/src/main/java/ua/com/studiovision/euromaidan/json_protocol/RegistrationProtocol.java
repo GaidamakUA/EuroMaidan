@@ -3,7 +3,10 @@ package ua.com.studiovision.euromaidan.json_protocol;
 public class RegistrationProtocol {
 
     // Do not create class
-    private RegistrationProtocol(){};
+    private RegistrationProtocol() {
+    }
+
+    ;
 
     public static class Request implements AbstractRequest<Request> {
         // TODO make final
@@ -24,12 +27,6 @@ public class RegistrationProtocol {
         }
     }
 
-    public static class Response implements AbstractResponse<Response> {
-        public Response(String status) {
-            this.status = status;
-        }
-
-        public String status; // success
-        public String message;
+    public static class Response extends AbstractResponse<Response> {
     }
 }

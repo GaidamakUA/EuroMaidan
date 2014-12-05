@@ -24,4 +24,7 @@ public class AppProtocol extends Protocol {
 
     // Settings activity send data
     public static final int SEND_PROFILE = 12;
+    // Settings activity request data
+    public static final int REQUEST_USER_SETTINGS = 13;
+    public static final int RESPONSE_USER_SETTINGS = 13;
 }

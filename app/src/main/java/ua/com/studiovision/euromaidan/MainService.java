@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.softevol.activity_service_communication.ActivityServiceCommunicationService;
@@ -12,7 +11,6 @@ import com.softevol.activity_service_communication.ActivityServiceCommunicationS
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EService;
 import org.androidannotations.annotations.SupposeBackground;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.api.BackgroundExecutor;
 
@@ -32,13 +30,14 @@ import ua.com.studiovision.euromaidan.process_strategies.AbstractProcessResponse
 import ua.com.studiovision.euromaidan.process_strategies.GetCitiesStrategy;
 import ua.com.studiovision.euromaidan.process_strategies.GetCountriesStrategy;
 import ua.com.studiovision.euromaidan.process_strategies.GetSchoolsStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.GetSettingsStrategy;
 import ua.com.studiovision.euromaidan.process_strategies.GetUniversitiesStrategy;
 import ua.com.studiovision.euromaidan.process_strategies.SendSchoolStrategy;
 import ua.com.studiovision.euromaidan.process_strategies.SendSettingsStrategy;
-import ua.com.studiovision.euromaidan.process_strategies.SendUnivercityStrategy;
+import ua.com.studiovision.euromaidan.process_strategies.SendUniversityStrategy;
 
 @EService
-public class MainService extends ActivityServiceCommunicationService {
+public class MainService extends ActivityServiceCommunicationService implements StrategyCallbacks {
     private static final String TAG = "MainService";
     private static final String BASE_URL = "http://e-m.com.ua/api";
     private static final Gson gson = new Gson();
@@ -71,31 +70,35 @@ public class MainService extends ActivityServiceCommunicationService {
                 break;
             case AppProtocol.REQUEST_COUNTRIES:
                 Log.v(TAG, "Countries");
-                doRequest(new GetCountriesStrategy(getContentResolver(), msg));
+                doRequest(new GetCountriesStrategy(getApplicationContext(), msg));
                 break;
             case AppProtocol.REQUEST_CITIES:
                 Log.v(TAG, "Cities");
-                doRequest(new GetCitiesStrategy(getContentResolver(), msg));
+                doRequest(new GetCitiesStrategy(getApplicationContext(), msg));
                 break;
             case AppProtocol.REQUEST_SCHOOLS:
                 Log.v(TAG, "Request Schools");
-                doRequest(new GetSchoolsStrategy(getContentResolver(), msg));
+                doRequest(new GetSchoolsStrategy(getApplicationContext(), msg));
                 break;
             case AppProtocol.REQUEST_UNIVERSITIES:
                 Log.v(TAG, "Request Universities");
-                doRequest(new GetUniversitiesStrategy(getContentResolver(), msg));
+                doRequest(new GetUniversitiesStrategy(getApplicationContext(), msg));
                 break;
             case AppProtocol.SEND_SCHOOL:
                 Log.v(TAG, "Send schools");
-                doRequest(new SendSchoolStrategy(getContentResolver(), msg));
+                doRequest(new SendSchoolStrategy(getApplicationContext(), msg));
                 break;
             case AppProtocol.SEND_UNIVERSITY:
                 Log.v(TAG, "Send universities");
-                doRequest(new SendUnivercityStrategy(getContentResolver(), msg));
+                doRequest(new SendUniversityStrategy(getApplicationContext(), msg));
                 break;
             case AppProtocol.SEND_PROFILE:
                 Log.v(TAG, "Send profile");
-                doRequest(new SendSettingsStrategy(msg));
+                doRequest(new SendSettingsStrategy(getApplicationContext(), msg));
+                break;
+            case AppProtocol.REQUEST_USER_SETTINGS:
+                Log.v(TAG, "Request user settings");
+                doRequest(new GetSettingsStrategy(getApplicationContext(), msg, this));
         }
     }
 
@@ -103,13 +106,14 @@ public class MainService extends ActivityServiceCommunicationService {
     void doRequest(AbstractProcessResponseStrategy strategy) {
         Log.v(TAG, "MainService.doRequest(strategy=" + strategy + ")");
         try {
-            strategy.processResponse(
+            strategy.handleResponse(
                     executeRequest(strategy.getRequest(), strategy.getResponseClass()));
         } catch (IOException e) {
             Log.e(TAG, "", e);
         }
     }
 
+    // TODO rewrite as strategy
     @Background
     void doRegister(String name, String surname, String password, String confirmPassword,
                     String email) {
@@ -121,24 +125,21 @@ public class MainService extends ActivityServiceCommunicationService {
                     password, confirmPassword, email);
             RegistrationProtocol.Response response =
                     executeRequest(request, RegistrationProtocol.Response.class);
-            if (response.status.equals("success")) {
+            if (response.status == AbstractResponse.QueryStatus.SUCCESS) {
                 Message msg = Message.obtain();
                 msg.what = AppProtocol.REGISTRATION_SUCCESSFUL;
                 sendMessage(msg);
-                // XXX hardcode
-            } else if (response.status.equals("error")) {
-                showErrorMessage(response.message);
+            } else if (response.status == AbstractResponse.QueryStatus.ERROR) {
                 Message msg = Message.obtain();
                 msg.what = AppProtocol.REGISTRATION_UNSUCCESSFUL;
                 sendMessage(msg);
-            } else {
-                throw new RuntimeException("Illegal answer from server");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    // TODO rewrite as strategy
     @Background(id = LoginActivity.LOGIN)
     void doLogIn(String login, String password) {
         Log.v(TAG, "MainService.doLogIn(" + "login=" + login + ", password=" + password + ")");
@@ -148,15 +149,12 @@ public class MainService extends ActivityServiceCommunicationService {
 
             assert (response.status != null);
 
-            // XXX hardcode
-            if (response.status.equals("success")) {
+            if (response.status == AbstractResponse.QueryStatus.SUCCESS) {
                 Message msg = Message.obtain();
                 msg.what = AppProtocol.LOG_IN_SUCCESSFUL;
                 sendMessage(msg);
                 mSharedPrefs.getToken().put(response.token);
-                // XXX hardcode
-            } else if (response.status.equals("error")) {
-                showErrorMessage(response.message);
+            } else if (response.status == AbstractResponse.QueryStatus.ERROR) {
                 Message msg = Message.obtain();
                 msg.what = AppProtocol.LOG_IN_UNSUCCESSFUL;
                 sendMessage(msg);
@@ -196,14 +194,13 @@ public class MainService extends ActivityServiceCommunicationService {
         return responseString;
     }
 
-    @UiThread
-    void showErrorMessage(String errorMessage) {
-        Toast toast = Toast.makeText(getBaseContext(), errorMessage, Toast.LENGTH_SHORT);
-        toast.show();
-    }
-
     private String readIt(InputStream stream) throws IOException {
         java.util.Scanner s = new java.util.Scanner(stream, "UTF-8").useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
+    }
+
+    @Override
+    public void sendMessageToActivity(Message message) {
+        sendMessage(message);
     }
 }
