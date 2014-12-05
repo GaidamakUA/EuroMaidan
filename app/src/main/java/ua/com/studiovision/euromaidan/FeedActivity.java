@@ -1,5 +1,6 @@
 package ua.com.studiovision.euromaidan;
 
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,8 +19,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+
 import com.softevol.activity_service_communication.ActivityServiceCommunicationFragmentActivity;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -33,7 +37,9 @@ import ua.com.studiovision.euromaidan.json_protocol.settings.GetSettingProtocol;
 import ua.com.studiovision.euromaidan.json_protocol.settings.SetSettingProtocol;
 import ua.com.studiovision.euromaidan.json_protocol.settings.SettingsParams;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @EActivity(R.layout.activity_feed)
 public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
@@ -42,8 +48,16 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
 
     @ViewById(R.id.avatar)
     ImageView avatar;
-    @ViewById(R.id.drawer_scrollable_container)
+    @ViewById(R.id.left_drawer)
     LinearLayout drawer;
+    @ViewById(R.id.list_slidermenu)
+    ListView drawerList;
+
+    private String[] navMenuTitles;
+    private TypedArray navMenuIcons;
+
+    private ArrayList<NavDrawerItem> navDrawerItems;
+    private NavDrawerListAdapter adapter;
 
     @Pref
     SharedPrefs_ preferences;
@@ -55,20 +69,20 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
         super.onCreate(savedInstanceState);
         mServiceClass = MainService_.class;
 
-        fragments.put(R.id.news_textview, new FeedFragment_());
-        fragments.put(R.id.settings_textview, new SettingsFragment_());
+        fragments.put(0, new FeedFragment_());
+        fragments.put(7, new SettingsFragment_());
 
         if (savedInstanceState == null) {
             FeedFragment_ feedFragment = new FeedFragment_();
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_holder, feedFragment).commit();
         }
     }
-
+/*
     @Click({R.id.news_textview, R.id.settings_textview})
     void onSettingsClick(View view) {
         Log.v(TAG, "FeedActivity.onSettingsClick(" + ")");
         replace(fragments.get(view.getId()));
-    }
+    }*/
 
     private void replace(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
@@ -144,5 +158,40 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
         LayerDrawable layerDrawable = new LayerDrawable(layers);
 
         drawer.setBackgroundDrawable(layerDrawable);
+
+        navMenuTitles = getResources().getStringArray(R.array.drawer_items);
+        navMenuIcons = getResources().obtainTypedArray(R.array.drawer_icons);
+
+        navDrawerItems = new ArrayList<>();
+
+        for (int i = 0; i < navMenuTitles.length; i++) {
+            //------only for preview---------
+            if (i==1){
+                navDrawerItems.add(new NavDrawerItem(navMenuTitles[i],navMenuIcons.getResourceId(i,-1),true,"13"));
+                continue;
+            }
+            if (i==2){
+                navDrawerItems.add(new NavDrawerItem(navMenuTitles[i],navMenuIcons.getResourceId(i,-1),true,"2"));
+                continue;
+            }
+            //----------end preview----------
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[i],navMenuIcons.getResourceId(i,-1)));
+        }
+
+        // Recycle the typed array
+        navMenuIcons.recycle();
+
+        // setting the nav drawer list adapter
+        adapter = new NavDrawerListAdapter(getApplicationContext(),navDrawerItems);
+        drawerList.setAdapter(adapter);
+        drawerList.setOnItemClickListener(new SlideMenuClickListener());
+    }
+    private class SlideMenuClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+            if (position == 0 || position == 7)
+                replace(fragments.get(position));
+        }
     }
 }

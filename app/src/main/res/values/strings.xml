@@ -28,15 +28,28 @@
     <string name="in_love">Влюблена</string>
     <string name="its_complicated">Все сложно</string>
     <string name="in_active_search">В активном поиске</string>
-
     <string name="search">Поиск</string>
-    <string name="news">Новости</string>
-    <string name="message">Сообщения</string>
-    <string name="friends">Друзья</string>
-    <string name="groups">Группы</string>
-    <string name="photos">Фотографии</string>
-    <string name="video">Видеозаписи</string>
-    <string name="audio">Аудиозаписи</string>
-    <string name="settings">Настройки</string>
+
+    <string-array name="drawer_items">
+        <item name="news">Новости</item>
+        <item name="message">Сообщения</item>
+        <item name="friends">Друзья</item>
+        <item name="groups">Группы</item>
+        <item name="photos">Фотографии</item>
+        <item name="video">Видеозаписи</item>
+        <item name="audio">Аудиозаписи</item>
+        <item name="settings">Настройки</item>
+    </string-array>
+
+    <array name="drawer_icons">
+        <item>@drawable/news_icon</item>
+        <item>@drawable/message_icon</item>
+        <item>@drawable/friends_icon</item>
+        <item>@drawable/groups_icon</item>
+        <item>@drawable/photo_icon</item>
+        <item>@drawable/video_icon</item>
+        <item>@drawable/audio_icon</item>
+        <item>@drawable/settings_icon</item>
+    </array>
 
 </resources>
