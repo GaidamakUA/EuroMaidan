@@ -4,8 +4,9 @@
         <item name="android:buttonStyle">@style/ButtonStyle</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
         <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextView</item>
+        <item name="android:textViewStyle">@style/TextView</item>
     </style>
-    
+
     <style name="ButtonStyle">
         <item name="android:background">@drawable/button_login_bg</item>
         <item name="android:textColor">@android:color/white</item>
@@ -31,7 +32,7 @@
 
     <style name="TextViewForgotPassStyle">
         <item name="android:text">@string/forgot_password</item>
-        <item name="android:textSize">@dimen/textSizeForgotPass</item>
+        <item name="android:textSize">@dimen/textSizeSmaller</item>
         <item name="android:textColor">@color/light_blue</item>
     </style>
 
@@ -72,6 +73,25 @@
     <style name="familyStatusRadioButton">
         <item name="android:button">@drawable/family_status_radio_button</item>
         <item name="android:textColor">@color/light_blue</item>
+    </style>
+
+    <style name="TextView" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/textSizeSmaller</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:drawablePadding">30dp</item>
+        <item name="android:layout_margin">@dimen/activity_horizontal_margin</item>
+    </style>
+
+    <style name="SearchStyle" parent="android:Widget.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/search_bg</item>
+        <item name="android:drawableStart">@drawable/search_icon</item>
+        <item name="android:drawableLeft">@drawable/search_icon</item>
+        <item name="android:gravity">center_horizontal</item>
     </style>
 
 </resources>
