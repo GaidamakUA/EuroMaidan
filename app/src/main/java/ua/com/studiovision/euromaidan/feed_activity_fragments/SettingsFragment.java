@@ -91,6 +91,7 @@ public class SettingsFragment extends Fragment {
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
                 | ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_USE_LOGO);
         actionBar.setCustomView(pagerSlidingTabStrip);
+        
         actionBar.setLogo(R.drawable.menu_icon);
         actionBar.setHomeButtonEnabled(true);
     }

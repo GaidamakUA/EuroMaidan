@@ -57,9 +57,9 @@ public abstract class AbstractProcessResponseStrategy<T extends AbstractRequest,
             default:
                 throw new IllegalArgumentException("Unexpected error message");
         }
-        // XXX Test only
+        /* XXX Test only
         errorText = response.message.toString();
-        Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show();*/
     }
 
     /**

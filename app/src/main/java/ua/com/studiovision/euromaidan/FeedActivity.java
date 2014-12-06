@@ -16,30 +16,31 @@ import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.softevol.activity_service_communication.ActivityServiceCommunicationFragmentActivity;
+
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.SettingsFragmentListener;
 import ua.com.studiovision.euromaidan.json_protocol.settings.GetSettingProtocol;
 import ua.com.studiovision.euromaidan.json_protocol.settings.SetSettingProtocol;
 import ua.com.studiovision.euromaidan.json_protocol.settings.SettingsParams;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 @EActivity(R.layout.activity_feed)
 public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
@@ -48,16 +49,14 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
 
     @ViewById(R.id.avatar)
     ImageView avatar;
-    @ViewById(R.id.left_drawer)
-    LinearLayout drawer;
+    @ViewById(R.id.drawer_layout)
+    DrawerLayout drawer;
     @ViewById(R.id.list_slidermenu)
     ListView drawerList;
+    @ViewById(R.id.background)
+    ImageView background;
 
-    private String[] navMenuTitles;
-    private TypedArray navMenuIcons;
-
-    private ArrayList<NavDrawerItem> navDrawerItems;
-    private NavDrawerListAdapter adapter;
+    public static int actionBarMargin = 0;
 
     @Pref
     SharedPrefs_ preferences;
@@ -76,13 +75,8 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
             FeedFragment_ feedFragment = new FeedFragment_();
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_holder, feedFragment).commit();
         }
+
     }
-/*
-    @Click({R.id.news_textview, R.id.settings_textview})
-    void onSettingsClick(View view) {
-        Log.v(TAG, "FeedActivity.onSettingsClick(" + ")");
-        replace(fragments.get(view.getId()));
-    }*/
 
     private void replace(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
@@ -91,7 +85,6 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.openDrawer(Gravity.START);
         }
         return true;
@@ -138,14 +131,23 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
 
     @SuppressWarnings("deprecation")
     @AfterViews
-    void init(){
-        avatar.setImageBitmap(ImageProcessor.getRoundedCornersImage(BitmapFactory.decodeResource(getResources(),R.drawable.fail_avatar)));
-        Bitmap overlay = Bitmap.createBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.fail_background_user));
-        final RenderScript rs =RenderScript.create(getApplicationContext());
+    void init() {
+        TypedValue tv = new TypedValue();
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            actionBarMargin = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics()) + 10;
+        }
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(0, actionBarMargin, 0, 0);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        avatar.setImageBitmap(ImageProcessor.getRoundedCornersImage(BitmapFactory.decodeResource(getResources(), R.drawable.fail_avatar)));
+        avatar.setLayoutParams(layoutParams);
+        Bitmap overlay = Bitmap.createBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.fail_background_user));
+        final RenderScript rs = RenderScript.create(getApplicationContext());
         final Allocation input = Allocation.createFromBitmapResource(rs, getResources(), R.drawable.fail_background_user, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
-        final Allocation output = Allocation.createTyped( rs, input.getType() );
-        final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create( rs, Element.U8_4(rs) );
-        script.setRadius( 5.f );
+        final Allocation output = Allocation.createTyped(rs, input.getType());
+        final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+        script.setRadius(5.f);
         script.setInput(input);
         script.forEach(output);
         output.copyTo(overlay);
@@ -154,44 +156,55 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
         ShapeDrawable blackCover = new ShapeDrawable();
         blackCover.getPaint().setColor(getResources().getColor(R.color.black_50_opacity));
 
-        Drawable[] layers = {new BitmapDrawable(getResources(),overlay),blackCover};
+        Drawable[] layers = {new BitmapDrawable(getResources(), overlay), blackCover};
         LayerDrawable layerDrawable = new LayerDrawable(layers);
 
-        drawer.setBackgroundDrawable(layerDrawable);
+        background.setBackgroundDrawable(layerDrawable);
 
-        navMenuTitles = getResources().getStringArray(R.array.drawer_items);
-        navMenuIcons = getResources().obtainTypedArray(R.array.drawer_icons);
+        String[] navMenuTitles = getResources().getStringArray(R.array.drawer_items);
+        TypedArray navMenuIcons = getResources().obtainTypedArray(R.array.drawer_icons);
 
-        navDrawerItems = new ArrayList<>();
+        ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<>();
 
         for (int i = 0; i < navMenuTitles.length; i++) {
             //------only for preview---------
-            if (i==1){
-                navDrawerItems.add(new NavDrawerItem(navMenuTitles[i],navMenuIcons.getResourceId(i,-1),true,"13"));
+            if (i == 1) {
+                navDrawerItems.add(new NavDrawerItem(navMenuTitles[i], navMenuIcons.getResourceId(i, -1), true, "13"));
                 continue;
             }
-            if (i==2){
-                navDrawerItems.add(new NavDrawerItem(navMenuTitles[i],navMenuIcons.getResourceId(i,-1),true,"2"));
+            if (i == 2) {
+                navDrawerItems.add(new NavDrawerItem(navMenuTitles[i], navMenuIcons.getResourceId(i, -1), true, "2"));
                 continue;
             }
             //----------end preview----------
-            navDrawerItems.add(new NavDrawerItem(navMenuTitles[i],navMenuIcons.getResourceId(i,-1)));
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[i], navMenuIcons.getResourceId(i, -1)));
         }
 
         // Recycle the typed array
         navMenuIcons.recycle();
 
         // setting the nav drawer list adapter
-        adapter = new NavDrawerListAdapter(getApplicationContext(),navDrawerItems);
+        NavDrawerListAdapter adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
         drawerList.setAdapter(adapter);
         drawerList.setOnItemClickListener(new SlideMenuClickListener());
     }
+
     private class SlideMenuClickListener implements ListView.OnItemClickListener {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
+        public void onItemClick(AdapterView<?> parent, View view, final int position,
                                 long id) {
-            if (position == 0 || position == 7)
-                replace(fragments.get(position));
+            drawer.closeDrawer(Gravity.START);
+            drawer.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (position == 0 || position == 7)
+                        replace(fragments.get(position));
+                }
+            }, 250);
+
+
         }
+
+
     }
 }

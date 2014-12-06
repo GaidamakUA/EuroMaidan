@@ -4,19 +4,26 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-import ua.com.studiovision.euromaidan.R;
-import ua.com.studiovision.euromaidan.json_protocol.settings.Genders;
-import ua.com.studiovision.euromaidan.json_protocol.settings.RelationshipStatus;
-import ua.com.studiovision.euromaidan.json_protocol.settings.SettingsParamsBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import ua.com.studiovision.euromaidan.R;
+import ua.com.studiovision.euromaidan.json_protocol.settings.Genders;
+import ua.com.studiovision.euromaidan.json_protocol.settings.RelationshipStatus;
+import ua.com.studiovision.euromaidan.json_protocol.settings.SettingsParamsBuilder;
 
 @EFragment(R.layout.fragment_user_detailes)
 public class UserDetailsFragment extends Fragment {
@@ -40,12 +47,6 @@ public class UserDetailsFragment extends Fragment {
     Button saveButton;
 
     private final String TAG = "User details fragment";
-    public static final String NAME = "name";
-    public static final String SURNAME = "surname";
-    public static final String GENDER = "gender";
-    public static final String DOB = "dob";
-    public static final String NATIVE_CITY = "native_city";
-    public static final String REALTIONSHIP = "relationship";
 
     SettingsFragmentListener settingsFragmentListener;
 

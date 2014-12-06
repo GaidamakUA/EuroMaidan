@@ -29,6 +29,8 @@
     <string name="its_complicated">Все сложно</string>
     <string name="in_active_search">В активном поиске</string>
     <string name="search">Поиск</string>
+    <string name="female">Женский</string>
+    <string name="male">Мужской</string>
 
     <string-array name="drawer_items">
         <item name="news">Новости</item>

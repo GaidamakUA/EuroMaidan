@@ -8,106 +8,147 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".LoginActivity" >
+    tools:context=".LoginActivity">
 
     <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/mainContainer" android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="true" android:layout_above="@+id/save_button">
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/save_button"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+
         <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
             <EditText
+                android:id="@+id/nameDetails"
                 style="@style/editTextAndButtonDimensionsLowSpacing"
                 android:layout_gravity="center_horizontal"
-                android:hint="@string/name" android:id="@+id/nameDetails"/>
+                android:hint="@string/name" />
+
             <EditText
+                android:id="@+id/surnameDetails"
                 style="@style/editTextAndButtonDimensionsLowSpacing"
                 android:layout_gravity="center_horizontal"
-                android:hint="@string/surname" android:id="@+id/surnameDetails"/>
+                android:hint="@string/surname" />
+
             <RadioGroup
-                    android:orientation="horizontal" android:gravity="center_horizontal"
-                    style="@style/sexRadioGroup" android:weightSum="1" android:id="@+id/genderGroup">
+                android:id="@+id/genderGroup"
+                style="@style/sexRadioGroup"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
                 <RadioButton
-                        android:layout_width="wrap_content"
-                        android:text="Женский"
-                        android:id="@+id/rb_female" android:checked="true" style="@style/sexRadioButton"
-                        android:layout_weight=".5" android:gravity="center"/>
+                    android:id="@+id/rb_female"
+                    style="@style/sexRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_weight=".5"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="@string/female" />
+
                 <RadioButton
-                        android:layout_width="wrap_content"
-                        android:text="Мужской"
-                        android:id="@+id/rb_male" style="@style/sexRadioButton" android:layout_weight=".5"
-                        android:gravity="center"/>
+                    android:id="@+id/rb_male"
+                    style="@style/sexRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_weight=".5"
+                    android:gravity="center"
+                    android:text="@string/male" />
             </RadioGroup>
+
             <Button
-                    android:layout_height="wrap_content"
-                    android:text="@string/pickBirthDate"
-                    android:id="@+id/btn_birthday" style="@style/datePickerButton"/>
+                android:id="@+id/btn_birthday"
+                style="@style/datePickerButton"
+                android:layout_height="wrap_content"
+                android:text="@string/pickBirthDate" />
+
             <EditText
+                android:id="@+id/native_city"
                 style="@style/editTextAndButtonDimensionsLowSpacing"
                 android:layout_gravity="center_horizontal"
-                android:hint="@string/native_city" android:id="@+id/native_city"/>
+                android:hint="@string/native_city" />
+
             <RadioGroup
-                    android:layout_width="@dimen/loginComponentWidth"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/topBottomMarginLow" android:layout_gravity="center_horizontal"
-                    android:id="@+id/relationshipGroup">
+                android:id="@+id/relationshipGroup"
+                android:layout_width="@dimen/loginComponentWidth"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/topBottomMarginLow">
+
                 <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/family_status"
-                        android:layout_gravity="center_horizontal"
-                        android:id="@+id/textView"
-                        android:textSize="@dimen/textSize"
-                        android:textColor="@color/light_blue"/>
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/family_status"
+                    android:textColor="@color/light_blue"
+                    android:textSize="@dimen/textSize" />
+
                 <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/single"
-                        android:id="@+id/relationSingle" android:checked="true"
-                        style="@style/familyStatusRadioButton"/>
+                    android:id="@+id/relationSingle"
+                    style="@style/familyStatusRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/single" />
+
                 <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dating"
-                        android:id="@+id/relationDating" style="@style/familyStatusRadioButton"/>
+                    android:id="@+id/relationDating"
+                    style="@style/familyStatusRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dating" />
+
                 <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/engaged"
-                        android:id="@+id/relationEngaged" style="@style/familyStatusRadioButton"/>
+                    android:id="@+id/relationEngaged"
+                    style="@style/familyStatusRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/engaged" />
+
                 <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/married"
-                        android:id="@+id/relationMarried" style="@style/familyStatusRadioButton"/>
+                    android:id="@+id/relationMarried"
+                    style="@style/familyStatusRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/married" />
+
                 <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/in_love"
-                        android:id="@+id/relationInLove" style="@style/familyStatusRadioButton"/>
+                    android:id="@+id/relationInLove"
+                    style="@style/familyStatusRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/in_love" />
+
                 <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/its_complicated"
-                        android:id="@+id/relationComplicated" style="@style/familyStatusRadioButton"/>
+                    android:id="@+id/relationComplicated"
+                    style="@style/familyStatusRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/its_complicated" />
+
                 <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/in_active_search"
-                        android:id="@+id/relationActiveSearch" style="@style/familyStatusRadioButton"/>
+                    android:id="@+id/relationActiveSearch"
+                    style="@style/familyStatusRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/in_active_search" />
             </RadioGroup>
         </LinearLayout>
     </ScrollView>
 
     <Button
-        style="@style/editTextAndButtonDimensions"
-        android:text="@string/save"
         android:id="@+id/save_button"
-        android:layout_gravity="center_horizontal" android:layout_alignParentLeft="false"
-        android:layout_alignParentTop="false" android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        style="@style/editTextAndButtonDimensions"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/save" />
 
 </RelativeLayout>
