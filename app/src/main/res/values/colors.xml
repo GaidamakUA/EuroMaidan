@@ -4,4 +4,5 @@
     <color name="grey_bg">#ffE9EDEE</color>
     <color name="white_50_opacity">#88ffffff</color>
     <color name="black_50_opacity">#88000000</color>
+    <color name="grey_bg_search">#cc1d1d1d</color>
 </resources>
