@@ -30,7 +30,7 @@
                 android:id="@+id/avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="?android:actionBarSize"
+                android:layout_margin="@dimen/activity_vertical_margin"
                 android:background="@drawable/avatar_border"
                 android:src="@drawable/ic_launcher"
                 android:layout_alignParentTop="true"
