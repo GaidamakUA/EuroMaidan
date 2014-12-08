@@ -29,6 +29,7 @@ import ua.com.studiovision.euromaidan.search_fragments.GroupSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.NewsSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.UserSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.VideoSearchFragment_;
+import ua.com.studiovision.euromaidan.activities.FeedActivity_;
 
 @EActivity(R.layout.activity_search)
 public class SearchActivity extends Activity {
