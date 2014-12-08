@@ -17,18 +17,18 @@ import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.softevol.activity_service_communication.ActivityServiceCommunicationFragmentActivity;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -63,6 +63,8 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     ListView drawerList;
     @ViewById(R.id.background)
     ImageView background;
+    @ViewById(R.id.search)
+    EditText search;
 
     @Pref
     SharedPrefs_ preferences;
@@ -102,7 +104,7 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home && drawer.isDrawerOpen(Gravity.START)) {
-            drawer.closeDrawer(Gravity.END);
+            drawer.closeDrawer(Gravity.START);
         } else {
             drawer.openDrawer(Gravity.START);
         }
@@ -197,6 +199,17 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
         NavDrawerListAdapter adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
         drawerList.setAdapter(adapter);
         drawerList.setOnItemClickListener(new SlideMenuClickListener());
+    }
+
+    @Click(R.id.search)
+    void searchClick() {
+        SearchActivity_.intent(FeedActivity.this).start();
+        drawer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                drawer.closeDrawer(Gravity.START);
+            }
+        },250);
     }
 
     private class SlideMenuClickListener implements ListView.OnItemClickListener {

@@ -101,6 +101,13 @@
         <item name="android:textSize">@dimen/textSizeSmaller</item>
     </style>
 
+    <style name="SearchStyleActionBar" parent="SearchStyle">
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
     <style name="ActionBarStyle" parent="android:Widget.Holo.ActionBar">
         <item name="android:background">@color/light_blue</item>
     </style>

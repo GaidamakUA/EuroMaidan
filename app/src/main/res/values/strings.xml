@@ -31,6 +31,7 @@
     <string name="search">Поиск</string>
     <string name="female">Женский</string>
     <string name="male">Мужской</string>
+    <string name="cancel">Отмена</string>
 
     <string-array name="drawer_items">
         <item name="news">Новости</item>
