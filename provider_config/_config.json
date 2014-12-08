@@ -2,7 +2,7 @@
     "syntaxVersion": "2",
     "projectPackageId": "ua.com.studiovision.euromaidan",
     "authority": "ua.com.studiovision.euromaidan.provider",
-    "providerJavaPackage": "ua.com.studiovision.euromaidan.provider",
+    "providerJavaPackage": "ua.com.studiovision.euromaidan.network.provider",
     "providerClassName": "EmContentProvider",
     "sqliteOpenHelperClassName": "EmSQLiteOpenHelper",
     "sqliteOpenHelperCallbacksClassName": "EmSQLiteOpenHelperCallbacks",
