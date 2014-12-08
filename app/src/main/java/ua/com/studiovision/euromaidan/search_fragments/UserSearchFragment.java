@@ -26,13 +26,13 @@ public class UserSearchFragment extends Fragment {
     private final String TAG = "User search fragment";
 
     @AfterViews
-    void init(){
+    void init() {
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
         searchRecyclerView.setAdapter(new UserSearchAdapter());
     }
 
-    private class UserSearchAdapter extends RecyclerView.Adapter<ViewHolder>{
+    private class UserSearchAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -52,7 +52,7 @@ public class UserSearchFragment extends Fragment {
         }
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder{
+    private class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView avatar;
         TextView userName;

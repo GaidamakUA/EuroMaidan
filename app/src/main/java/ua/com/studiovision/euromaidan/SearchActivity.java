@@ -2,18 +2,16 @@ package ua.com.studiovision.euromaidan;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
-import android.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -29,7 +27,6 @@ import java.util.Set;
 import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.GroupSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.NewsSearchFragment_;
-import ua.com.studiovision.euromaidan.search_fragments.UserSearchFragment;
 import ua.com.studiovision.euromaidan.search_fragments.UserSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.VideoSearchFragment_;
 
@@ -49,20 +46,29 @@ public class SearchActivity extends Activity {
     private FragmentPagerAdapter fragmentPagerAdapter;
 
     @AfterViews
-    void init(){
+    void init() {
         LayoutInflater inflater = getLayoutInflater();
-        searchActionBar = (LinearLayout) inflater.inflate(R.layout.search_action_bar,null);
+        searchActionBar = (LinearLayout) inflater.inflate(R.layout.search_action_bar, null);
 
         ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
 
         ActionBar actionBar = getActionBar();
         assert actionBar != null;
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(searchActionBar,layoutParams);
+        actionBar.setCustomView(searchActionBar, layoutParams);
         actionBar.setBackgroundDrawable(new ColorDrawable(R.color.grey_bg_search));
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayUseLogoEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
+
+        TextView cancel = (TextView) searchActionBar.findViewById(R.id.cancel_textview);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FeedActivity_.intent(SearchActivity.this).start();
+                finish();
+            }
+        });
 
         fragments.add(new NewsSearchFragment_());
         fragments.add(new UserSearchFragment_());
@@ -79,7 +85,6 @@ public class SearchActivity extends Activity {
         searchCategoriesSlidingTabStrip.setIndicatorHeight((int) getResources().getDimension(R.dimen.slidingIndicatorHeight));
         searchCategoriesSlidingTabStrip.setDividerColorResource(android.R.color.transparent);
         searchCategoriesSlidingTabStrip.setViewPager(viewPager);
-
     }
 
     @Override
@@ -92,15 +97,28 @@ public class SearchActivity extends Activity {
         }
     }
 
-    private class SearchFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider{
+    private class SearchFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
 
-        private int[] ICONS = new int[] {
+        private int[] ICONS = new int[]{
                 R.drawable.news_icon,
                 R.drawable.settings_profile_icon,
                 R.drawable.groups_icon,
                 R.drawable.video_icon,
                 R.drawable.audio_icon
         };
+
+        private String[] TITLES = new String[]{
+                "Общие",
+                "Друзья",
+                "Группы",
+                "Видеозаписи",
+                "Аудиозаписи"
+        };
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return TITLES[position];
+        }
 
         public SearchFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -123,6 +141,8 @@ public class SearchActivity extends Activity {
         public int getCount() {
             return PAGE_COUNT;
         }
+
+
     }
 
 }

@@ -7,11 +7,15 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/avatar_imageview"/>
+        android:id="@+id/avatar_imageview"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/activity_vertical_margin"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/user_name_textview"/>
+        android:id="@+id/user_name_textview"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/activity_vertical_margin"/>
 
 </LinearLayout>

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
         android:text="@string/cancel"
-        android:id="@+id/cancel"
+        android:id="@+id/cancel_textview"
         android:textColor="@color/light_blue"
         android:textSize="@dimen/textSizeSmaller"
         android:gravity="center"
