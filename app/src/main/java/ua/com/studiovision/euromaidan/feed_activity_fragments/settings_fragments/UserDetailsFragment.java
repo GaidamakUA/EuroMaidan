@@ -21,9 +21,9 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import ua.com.studiovision.euromaidan.R;
-import ua.com.studiovision.euromaidan.json_protocol.settings.Genders;
-import ua.com.studiovision.euromaidan.json_protocol.settings.RelationshipStatus;
-import ua.com.studiovision.euromaidan.json_protocol.settings.SettingsParamsBuilder;
+import ua.com.studiovision.euromaidan.network.json_protocol.settings.Genders;
+import ua.com.studiovision.euromaidan.network.json_protocol.settings.RelationshipStatus;
+import ua.com.studiovision.euromaidan.network.json_protocol.settings.SettingsParamsBuilder;
 
 @EFragment(R.layout.fragment_user_detailes)
 public class UserDetailsFragment extends Fragment {

@@ -17,12 +17,12 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import ua.com.studiovision.euromaidan.R;
-import ua.com.studiovision.euromaidan.provider.city.CityColumns;
-import ua.com.studiovision.euromaidan.provider.city.CityCursor;
-import ua.com.studiovision.euromaidan.provider.country.CountryColumns;
-import ua.com.studiovision.euromaidan.provider.country.CountryCursor;
-import ua.com.studiovision.euromaidan.provider.university.UniversityColumns;
-import ua.com.studiovision.euromaidan.provider.university.UniversityCursor;
+import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
+import ua.com.studiovision.euromaidan.network.provider.city.CityCursor;
+import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
+import ua.com.studiovision.euromaidan.network.provider.country.CountryCursor;
+import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
+import ua.com.studiovision.euromaidan.network.provider.university.UniversityCursor;
 
 @EFragment(R.layout.fragment_university)
 public class UniversityFragment extends Fragment {
