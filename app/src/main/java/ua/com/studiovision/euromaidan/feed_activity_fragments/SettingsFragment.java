@@ -50,7 +50,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        getActivity().getActionBar().show();
         // XXX may be dangerous
         ((SettingsFragmentListener) getActivity()).requestProfileDataFromServer();
     }
@@ -81,19 +80,17 @@ public class SettingsFragment extends Fragment {
         pagerSlidingTabStrip = (PagerSlidingTabStrip) inflater.inflate(R.layout.pager_tab_layout, null).findViewById(R.id.pager_tabs);
         pagerSlidingTabStrip.setShouldExpand(true);
         pagerSlidingTabStrip.setUnderlineHeight((int) getResources().getDimension(R.dimen.invisibleUnderline));
-        pagerSlidingTabStrip.setIndicatorColorResource(R.color.light_blue);
+        pagerSlidingTabStrip.setIndicatorColorResource(android.R.color.white);
         pagerSlidingTabStrip.setIndicatorHeight((int) getResources().getDimension(R.dimen.slidingIndicatorHeight));
         pagerSlidingTabStrip.setDividerColorResource(android.R.color.transparent);
         pagerSlidingTabStrip.setViewPager(viewPager);
-        ActionBar actionBar = getActivity().getActionBar();
 
+        ActionBar actionBar = getActivity().getActionBar();
         assert actionBar != null;
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
-                | ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_USE_LOGO);
+        actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(pagerSlidingTabStrip);
         
-        actionBar.setLogo(R.drawable.menu_icon);
-        actionBar.setHomeButtonEnabled(true);
+
     }
 
     private class SettingsFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {

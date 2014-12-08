@@ -33,7 +33,8 @@ public class FeedFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        getActivity().getActionBar().hide();
+        assert getActivity().getActionBar() !=null;
+        getActivity().getActionBar().setDisplayShowCustomEnabled(false);
     }
 
     private class FeedAdapter extends RecyclerView.Adapter<ViewHolder>{

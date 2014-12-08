@@ -1,5 +1,6 @@
 package ua.com.studiovision.euromaidan;
 
+import android.app.ActionBar;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -56,8 +57,6 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     @ViewById(R.id.background)
     ImageView background;
 
-    public static int actionBarMargin = 0;
-
     @Pref
     SharedPrefs_ preferences;
 
@@ -78,13 +77,26 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        ActionBar actionBar = getActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_USE_LOGO);
+        actionBar.setLogo(R.drawable.menu_icon);
+        actionBar.setHomeButtonEnabled(true);
+    }
+
     private void replace(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home && drawer.isDrawerOpen(Gravity.START)) {
+            drawer.closeDrawer(Gravity.END);
+        } else {
             drawer.openDrawer(Gravity.START);
         }
         return true;
@@ -132,16 +144,7 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     @SuppressWarnings("deprecation")
     @AfterViews
     void init() {
-        TypedValue tv = new TypedValue();
-        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-            actionBarMargin = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics()) + 10;
-        }
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(0, actionBarMargin, 0, 0);
-        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         avatar.setImageBitmap(ImageProcessor.getRoundedCornersImage(BitmapFactory.decodeResource(getResources(), R.drawable.fail_avatar)));
-        avatar.setLayoutParams(layoutParams);
         Bitmap overlay = Bitmap.createBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.fail_background_user));
         final RenderScript rs = RenderScript.create(getApplicationContext());
         final Allocation input = Allocation.createFromBitmapResource(rs, getResources(), R.drawable.fail_background_user, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
@@ -191,18 +194,10 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
 
     private class SlideMenuClickListener implements ListView.OnItemClickListener {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, final int position,
+        public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             drawer.closeDrawer(Gravity.START);
-            drawer.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (position == 0 || position == 7)
-                        replace(fragments.get(position));
-                }
-            }, 250);
-
-
+            replace(fragments.get(position));
         }
 
 
