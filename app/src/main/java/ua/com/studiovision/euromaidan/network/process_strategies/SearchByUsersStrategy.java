@@ -20,6 +20,6 @@ public class SearchByUsersStrategy extends AbstractProcessResponseStrategy
 
     @Override
     protected void onResponse(SearchUsersProtocol.SearchUsersResponse response) {
-        super.onResponse(response);
+        // handle response here
     }
 }
