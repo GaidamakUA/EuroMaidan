@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ua.com.studiovision.euromaidan.activities.FeedActivity_;
 import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.GroupSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.NewsSearchFragment_;

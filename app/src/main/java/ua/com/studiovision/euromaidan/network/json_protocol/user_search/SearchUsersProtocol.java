@@ -40,11 +40,11 @@ public class SearchUsersProtocol {
     }
 
     public static class SearchUsersResponse extends AbstractResponse<SearchUsersResponse> {
-        SearchByUserResult result;
+        public SearchByUserResult result;
 
         public class SearchByUserResult {
-            User[] users;
-            Integer count;
+            public User[] users;
+            public Integer count;
             public int[][] ids;
         }
     }
