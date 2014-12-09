@@ -30,4 +30,5 @@ public class AppProtocol extends Protocol {
 
     // Search activity
     public static final int SEARCH_BY_USERS = 15;
+    public static final int SEARCH_BY_USERS_RESPONSE = 16;
 }

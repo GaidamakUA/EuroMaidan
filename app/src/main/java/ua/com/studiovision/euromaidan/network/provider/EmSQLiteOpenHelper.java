@@ -11,10 +11,10 @@ import android.os.Build;
 import android.util.Log;
 
 import ua.com.studiovision.euromaidan.BuildConfig;
-import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
-import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
 import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
 import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
+import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
+import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 
 public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
@@ -66,6 +66,8 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
             + UsersColumns.USER_ID + " INTEGER NOT NULL, "
             + UsersColumns.USER_NAME + " TEXT NOT NULL, "
             + UsersColumns.USER_SURNAME + " TEXT NOT NULL, "
+            + UsersColumns.USER_NAME_LOWERCASE + " TEXT NOT NULL, "
+            + UsersColumns.USER_SURNAME_LOWERCASE + " TEXT NOT NULL, "
             + UsersColumns.AVATAR + " TEXT NOT NULL "
             + ", CONSTRAINT unique_id UNIQUE (user_id) ON CONFLICT REPLACE"
             + " );";

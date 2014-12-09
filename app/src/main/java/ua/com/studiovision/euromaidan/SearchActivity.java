@@ -5,15 +5,21 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.Message;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.softevol.activity_service_communication.ActivityServiceCommunicationActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -25,19 +31,21 @@ import java.util.List;
 import java.util.Set;
 
 import ua.com.studiovision.euromaidan.activities.FeedActivity_;
+import ua.com.studiovision.euromaidan.network.MainService_;
 import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.GroupSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.NewsSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.UserSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.VideoSearchFragment_;
-import ua.com.studiovision.euromaidan.activities.FeedActivity_;
 
 @EActivity(R.layout.activity_search)
-public class SearchActivity extends Activity {
+public class SearchActivity extends ActivityServiceCommunicationActivity {
     @ViewById(R.id.view_pager)
     ViewPager viewPager;
     @ViewById(R.id.searchSlidingStrip)
     PagerSlidingTabStrip searchCategoriesSlidingTabStrip;
+    @ViewById(R.id.search_field_edit_text)
+    EditText searchEditText;
 
     private final String TAG = "Search activity";
     private final int PAGE_COUNT = 5;
@@ -47,8 +55,15 @@ public class SearchActivity extends Activity {
     private Set<Fragment> disposableFragment = new HashSet<Fragment>();
     private FragmentPagerAdapter fragmentPagerAdapter;
 
-    @AfterViews
-    void init() {
+    public static final String USER_IDS = "user_ids";
+    public static final String COUNT = "count";
+    public static final String SEARCH_QUERY = "search_query";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mServiceClass = MainService_.class;
+
         LayoutInflater inflater = getLayoutInflater();
         searchActionBar = (LinearLayout) inflater.inflate(R.layout.search_action_bar, null);
 
@@ -62,7 +77,10 @@ public class SearchActivity extends Activity {
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayUseLogoEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
+    }
 
+    @AfterViews
+    void init() {
         TextView cancel = (TextView) searchActionBar.findViewById(R.id.cancel_textview);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +105,28 @@ public class SearchActivity extends Activity {
         searchCategoriesSlidingTabStrip.setIndicatorHeight((int) getResources().getDimension(R.dimen.slidingIndicatorHeight));
         searchCategoriesSlidingTabStrip.setDividerColorResource(android.R.color.transparent);
         searchCategoriesSlidingTabStrip.setViewPager(viewPager);
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Message msg = Message.obtain();
+                msg.what = AppProtocol.SEARCH_BY_USERS;
+                Bundle data = new Bundle();
+                data.putString(SEARCH_QUERY, s.toString());
+                msg.setData(data);
+                sendMessage(msg);
+            }
+        });
     }
 
     @Override
@@ -96,6 +136,18 @@ public class SearchActivity extends Activity {
         for (Fragment fragment : disposableFragment) {
             Log.v(TAG, "fragment=" + fragment);
             fragmentPagerAdapter.destroyItem(null, 0, fragment);
+        }
+    }
+
+    @Override
+    protected void handleMessage(Message msg) {
+        switch (msg.what) {
+            case AppProtocol.ON_SERVICE_CONNECTED:
+                Log.v(TAG, "Service connected");
+                break;
+            case AppProtocol.SEARCH_BY_USERS_RESPONSE:
+                Log.v(TAG, "search_by_users_response=" + msg.getData());
+                break;
         }
     }
 

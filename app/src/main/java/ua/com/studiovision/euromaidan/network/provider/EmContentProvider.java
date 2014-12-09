@@ -1,5 +1,10 @@
 package ua.com.studiovision.euromaidan.network.provider;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
@@ -12,16 +17,11 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-
 import ua.com.studiovision.euromaidan.BuildConfig;
-import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
-import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
 import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
 import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
+import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
+import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 
 public class EmContentProvider extends ContentProvider {
@@ -32,7 +32,7 @@ public class EmContentProvider extends ContentProvider {
     private static final String TYPE_CURSOR_ITEM = "vnd.android.cursor.item/";
     private static final String TYPE_CURSOR_DIR = "vnd.android.cursor.dir/";
 
-    public static final String AUTHORITY = "ua.com.studiovision.euromaidan.provider";
+    public static final String AUTHORITY = "ua.com.studiovision.euromaidan.network.provider";
     public static final String CONTENT_URI_BASE = "content://" + AUTHORITY;
 
     public static final String QUERY_NOTIFY = "QUERY_NOTIFY";
@@ -52,6 +52,7 @@ public class EmContentProvider extends ContentProvider {
 
     private static final int URI_TYPE_USERS = 8;
     private static final int URI_TYPE_USERS_ID = 9;
+
 
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
@@ -169,8 +170,7 @@ public class EmContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        if (DEBUG)
-            Log.d(TAG, "update uri=" + uri + " values=" + values + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
+        if (DEBUG) Log.d(TAG, "update uri=" + uri + " values=" + values + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
         QueryParams queryParams = getQueryParams(uri, selection, null);
         int res = mEmSQLiteOpenHelper.getWritableDatabase().update(queryParams.table, values, queryParams.selection, selectionArgs);
         String notify;
@@ -182,8 +182,7 @@ public class EmContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        if (DEBUG)
-            Log.d(TAG, "delete uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
+        if (DEBUG) Log.d(TAG, "delete uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
         QueryParams queryParams = getQueryParams(uri, selection, null);
         int res = mEmSQLiteOpenHelper.getWritableDatabase().delete(queryParams.table, queryParams.selection, selectionArgs);
         String notify;

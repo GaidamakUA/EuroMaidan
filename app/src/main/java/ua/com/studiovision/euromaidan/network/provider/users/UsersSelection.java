@@ -113,6 +113,36 @@ public class UsersSelection extends AbstractSelection<UsersSelection> {
         return this;
     }
 
+    public UsersSelection userNameLowercase(String... value) {
+        addEquals(UsersColumns.USER_NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public UsersSelection userNameLowercaseNot(String... value) {
+        addNotEquals(UsersColumns.USER_NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public UsersSelection userNameLowercaseLike(String... value) {
+        addLike(UsersColumns.USER_NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public UsersSelection userSurnameLowercase(String... value) {
+        addEquals(UsersColumns.USER_SURNAME_LOWERCASE, value);
+        return this;
+    }
+
+    public UsersSelection userSurnameLowercaseNot(String... value) {
+        addNotEquals(UsersColumns.USER_SURNAME_LOWERCASE, value);
+        return this;
+    }
+
+    public UsersSelection userSurnameLowercaseLike(String... value) {
+        addLike(UsersColumns.USER_SURNAME_LOWERCASE, value);
+        return this;
+    }
+
     public UsersSelection avatar(String... value) {
         addEquals(UsersColumns.AVATAR, value);
         return this;

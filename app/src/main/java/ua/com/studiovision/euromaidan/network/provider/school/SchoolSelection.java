@@ -1,5 +1,7 @@
 package ua.com.studiovision.euromaidan.network.provider.school;
 
+import java.util.Date;
+
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,9 +21,9 @@ public class SchoolSelection extends AbstractSelection<SchoolSelection> {
      * Query the given content resolver using this selection.
      *
      * @param contentResolver The content resolver to query.
-     * @param projection      A list of which columns to return. Passing null will return all columns, which is inefficient.
-     * @param sortOrder       How to order the rows, formatted as an SQL ORDER BY clause (excluding the ORDER BY itself). Passing null will use the default sort
-     *                        order, which may be unordered.
+     * @param projection A list of which columns to return. Passing null will return all columns, which is inefficient.
+     * @param sortOrder How to order the rows, formatted as an SQL ORDER BY clause (excluding the ORDER BY itself). Passing null will use the default sort
+     *            order, which may be unordered.
      * @return A {@code SchoolCursor} object, which is positioned before the first entry, or null.
      */
     public SchoolCursor query(ContentResolver contentResolver, String[] projection, String sortOrder) {

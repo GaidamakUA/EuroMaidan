@@ -4,6 +4,11 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import ua.com.studiovision.euromaidan.network.provider.EmContentProvider;
+import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
+import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
+import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
+import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
+import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 
 /**
  * Represents country entity
@@ -28,10 +33,10 @@ public class CountryColumns implements BaseColumns {
     public static final String COUNTRY_NAME = "country_name";
 
 
-    public static final String DEFAULT_ORDER = TABLE_NAME + "." + _ID;
+    public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
 
     // @formatter:off
-    public static final String[] ALL_COLUMNS = new String[]{
+    public static final String[] ALL_COLUMNS = new String[] {
             _ID,
             COUNTRY_ID,
             COUNTRY_NAME

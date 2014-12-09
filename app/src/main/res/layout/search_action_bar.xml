@@ -8,7 +8,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.7"
-        style="@style/SearchStyleActionBar"/>
+        style="@style/SearchStyleActionBar"
+        android:id="@+id/search_field_edit_text" />
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"

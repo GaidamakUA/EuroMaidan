@@ -28,6 +28,10 @@ public class UsersColumns implements BaseColumns {
 
     public static final String USER_SURNAME = "user_surname";
 
+    public static final String USER_NAME_LOWERCASE = "user_name_lowercase";
+
+    public static final String USER_SURNAME_LOWERCASE = "user_surname_lowercase";
+
     public static final String AVATAR = "avatar";
 
 
@@ -39,6 +43,8 @@ public class UsersColumns implements BaseColumns {
             USER_ID,
             USER_NAME,
             USER_SURNAME,
+            USER_NAME_LOWERCASE,
+            USER_SURNAME_LOWERCASE,
             AVATAR
     };
     // @formatter:on
@@ -49,6 +55,8 @@ public class UsersColumns implements BaseColumns {
             if (c == USER_ID || c.contains("." + USER_ID)) return true;
             if (c == USER_NAME || c.contains("." + USER_NAME)) return true;
             if (c == USER_SURNAME || c.contains("." + USER_SURNAME)) return true;
+            if (c == USER_NAME_LOWERCASE || c.contains("." + USER_NAME_LOWERCASE)) return true;
+            if (c == USER_SURNAME_LOWERCASE || c.contains("." + USER_SURNAME_LOWERCASE)) return true;
             if (c == AVATAR || c.contains("." + AVATAR)) return true;
         }
         return false;

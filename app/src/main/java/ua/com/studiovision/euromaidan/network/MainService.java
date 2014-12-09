@@ -108,7 +108,8 @@ public class MainService extends ActivityServiceCommunicationService implements 
                 break;
             case AppProtocol.SEARCH_BY_USERS:
                 Log.v(TAG, "Search by users");
-                doRequest(new SearchByUsersStrategy(getApplicationContext(), msg));
+                doRequest(new SearchByUsersStrategy(getApplicationContext(), msg, this));
+                break;
         }
     }
 

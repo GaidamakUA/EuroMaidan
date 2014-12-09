@@ -40,6 +40,24 @@ public class UsersCursor extends AbstractCursor {
     }
 
     /**
+     * Get the {@code user_name_lowercase} value.
+     * Cannot be {@code null}.
+     */
+    public String getUserNameLowercase() {
+        Integer index = getCachedColumnIndexOrThrow(UsersColumns.USER_NAME_LOWERCASE);
+        return getString(index);
+    }
+
+    /**
+     * Get the {@code user_surname_lowercase} value.
+     * Cannot be {@code null}.
+     */
+    public String getUserSurnameLowercase() {
+        Integer index = getCachedColumnIndexOrThrow(UsersColumns.USER_SURNAME_LOWERCASE);
+        return getString(index);
+    }
+
+    /**
      * Get the {@code avatar} value.
      * Cannot be {@code null}.
      */

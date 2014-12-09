@@ -1,13 +1,13 @@
 package ua.com.studiovision.euromaidan.network.provider.base;
 
-import android.content.ContentResolver;
-import android.net.Uri;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public abstract class AbstractSelection<T extends AbstractSelection<?>> {
+import android.content.ContentResolver;
+import android.net.Uri;
+
+public abstract class AbstractSelection <T extends AbstractSelection<?>> {
     private static final String EQ = "=?";
     private static final String PAREN_OPEN = "(";
     private static final String PAREN_CLOSE = ")";
@@ -203,7 +203,7 @@ public abstract class AbstractSelection<T extends AbstractSelection<?>> {
     }
 
     protected Object[] toObjectArray(Boolean value) {
-        return new Object[]{value};
+        return new Object[] { value };
     }
 
 
