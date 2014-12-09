@@ -51,7 +51,7 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
 
     @AfterViews
     void init() {
-        userSearchAdapter = new UserSearchAdapter(null);
+        userSearchAdapter = new UserSearchAdapter(null,getActivity());
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
         searchRecyclerView.setAdapter(userSearchAdapter);
