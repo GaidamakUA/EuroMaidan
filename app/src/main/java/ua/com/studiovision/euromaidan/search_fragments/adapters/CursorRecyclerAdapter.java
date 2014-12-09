@@ -50,6 +50,7 @@ public abstract class CursorRecyclerAdapter<VH
      */
     @Override
     public void onBindViewHolder(VH holder, int i){
+        Log.v("CURSOR","State closed:"+mCursor.isClosed());
         if (!mDataValid) {
             throw new IllegalStateException("this should only be called when the cursor is valid");
         }

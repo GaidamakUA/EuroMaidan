@@ -34,9 +34,11 @@ import ua.com.studiovision.euromaidan.AppProtocol;
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.activities.FeedActivity_;
 import ua.com.studiovision.euromaidan.network.MainService_;
+import ua.com.studiovision.euromaidan.network.provider.users.UsersSelection;
 import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.GroupSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.NewsSearchFragment_;
+import ua.com.studiovision.euromaidan.search_fragments.UserSearchFragment;
 import ua.com.studiovision.euromaidan.search_fragments.UserSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.VideoSearchFragment_;
 
@@ -52,7 +54,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity {
     private final String TAG = "Search activity";
     private final int PAGE_COUNT = 5;
 
-    private LinearLayout searchActionBar;
+    LinearLayout searchActionBar;
     private List<Fragment> fragments = new ArrayList<Fragment>();
     private Set<Fragment> disposableFragment = new HashSet<Fragment>();
     private FragmentPagerAdapter fragmentPagerAdapter;

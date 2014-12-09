@@ -1,22 +1,26 @@
 package ua.com.studiovision.euromaidan.search_fragments.adapters;
 
-import android.database.Cursor;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import ua.com.studiovision.euromaidan.R;
-import ua.com.studiovision.euromaidan.network.json_protocol.user_search.User;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersCursor;
 
-public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.ViewHolder,UsersCursor>{
+public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.ViewHolder, UsersCursor> {
 
-    public UserSearchAdapter(UsersCursor cursor) {
+    Context context;
+
+    public UserSearchAdapter(UsersCursor cursor, Context context) {
         super(cursor);
+        this.context = context;
     }
 
     @Override
@@ -27,7 +31,10 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
 
     @Override
     public void onBindViewHolderCursor(ViewHolder holder, UsersCursor cursor) {
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         holder.userName.setText(cursor.getUserName());
+        imageLoader.displayImage(cursor.getAvatar(),holder.avatar);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -41,6 +48,4 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
             userName = (TextView) itemView.findViewById(R.id.user_name_textview);
         }
     }
-
-
 }
