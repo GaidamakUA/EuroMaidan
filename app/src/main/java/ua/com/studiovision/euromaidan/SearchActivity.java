@@ -85,7 +85,6 @@ public class SearchActivity extends ActivityServiceCommunicationActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FeedActivity_.intent(SearchActivity.this).start();
                 finish();
             }
         });
