@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -20,14 +22,16 @@ import org.androidannotations.annotations.ViewById;
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersCursor;
+import ua.com.studiovision.euromaidan.network.provider.users.UsersSelection;
 import ua.com.studiovision.euromaidan.search_fragments.adapters.UserSearchAdapter;
 
-@EFragment(R.layout.fragment_user_search)
+@EFragment(R.layout.fragment_search)
 public class UserSearchFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     @ViewById(R.id.searchRecyclerView)
     RecyclerView searchRecyclerView;
     UserSearchAdapter userSearchAdapter;
     EditText searchEditText;
+    String filter;
 
     private final String TAG = "User search fragment";
 
@@ -45,6 +49,24 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
         searchRecyclerView.setAdapter(userSearchAdapter);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                UsersSelection selection = new UsersSelection();
+                filter = selection.userNameLowercaseLike(editable.toString()).toString();
+                getLoaderManager().restartLoader(0,null,UserSearchFragment.this);
+            }
+        });
     }
 
     @Override
@@ -53,7 +75,7 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
                 getActivity().getBaseContext(),
                 UsersColumns.CONTENT_URI,
                 UsersColumns.ALL_COLUMNS,
-                null, null, null);
+                filter, null, null);
         cursorLoader.setUpdateThrottle(2000);
         return cursorLoader;
     }
