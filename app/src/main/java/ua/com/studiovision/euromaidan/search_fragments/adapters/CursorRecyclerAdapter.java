@@ -13,6 +13,7 @@ import android.widget.Filterable;
 public abstract class CursorRecyclerAdapter<VH
         extends android.support.v7.widget.RecyclerView.ViewHolder, C extends Cursor> extends RecyclerView.Adapter<VH>
         implements Filterable, CursorFilter.CursorFilterClient<C> {
+    private static final String TAG = "CursorRecyclerAdapter";
     private boolean mDataValid;
     private int mRowIDColumn;
     private C mCursor;
@@ -124,6 +125,7 @@ public abstract class CursorRecyclerAdapter<VH
      * Cursor, null is also returned.
      */
     public C swapCursor(C newCursor) {
+        Log.v(TAG, "swapCursor(" + "newCursor=" + newCursor + ")");
         if (newCursor == mCursor) {
             return null;
         }
@@ -144,9 +146,10 @@ public abstract class CursorRecyclerAdapter<VH
             mRowIDColumn = -1;
             mDataValid = false;
             // notify the observers about the lack of a data set
-            // notifyDataSetInvalidated();
+//            notifyDataSetInvalidated();
             notifyItemRangeRemoved(0, getItemCount());
         }
+        Log.v(TAG, "mCursor=" + mCursor);
         return oldCursor;
     }
 

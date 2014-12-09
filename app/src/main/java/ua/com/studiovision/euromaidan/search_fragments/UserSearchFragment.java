@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -20,6 +22,7 @@ import org.androidannotations.annotations.ViewById;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.activities.SearchActivity;
+import ua.com.studiovision.euromaidan.network.json_protocol.user_search.User;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersCursor;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersSelection;
@@ -40,9 +43,15 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
         getActivity().getLoaderManager().initLoader(0, null, this);
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.v(TAG, "onDetach(" + ")");
+    }
+
     @AfterViews
     void init() {
-        userSearchAdapter = new UserSearchAdapter(null,getActivity());
+        userSearchAdapter = new UserSearchAdapter(null);
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
         searchRecyclerView.setAdapter(userSearchAdapter);
@@ -60,21 +69,21 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
             @Override
             public void afterTextChanged(Editable editable) {
                 String query = editable.toString();
-                if (query.length() > 0) {
-                    UsersSelection selection = new UsersSelection();
+                UsersSelection selection = new UsersSelection();
+                if(query.length() > 0) {
                     filter = selection.userNameLowercaseLike("%" + editable.toString().toLowerCase() + "%");
-                    getLoaderManager().restartLoader(0, null, UserSearchFragment.this);
                 } else {
-                    filter = null;
-                    userSearchAdapter.changeCursor(null);
-                    userSearchAdapter.notifyDataSetChanged();
+                    // XXX looking for -1 just to find nothing and clear list
+                    filter = selection.id(-1l);
                 }
+                getLoaderManager().restartLoader(0, null, UserSearchFragment.this);
             }
         });
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        Log.v(TAG, "onCreateLoader(" + "i=" + i + ", bundle=" + bundle + ")");
         if (filter == null)
             return null;
         CursorLoader cursorLoader = new CursorLoader(
@@ -88,6 +97,7 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        Log.v(TAG, "onLoadFinished(" + "loader=" + loader + ", cursor=" + cursor + ")");
         userSearchAdapter.changeCursor(new UsersCursor(cursor));
     }
 
