@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -20,6 +21,8 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import ua.com.studiovision.euromaidan.R;
+import ua.com.studiovision.euromaidan.activities.SearchActivity;
+import ua.com.studiovision.euromaidan.network.json_protocol.user_search.User;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersCursor;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersSelection;
@@ -30,10 +33,9 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
     @ViewById(R.id.searchRecyclerView)
     RecyclerView searchRecyclerView;
     UserSearchAdapter userSearchAdapter;
-    EditText searchEditText;
-    String filter;
+    UsersSelection filter;
 
-    private final String TAG = "User search fragment";
+    private final String TAG = "UserSearchFragment";
 
     @Override
     public void onAttach(Activity activity) {
@@ -43,13 +45,11 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
 
     @AfterViews
     void init() {
-        LinearLayout searchActionBar = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.search_action_bar, null);
-        searchEditText = (EditText) searchActionBar.findViewById(R.id.search_field_edit_text);
         userSearchAdapter = new UserSearchAdapter(null);
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
         searchRecyclerView.setAdapter(userSearchAdapter);
-        searchEditText.addTextChangedListener(new TextWatcher() {
+        ((SearchActivity) getActivity()).searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
@@ -62,21 +62,30 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
 
             @Override
             public void afterTextChanged(Editable editable) {
-                UsersSelection selection = new UsersSelection();
-                filter = selection.userNameLowercaseLike(editable.toString()).toString();
-                getLoaderManager().restartLoader(0,null,UserSearchFragment.this);
+                String query = editable.toString();
+                if(query.length() > 0) {
+                    UsersSelection selection = new UsersSelection();
+                    filter = selection.userNameLowercaseLike("%" + editable.toString().toLowerCase() + "%");
+                    getLoaderManager().restartLoader(0, null, UserSearchFragment.this);
+                } else {
+                    filter = null;
+                    userSearchAdapter.changeCursor(null);
+                    userSearchAdapter.notifyDataSetChanged();
+                }
             }
         });
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        if (filter == null)
+            return null;
         CursorLoader cursorLoader = new CursorLoader(
                 getActivity().getBaseContext(),
                 UsersColumns.CONTENT_URI,
                 UsersColumns.ALL_COLUMNS,
-                filter, null, null);
-        cursorLoader.setUpdateThrottle(2000);
+                filter.sel(), filter.args(), null);
+        Log.v(TAG, "FILTER = " + filter);
         return cursorLoader;
     }
 

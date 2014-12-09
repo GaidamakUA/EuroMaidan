@@ -41,7 +41,6 @@ import ua.com.studiovision.euromaidan.ImageProcessor;
 import ua.com.studiovision.euromaidan.NavDrawerItem;
 import ua.com.studiovision.euromaidan.NavDrawerListAdapter;
 import ua.com.studiovision.euromaidan.R;
-import ua.com.studiovision.euromaidan.SearchActivity_;
 import ua.com.studiovision.euromaidan.SharedPrefs_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;

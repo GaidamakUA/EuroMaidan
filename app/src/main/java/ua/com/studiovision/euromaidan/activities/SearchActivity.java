@@ -1,4 +1,4 @@
-package ua.com.studiovision.euromaidan;
+package ua.com.studiovision.euromaidan.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -30,6 +30,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ua.com.studiovision.euromaidan.AppProtocol;
+import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.activities.FeedActivity_;
 import ua.com.studiovision.euromaidan.network.MainService_;
 import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment_;
@@ -45,7 +47,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity {
     @ViewById(R.id.searchSlidingStrip)
     PagerSlidingTabStrip searchCategoriesSlidingTabStrip;
     @ViewById(R.id.search_field_edit_text)
-    EditText searchEditText;
+    public EditText searchEditText;
 
     private final String TAG = "Search activity";
     private final int PAGE_COUNT = 5;

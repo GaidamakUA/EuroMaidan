@@ -6,7 +6,7 @@ import android.os.Message;
 import android.util.Log;
 
 import ua.com.studiovision.euromaidan.AppProtocol;
-import ua.com.studiovision.euromaidan.SearchActivity;
+import ua.com.studiovision.euromaidan.activities.SearchActivity;
 import ua.com.studiovision.euromaidan.network.json_protocol.user_search.SearchUsersProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.user_search.User;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersContentValues;
