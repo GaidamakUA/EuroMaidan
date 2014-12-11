@@ -18,7 +18,10 @@
     <dimen name="avatarBorderSize">3dp</dimen>
 
     <dimen name="touchTargetHeightWidth">40dp</dimen>
+    <dimen name="touchTargetSmallHeightWidth">24dp</dimen>
     <dimen name="listItemHeight">72dp</dimen>
-    <dimen name="listImageLeftMargin">16dp</dimen>
+    <dimen name="listImageLeftRightMargin">16dp</dimen>
     <dimen name="listContentLeftMargin">72dp</dimen>
+    <dimen name="touchTargetPadding">4dp</dimen>
+    <dimen name="touchTargetSmallPadding">12dp</dimen>
 </resources>

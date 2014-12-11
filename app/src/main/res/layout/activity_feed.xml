@@ -48,7 +48,8 @@
 
             <EditText style="@style/SearchStyle"
                 android:layout_below="@+id/name"
-                android:id="@+id/search"/>
+                android:id="@+id/search"
+                android:singleLine="true"/>
 
             <ListView
                 android:id="@+id/list_slidermenu"
