@@ -9,8 +9,8 @@ public enum SearchCategory {
     PEOPLE,
     @SerializedName("publics")
     PUBLICS,
-    @SerializedName("audios")
-    AUDIOS,
     @SerializedName("videos")
-    VIDEOS
+    VIDEOS,
+    @SerializedName("audios")
+    AUDIOS
 }

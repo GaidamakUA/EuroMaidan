@@ -82,7 +82,7 @@ public class AudioSearchFragment extends Fragment implements LoaderManager.Loade
                 getLoaderManager().restartLoader(0, null, AudioSearchFragment.this);
             }
         });
-        searchRecyclerView.setOnScrollListener(new SearchOnScrollListener((SearchActivityCallbacks)AudioSearchFragment.this.getActivity(), SearchCategory.AUDIOS));
+        searchRecyclerView.setOnScrollListener(new SearchOnScrollListener((SearchActivityCallbacks)AudioSearchFragment.this.getActivity()));
     }
 
     @Override

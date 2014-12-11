@@ -78,7 +78,7 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
                 getLoaderManager().restartLoader(0, null, UserSearchFragment.this);
             }
         });
-        searchRecyclerView.setOnScrollListener(new SearchOnScrollListener((SearchActivityCallbacks)UserSearchFragment.this.getActivity(), SearchCategory.PEOPLE));
+        searchRecyclerView.setOnScrollListener(new SearchOnScrollListener((SearchActivityCallbacks)UserSearchFragment.this.getActivity()));
     }
 
     @Override

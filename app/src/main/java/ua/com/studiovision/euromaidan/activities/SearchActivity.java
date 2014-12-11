@@ -136,7 +136,9 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
                 msg.what = AppProtocol.SEARCH_BY_USERS;
                 Bundle data = new Bundle();
                 data.putString(SEARCH_QUERY, s.toString());
-                data.putSerializable(CONTENTS, SearchCategory.PEOPLE);
+                int pos = viewPager.getCurrentItem();
+                Log.v(TAG,"Position set to -> "+pos);
+                data.putSerializable(CONTENTS, SearchCategory.values()[viewPager.getCurrentItem()]);
                 msg.setData(data);
                 sendMessage(msg);
             }
