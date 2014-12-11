@@ -15,7 +15,9 @@ import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
 import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
 import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
 import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
+import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
+import ua.com.studiovision.euromaidan.network.provider.videos.VideosColumns;
 
 public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = EmSQLiteOpenHelper.class.getSimpleName();
@@ -60,6 +62,15 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
             + ", CONSTRAINT unique_name UNIQUE (city_id, city_name) ON CONFLICT REPLACE"
             + " );";
 
+    private static final String SQL_CREATE_TABLE_AUDIOS = "CREATE TABLE IF NOT EXISTS "
+            + AudiosColumns.TABLE_NAME + " ( "
+            + AudiosColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + AudiosColumns.NAME + " TEXT NOT NULL, "
+            + AudiosColumns.AUTHOR + " TEXT NOT NULL, "
+            + AudiosColumns.DURATION + " INTEGER NOT NULL, "
+            + AudiosColumns.AUDIO_URL + " TEXT NOT NULL "
+            + " );";
+
     private static final String SQL_CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS "
             + UsersColumns.TABLE_NAME + " ( "
             + UsersColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -70,6 +81,14 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
             + UsersColumns.USER_SURNAME_LOWERCASE + " TEXT NOT NULL, "
             + UsersColumns.AVATAR + " TEXT NOT NULL "
             + ", CONSTRAINT unique_id UNIQUE (user_id) ON CONFLICT REPLACE"
+            + " );";
+
+    private static final String SQL_CREATE_TABLE_VIDEOS = "CREATE TABLE IF NOT EXISTS "
+            + VideosColumns.TABLE_NAME + " ( "
+            + VideosColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + VideosColumns.NAME + " TEXT NOT NULL, "
+            + VideosColumns.DURATION + " INTEGER NOT NULL, "
+            + VideosColumns.VIDEO_URL + " TEXT NOT NULL "
             + " );";
 
     // @formatter:on
@@ -132,7 +151,9 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TABLE_UNIVERSITY);
         db.execSQL(SQL_CREATE_TABLE_COUNTRY);
         db.execSQL(SQL_CREATE_TABLE_CITY);
+        db.execSQL(SQL_CREATE_TABLE_AUDIOS);
         db.execSQL(SQL_CREATE_TABLE_USERS);
+        db.execSQL(SQL_CREATE_TABLE_VIDEOS);
         mOpenHelperCallbacks.onPostCreate(mContext, db);
     }
 

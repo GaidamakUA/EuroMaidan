@@ -32,6 +32,7 @@ import java.util.Set;
 import ua.com.studiovision.euromaidan.AppProtocol;
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.network.MainService_;
+import ua.com.studiovision.euromaidan.network.json_protocol.user_search.SearchCategory;
 import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.GroupSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.NewsSearchFragment_;
@@ -59,6 +60,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
     private HashSet<Integer> mUnseenUserIds = new HashSet<Integer>();
     private int mIdCount;
 
+    public static final String CONTENTS = "contents";
     public static final String USER_IDS = "user_ids";
     public static final String USERS_COUNT = "users_count";
     public static final String GROUPS_IDS = "groups_ids";
@@ -134,6 +136,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
                 msg.what = AppProtocol.SEARCH_BY_USERS;
                 Bundle data = new Bundle();
                 data.putString(SEARCH_QUERY, s.toString());
+                data.putSerializable(CONTENTS, SearchCategory.PEOPLE);
                 msg.setData(data);
                 sendMessage(msg);
             }
@@ -182,6 +185,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         Log.v(TAG, "idsToRequest=" + idsToRequest);
         data.putIntegerArrayList(USER_IDS, idsToRequest);
         data.putInt(USERS_COUNT, mIdCount);
+        data.putSerializable(CONTENTS, SearchCategory.PEOPLE);
 
         Message msg = Message.obtain();
         msg.what = AppProtocol.SEARCH_BY_USERS;

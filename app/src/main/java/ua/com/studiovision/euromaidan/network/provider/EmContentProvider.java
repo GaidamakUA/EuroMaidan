@@ -22,7 +22,9 @@ import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
 import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
 import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
 import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
+import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
+import ua.com.studiovision.euromaidan.network.provider.videos.VideosColumns;
 
 public class EmContentProvider extends ContentProvider {
     private static final String TAG = EmContentProvider.class.getSimpleName();
@@ -50,8 +52,14 @@ public class EmContentProvider extends ContentProvider {
     private static final int URI_TYPE_CITY = 6;
     private static final int URI_TYPE_CITY_ID = 7;
 
-    private static final int URI_TYPE_USERS = 8;
-    private static final int URI_TYPE_USERS_ID = 9;
+    private static final int URI_TYPE_AUDIOS = 8;
+    private static final int URI_TYPE_AUDIOS_ID = 9;
+
+    private static final int URI_TYPE_USERS = 10;
+    private static final int URI_TYPE_USERS_ID = 11;
+
+    private static final int URI_TYPE_VIDEOS = 12;
+    private static final int URI_TYPE_VIDEOS_ID = 13;
 
 
 
@@ -66,8 +74,12 @@ public class EmContentProvider extends ContentProvider {
         URI_MATCHER.addURI(AUTHORITY, CountryColumns.TABLE_NAME + "/#", URI_TYPE_COUNTRY_ID);
         URI_MATCHER.addURI(AUTHORITY, CityColumns.TABLE_NAME, URI_TYPE_CITY);
         URI_MATCHER.addURI(AUTHORITY, CityColumns.TABLE_NAME + "/#", URI_TYPE_CITY_ID);
+        URI_MATCHER.addURI(AUTHORITY, AudiosColumns.TABLE_NAME, URI_TYPE_AUDIOS);
+        URI_MATCHER.addURI(AUTHORITY, AudiosColumns.TABLE_NAME + "/#", URI_TYPE_AUDIOS_ID);
         URI_MATCHER.addURI(AUTHORITY, UsersColumns.TABLE_NAME, URI_TYPE_USERS);
         URI_MATCHER.addURI(AUTHORITY, UsersColumns.TABLE_NAME + "/#", URI_TYPE_USERS_ID);
+        URI_MATCHER.addURI(AUTHORITY, VideosColumns.TABLE_NAME, URI_TYPE_VIDEOS);
+        URI_MATCHER.addURI(AUTHORITY, VideosColumns.TABLE_NAME + "/#", URI_TYPE_VIDEOS_ID);
     }
 
     protected EmSQLiteOpenHelper mEmSQLiteOpenHelper;
@@ -119,10 +131,20 @@ public class EmContentProvider extends ContentProvider {
             case URI_TYPE_CITY_ID:
                 return TYPE_CURSOR_ITEM + CityColumns.TABLE_NAME;
 
+            case URI_TYPE_AUDIOS:
+                return TYPE_CURSOR_DIR + AudiosColumns.TABLE_NAME;
+            case URI_TYPE_AUDIOS_ID:
+                return TYPE_CURSOR_ITEM + AudiosColumns.TABLE_NAME;
+
             case URI_TYPE_USERS:
                 return TYPE_CURSOR_DIR + UsersColumns.TABLE_NAME;
             case URI_TYPE_USERS_ID:
                 return TYPE_CURSOR_ITEM + UsersColumns.TABLE_NAME;
+
+            case URI_TYPE_VIDEOS:
+                return TYPE_CURSOR_DIR + VideosColumns.TABLE_NAME;
+            case URI_TYPE_VIDEOS_ID:
+                return TYPE_CURSOR_ITEM + VideosColumns.TABLE_NAME;
 
         }
         return null;
@@ -285,11 +307,25 @@ public class EmContentProvider extends ContentProvider {
                 res.orderBy = CityColumns.DEFAULT_ORDER;
                 break;
 
+            case URI_TYPE_AUDIOS:
+            case URI_TYPE_AUDIOS_ID:
+                res.table = AudiosColumns.TABLE_NAME;
+                res.tablesWithJoins = AudiosColumns.TABLE_NAME;
+                res.orderBy = AudiosColumns.DEFAULT_ORDER;
+                break;
+
             case URI_TYPE_USERS:
             case URI_TYPE_USERS_ID:
                 res.table = UsersColumns.TABLE_NAME;
                 res.tablesWithJoins = UsersColumns.TABLE_NAME;
                 res.orderBy = UsersColumns.DEFAULT_ORDER;
+                break;
+
+            case URI_TYPE_VIDEOS:
+            case URI_TYPE_VIDEOS_ID:
+                res.table = VideosColumns.TABLE_NAME;
+                res.tablesWithJoins = VideosColumns.TABLE_NAME;
+                res.orderBy = VideosColumns.DEFAULT_ORDER;
                 break;
 
             default:
@@ -301,7 +337,9 @@ public class EmContentProvider extends ContentProvider {
             case URI_TYPE_UNIVERSITY_ID:
             case URI_TYPE_COUNTRY_ID:
             case URI_TYPE_CITY_ID:
+            case URI_TYPE_AUDIOS_ID:
             case URI_TYPE_USERS_ID:
+            case URI_TYPE_VIDEOS_ID:
                 id = uri.getLastPathSegment();
         }
         if (id != null) {

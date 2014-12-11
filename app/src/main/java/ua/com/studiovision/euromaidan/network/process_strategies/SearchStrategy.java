@@ -9,8 +9,10 @@ import java.util.ArrayList;
 
 import ua.com.studiovision.euromaidan.AppProtocol;
 import ua.com.studiovision.euromaidan.activities.SearchActivity;
+import ua.com.studiovision.euromaidan.network.json_protocol.AbstractGetArrayProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.user_search.InfiniteScrollResponse;
-import ua.com.studiovision.euromaidan.network.json_protocol.user_search.SearchUsersProtocol;
+import ua.com.studiovision.euromaidan.network.json_protocol.user_search.SearchCategory;
+import ua.com.studiovision.euromaidan.network.json_protocol.user_search.SearchProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.user_search.User;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersContentValues;
 
@@ -18,39 +20,39 @@ import ua.com.studiovision.euromaidan.network.provider.users.UsersContentValues;
  * Created by gaidamak on 08.12.14.
  */
 public class SearchStrategy extends AbstractProcessResponseStrategy
-        <SearchUsersProtocol.SearchUsersRequest, SearchUsersProtocol.SearchUsersResponse> {
-    private static final String TAG = "SearchByUsersStrategy";
+        <SearchProtocol.SearchUsersRequest, SearchProtocol.SearchUsersResponse> {
+    private static final String TAG = "SearchStrategy";
     StrategyCallbacks callbacks;
 
     public SearchStrategy(Context context, Message message, StrategyCallbacks callbacks) {
-        super(context, SearchUsersProtocol.SearchUsersResponse.class);
+        super(context, SearchProtocol.SearchUsersResponse.class);
         Bundle bundle = message.getData();
         Log.v(TAG, "SearchActivity.SEARCH_QUERY=" + bundle.getString(SearchActivity.SEARCH_QUERY));
-        request = new SearchUsersProtocol.SearchUsersRequest(bundle.getIntegerArrayList(SearchActivity.USER_IDS),
-                bundle.getInt(SearchActivity.USERS_COUNT), bundle.getString(SearchActivity.SEARCH_QUERY));
+        request = new SearchProtocol.SearchUsersRequest(bundle.getIntegerArrayList(SearchActivity.USER_IDS),
+                bundle.getInt(SearchActivity.USERS_COUNT), bundle.getString(SearchActivity.SEARCH_QUERY),
+                (SearchCategory) bundle.getSerializable(SearchActivity.CONTENTS));
         this.callbacks = callbacks;
     }
 
     @Override
-    protected void onResponse(SearchUsersProtocol.SearchUsersResponse response) {
+    protected void onResponse(SearchProtocol.SearchUsersResponse response) {
         // handle response here
         if (response.result.users == null || response.result.users.users.length < 1) {
             return;
         }
         // uncommon
-        UsersContentValues contentValues = new UsersContentValues();
+        UsersContentValues usersContentValues = new UsersContentValues();
         for (User user : response.result.users.users) {
-            contentValues.putUserId(user.id)
+            usersContentValues.putUserId(user.id)
                     .putUserName(user.name)
                     .putUserSurname(user.surname)
                     .putAvatar(user.avatar);
             // common
-            contentValues.insert(context.getContentResolver());
+            usersContentValues.insert(context.getContentResolver());
         }
         // Generalizable
         Bundle bundle = new Bundle();
-        addStuffToBundle(bundle, response.result.users, SearchActivity.USER_IDS,
-                SearchActivity.USERS_COUNT);
+        addStuffToBundle(bundle, response.result.users);
 
         Message msg = Message.obtain();
         msg.what = AppProtocol.SEARCH_BY_USERS_RESPONSE;
@@ -58,8 +60,16 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
         callbacks.sendMessageToActivity(msg);
     }
 
-    private void addStuffToBundle(Bundle bundle, InfiniteScrollResponse infiniteScrollResponse,
-                                  String id_key, String count_key) {
+    private void addStuffToBundle(Bundle bundle, InfiniteScrollResponse infiniteScrollResponse) {
+        String id_key;
+        String count_key;
+        if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.UsersResponse) {
+            id_key = SearchActivity.USER_IDS;
+            count_key = SearchActivity.USERS_COUNT;
+        } else {
+            throw new IllegalArgumentException("unexpected instance of InfiniteScrollResponse:"
+                    + infiniteScrollResponse.getClass().getName());
+        }
         if (infiniteScrollResponse.ids != null && infiniteScrollResponse.ids.length > 0) {
             ArrayList<Integer> availableIds = new ArrayList<Integer>(infiniteScrollResponse.ids.length);
             for (int i = infiniteScrollResponse.ids.length - 1; i >= 0; i--) {

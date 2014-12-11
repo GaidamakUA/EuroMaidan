@@ -13,10 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-
-import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -24,11 +20,10 @@ import org.androidannotations.annotations.ViewById;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.activities.SearchActivity;
-import ua.com.studiovision.euromaidan.network.json_protocol.user_search.User;
+import ua.com.studiovision.euromaidan.network.json_protocol.user_search.SearchCategory;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersCursor;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersSelection;
-import ua.com.studiovision.euromaidan.search_fragments.adapters.SearchCategories;
 import ua.com.studiovision.euromaidan.search_fragments.adapters.SearchOnScrollListener;
 import ua.com.studiovision.euromaidan.search_fragments.adapters.UserSearchAdapter;
 
@@ -83,7 +78,7 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
                 getLoaderManager().restartLoader(0, null, UserSearchFragment.this);
             }
         });
-        searchRecyclerView.setOnScrollListener(new SearchOnScrollListener((SearchActivityCallbacks)UserSearchFragment.this.getActivity(), SearchCategories.USERS));
+        searchRecyclerView.setOnScrollListener(new SearchOnScrollListener((SearchActivityCallbacks)UserSearchFragment.this.getActivity(), SearchCategory.PEOPLE));
     }
 
     @Override

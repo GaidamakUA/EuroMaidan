@@ -1,5 +1,6 @@
 package ua.com.studiovision.euromaidan.network.json_protocol.user_search;
 
+import android.provider.MediaStore;
 import android.util.Log;
 
 import java.util.List;
@@ -10,18 +11,19 @@ import ua.com.studiovision.euromaidan.network.json_protocol.AbstractResponse;
 /**
  * Created by gaidamak on 08.12.14.
  */
-public class SearchUsersProtocol {
+public class SearchProtocol {
     public static class SearchUsersRequest implements AbstractRequest<SearchUsersRequest> {
         private static final String TAG = "SearchUsersRequest";
-        public String key = "search"; // all,people,publics,audios,videos
-        public String content = "people";
+        public String key = "search";
+        // all,people,publics,audios,videos
+        public SearchCategory content;
         // ай-ди по которым вибирать данные
         public int[][] ids; //[[58],[59],[23]]; // null
         // количество результатов найденных ранее(при поиске)!
         public Integer count; //'5', / null
         public SearchFilters filters;
 
-        public SearchUsersRequest(List<Integer> ids, Integer count, String search_query) {
+        public SearchUsersRequest(List<Integer> ids, Integer count, String search_query, SearchCategory content) {
             Log.v(TAG, "SearchUsersRequest(" + "ids=" + ids + ", count=" + count + ", search_query=" + search_query + ")");
             if (ids != null && ids.size() > 0) {
                 int length = ids.size();
@@ -32,6 +34,7 @@ public class SearchUsersProtocol {
             }
             this.count = count;
             this.filters = new SearchFilters(search_query);
+            this.content = content;
         }
 
         public SearchUsersRequest(int[] ids, Integer count, String search_query) {
@@ -73,13 +76,15 @@ public class SearchUsersProtocol {
         }
 
         public class GroupsResponse extends InfiniteScrollResponse {
-            public User[] groups;
+            public Public[] groups;
         }
 
         public class MusicResponse extends InfiniteScrollResponse {
+            public MyAudio[] audios;
         }
 
         public class VideosResponse extends InfiniteScrollResponse {
+            public MyVideo[] videos;
         }
     }
 }
