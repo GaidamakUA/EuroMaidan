@@ -7,5 +7,5 @@ import org.androidannotations.annotations.EFragment;
 import ua.com.studiovision.euromaidan.R;
 
 @EFragment(R.layout.fragment_group_search)
-public class GroupSearchFragment extends Fragment{
+public class PublicSearchFragment extends Fragment{
 }

@@ -209,7 +209,7 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
             public void run() {
                 drawer.closeDrawer(Gravity.START);
             }
-        },250);
+        }, 250);
     }
 
     private class SlideMenuClickListener implements ListView.OnItemClickListener {

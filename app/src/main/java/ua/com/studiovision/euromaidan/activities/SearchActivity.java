@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -35,7 +34,7 @@ import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.network.MainService_;
 import ua.com.studiovision.euromaidan.network.json_protocol.search.SearchCategory;
 import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment_;
-import ua.com.studiovision.euromaidan.search_fragments.GroupSearchFragment_;
+import ua.com.studiovision.euromaidan.search_fragments.PublicSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.NewsSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.SearchActivityCallbacks;
 import ua.com.studiovision.euromaidan.search_fragments.UserSearchFragment_;
@@ -104,7 +103,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
 
         fragments.add(new NewsSearchFragment_());
         fragments.add(new UserSearchFragment_());
-        fragments.add(new GroupSearchFragment_());
+        fragments.add(new PublicSearchFragment_());
         fragments.add(new VideoSearchFragment_());
         fragments.add(new AudioSearchFragment_());
 
