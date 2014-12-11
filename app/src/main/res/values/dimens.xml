@@ -16,4 +16,9 @@
     <dimen name="radioButtonRingThickness">5dp</dimen>
     <dimen name="radioButtonFamilyStatusSize">20dp</dimen>
     <dimen name="avatarBorderSize">3dp</dimen>
+
+    <dimen name="touchTargetHeightWidth">40dp</dimen>
+    <dimen name="listItemHeight">72dp</dimen>
+    <dimen name="listImageLeftMargin">16dp</dimen>
+    <dimen name="listContentLeftMargin">72dp</dimen>
 </resources>

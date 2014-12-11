@@ -1,14 +1,22 @@
 package ua.com.studiovision.euromaidan.search_fragments.adapters;
 
+import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Filter;
 import android.widget.FilterQueryProvider;
 import android.widget.Filterable;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 public abstract class CursorRecyclerAdapter<VH
         extends android.support.v7.widget.RecyclerView.ViewHolder, C extends Cursor> extends RecyclerView.Adapter<VH>
@@ -21,9 +29,21 @@ public abstract class CursorRecyclerAdapter<VH
     private DataSetObserver mDataSetObserver;
     private CursorFilter<C> mCursorFilter;
     private FilterQueryProvider mFilterQueryProvider;
+    protected ImageLoaderConfiguration imageLoaderConfiguration;
 
-    public CursorRecyclerAdapter(C cursor) {
+    public CursorRecyclerAdapter(C cursor, Context context) {
         init(cursor);
+        DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .showImageOnLoading(android.R.drawable.progress_indeterminate_horizontal)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
+        imageLoaderConfiguration = new ImageLoaderConfiguration.Builder(context)
+                .defaultDisplayImageOptions(displayImageOptions)
+                .threadPoolSize(5)
+                .build();
     }
 
     void init(C c) {

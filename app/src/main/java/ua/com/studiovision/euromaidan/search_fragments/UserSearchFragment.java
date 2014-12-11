@@ -16,6 +16,8 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -26,6 +28,8 @@ import ua.com.studiovision.euromaidan.network.json_protocol.user_search.User;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersCursor;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersSelection;
+import ua.com.studiovision.euromaidan.search_fragments.adapters.SearchCategories;
+import ua.com.studiovision.euromaidan.search_fragments.adapters.SearchOnScrollListener;
 import ua.com.studiovision.euromaidan.search_fragments.adapters.UserSearchAdapter;
 
 @EFragment(R.layout.fragment_search)
@@ -51,7 +55,7 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
 
     @AfterViews
     void init() {
-        userSearchAdapter = new UserSearchAdapter(null,getActivity());
+        userSearchAdapter = new UserSearchAdapter(null,getActivity().getBaseContext());
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
         searchRecyclerView.setAdapter(userSearchAdapter);
@@ -70,7 +74,7 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
             public void afterTextChanged(Editable editable) {
                 String query = editable.toString();
                 UsersSelection selection = new UsersSelection();
-                if(query.length() > 0) {
+                if (query.length() > 0) {
                     filter = selection.userNameLowercaseLike("%" + editable.toString().toLowerCase() + "%");
                 } else {
                     // XXX looking for -1 just to find nothing and clear list
@@ -79,31 +83,7 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
                 getLoaderManager().restartLoader(0, null, UserSearchFragment.this);
             }
         });
-        searchRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        Log.v(TAG, "SCROLL_STATE_SETTLING");
-                        ((SearchActivityCallbacks) UserSearchFragment.this.getActivity())
-                                .loadMoreUserIds();
-                        break;
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        Log.v(TAG, "SCROLL_STATE_IDLE");
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        Log.v(TAG, "SCROLL_STATE_DRAGGING");
-                        break;
-                    default:
-                        Log.v(TAG, "SCROLL_STATE_LOL");
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                Log.v(TAG, "onScrolled(" + "recyclerView=" + recyclerView + ", dx=" + dx + ", dy=" + dy + ")");
-            }
-        });
+        searchRecyclerView.setOnScrollListener(new SearchOnScrollListener((SearchActivityCallbacks)UserSearchFragment.this.getActivity(), SearchCategories.USERS));
     }
 
     @Override
