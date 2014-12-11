@@ -19,6 +19,6 @@ public class AddFriendStrategy extends AbstractProcessResponseStrategy
         String token = bundle.getString(SetSettingProtocol.TOKEN);
         SettingsParams settingsParams =
                 bundle.getParcelable(SetSettingProtocol.SETTINGS_PARAMS);
-        request = new SetSettingProtocol.SetSettingsRequest(token, settingsParams);
+//        request = new ;
     }
 }
