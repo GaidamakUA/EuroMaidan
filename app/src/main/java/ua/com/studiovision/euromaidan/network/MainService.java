@@ -36,7 +36,7 @@ import ua.com.studiovision.euromaidan.network.process_strategies.GetCountriesStr
 import ua.com.studiovision.euromaidan.network.process_strategies.GetSchoolsStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetSettingsStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetUniversitiesStrategy;
-import ua.com.studiovision.euromaidan.network.process_strategies.SearchByUsersStrategy;
+import ua.com.studiovision.euromaidan.network.process_strategies.SearchStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.SendSchoolStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.SendSettingsStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.SendUniversityStrategy;
@@ -108,7 +108,7 @@ public class MainService extends ActivityServiceCommunicationService implements 
                 break;
             case AppProtocol.SEARCH_BY_USERS:
                 Log.v(TAG, "Search by users");
-                doRequest(new SearchByUsersStrategy(getApplicationContext(), msg, this));
+                doRequest(new SearchStrategy(getApplicationContext(), msg, this));
                 break;
         }
     }

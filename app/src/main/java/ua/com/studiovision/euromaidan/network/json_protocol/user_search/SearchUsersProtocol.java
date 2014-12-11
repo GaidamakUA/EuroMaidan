@@ -62,9 +62,24 @@ public class SearchUsersProtocol {
         public SearchByUserResult result;
 
         public class SearchByUserResult {
+            public UsersResponse users;
+            public GroupsResponse groups;
+            public MusicResponse music;
+            public VideosResponse videos;
+        }
+
+        public class UsersResponse extends InfiniteScrollResponse {
             public User[] users;
-            public Integer count;
-            public int[][] ids;
+        }
+
+        public class GroupsResponse extends InfiniteScrollResponse {
+            public User[] groups;
+        }
+
+        public class MusicResponse extends InfiniteScrollResponse {
+        }
+
+        public class VideosResponse extends InfiniteScrollResponse {
         }
     }
 }

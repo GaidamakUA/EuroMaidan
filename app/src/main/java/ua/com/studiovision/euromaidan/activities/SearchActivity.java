@@ -1,7 +1,6 @@
 package ua.com.studiovision.euromaidan.activities;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.graphics.drawable.ColorDrawable;
@@ -25,23 +24,18 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import ua.com.studiovision.euromaidan.AppProtocol;
 import ua.com.studiovision.euromaidan.R;
-import ua.com.studiovision.euromaidan.activities.FeedActivity_;
 import ua.com.studiovision.euromaidan.network.MainService_;
-import ua.com.studiovision.euromaidan.network.provider.users.UsersSelection;
 import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.GroupSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.NewsSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.SearchActivityCallbacks;
-import ua.com.studiovision.euromaidan.search_fragments.UserSearchFragment;
 import ua.com.studiovision.euromaidan.search_fragments.UserSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.VideoSearchFragment_;
 
@@ -66,7 +60,13 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
     private int mIdCount;
 
     public static final String USER_IDS = "user_ids";
-    public static final String COUNT = "count";
+    public static final String USERS_COUNT = "users_count";
+    public static final String GROUPS_IDS = "groups_ids";
+    public static final String GROUPS_COUNT = "groups_count";
+    public static final String MUSIC_IDS = "music_ids";
+    public static final String MUSIC_COUNT = "music_count";
+    public static final String VIDEOS_IDS = "videos_ids";
+    public static final String VIDEOS_COUNT = "videos_count";
     public static final String SEARCH_QUERY = "search_query";
 
     @Override
@@ -161,7 +161,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
                 Log.v(TAG, "search_by_users_response=" + data);
                 if (mUnseenUserIds.isEmpty()) {
                     mUnseenUserIds.addAll(data.getIntegerArrayList(USER_IDS));
-                    mIdCount = data.getInt(COUNT);
+                    mIdCount = data.getInt(USERS_COUNT);
                 }
                 break;
         }
@@ -169,6 +169,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
 
     @Override
     public void loadMoreUserIds() {
+        if (mUnseenUserIds.isEmpty()) return;
         Bundle data = new Bundle();
         ArrayList<Integer> idsToRequest = new ArrayList<Integer>(10);
         int counter = 10;
@@ -180,7 +181,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         mUnseenUserIds.removeAll(idsToRequest);
         Log.v(TAG, "idsToRequest=" + idsToRequest);
         data.putIntegerArrayList(USER_IDS, idsToRequest);
-        data.putInt(COUNT, mIdCount);
+        data.putInt(USERS_COUNT, mIdCount);
 
         Message msg = Message.obtain();
         msg.what = AppProtocol.SEARCH_BY_USERS;
