@@ -1,0 +1,20 @@
+{
+    "fields": [
+        {
+            "name": "name",
+            "type": "String",
+            "nullable": "false",
+        },
+        {
+            "documentation": "Seconds",
+            "name": "duration",
+            "type": "Integer",
+            "nullable": "false",
+        },
+        {
+            "name": "video_url",
+            "type": "String",
+            "nullable": "false",
+        }
+    ]
+}

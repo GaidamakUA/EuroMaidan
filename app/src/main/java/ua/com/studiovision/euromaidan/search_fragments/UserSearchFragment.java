@@ -20,7 +20,7 @@ import org.androidannotations.annotations.ViewById;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.activities.SearchActivity;
-import ua.com.studiovision.euromaidan.network.json_protocol.user_search.SearchCategory;
+import ua.com.studiovision.euromaidan.network.json_protocol.search.SearchCategory;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersCursor;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersSelection;

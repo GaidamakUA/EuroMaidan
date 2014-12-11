@@ -1,6 +1,5 @@
-package ua.com.studiovision.euromaidan.network.json_protocol.user_search;
+package ua.com.studiovision.euromaidan.network.json_protocol.search;
 
-import android.provider.MediaStore;
 import android.util.Log;
 
 import java.util.List;

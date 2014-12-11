@@ -1,4 +1,4 @@
-package ua.com.studiovision.euromaidan.network.json_protocol.user_search;
+package ua.com.studiovision.euromaidan.network.json_protocol.search;
 
 /**
  * Created by gaidamak on 08.12.14.

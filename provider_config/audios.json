@@ -1,0 +1,24 @@
+{
+    "fields": [
+        {
+            "name": "name",
+            "type": "String",
+            "nullable": "false",
+        },
+        {
+            "name": "author",
+            "type": "String",
+            "nullable": "false",
+        },
+        {
+            "name": "duration",
+            "type": "Integer",
+            "nullable": "false",
+        },
+        {
+            "name": "audio_url",
+            "type": "String",
+            "nullable": "false",
+        }
+    ]
+}

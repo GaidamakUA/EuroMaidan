@@ -1,9 +1,8 @@
 package ua.com.studiovision.euromaidan.search_fragments.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
-import ua.com.studiovision.euromaidan.network.json_protocol.user_search.SearchCategory;
+import ua.com.studiovision.euromaidan.network.json_protocol.search.SearchCategory;
 import ua.com.studiovision.euromaidan.search_fragments.SearchActivityCallbacks;
 
 public class SearchOnScrollListener extends RecyclerView.OnScrollListener {

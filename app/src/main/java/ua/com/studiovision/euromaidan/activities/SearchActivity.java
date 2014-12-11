@@ -32,7 +32,7 @@ import java.util.Set;
 import ua.com.studiovision.euromaidan.AppProtocol;
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.network.MainService_;
-import ua.com.studiovision.euromaidan.network.json_protocol.user_search.SearchCategory;
+import ua.com.studiovision.euromaidan.network.json_protocol.search.SearchCategory;
 import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.GroupSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.NewsSearchFragment_;
