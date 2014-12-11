@@ -66,8 +66,8 @@ public class SearchProtocol {
 
         public class SearchByUserResult {
             public UsersResponse users;
-            public GroupsResponse groups;
-            public MusicResponse music;
+            public GroupsResponse publics;
+            public MusicResponse audios;
             public VideosResponse videos;
         }
 

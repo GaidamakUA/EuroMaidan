@@ -11,10 +11,14 @@ import ua.com.studiovision.euromaidan.AppProtocol;
 import ua.com.studiovision.euromaidan.activities.SearchActivity;
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractGetArrayProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.user_search.InfiniteScrollResponse;
+import ua.com.studiovision.euromaidan.network.json_protocol.user_search.MyAudio;
+import ua.com.studiovision.euromaidan.network.json_protocol.user_search.MyVideo;
 import ua.com.studiovision.euromaidan.network.json_protocol.user_search.SearchCategory;
 import ua.com.studiovision.euromaidan.network.json_protocol.user_search.SearchProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.user_search.User;
+import ua.com.studiovision.euromaidan.network.provider.audios.AudiosContentValues;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersContentValues;
+import ua.com.studiovision.euromaidan.network.provider.videos.VideosContentValues;
 
 /**
  * Created by gaidamak on 08.12.14.
@@ -50,7 +54,24 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
             // common
             usersContentValues.insert(context.getContentResolver());
         }
-        // Generalizable
+        AudiosContentValues audioContentValues = new AudiosContentValues();
+        for (MyAudio audio : response.result.audios.audios) {
+            audioContentValues
+                    .putName(audio.name)
+                    .putAuthor(audio.author)
+                    .putDuration(audio.duration)
+                    .putAudioUrl(audio.url);
+            audioContentValues.insert(context.getContentResolver());
+        }
+        VideosContentValues videosContentValues = new VideosContentValues();
+        for (MyVideo video : response.result.videos.videos) {
+            videosContentValues
+                    .putName(video.name)
+                    .putDuration(video.duration)
+                    .putVideoUrl(video.url);
+            videosContentValues.insert(context.getContentResolver());
+        }
+
         Bundle bundle = new Bundle();
         addStuffToBundle(bundle, response.result.users);
 

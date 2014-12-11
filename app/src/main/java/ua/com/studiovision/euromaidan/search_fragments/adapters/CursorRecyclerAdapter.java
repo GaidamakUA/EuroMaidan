@@ -7,7 +7,6 @@ import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Filter;
 import android.widget.FilterQueryProvider;
 import android.widget.Filterable;
@@ -71,7 +70,6 @@ public abstract class CursorRecyclerAdapter<VH
      */
     @Override
     public void onBindViewHolder(VH holder, int i) {
-        Log.v("CURSOR", "State closed:" + mCursor.isClosed());
         if (!mDataValid) {
             throw new IllegalStateException("this should only be called when the cursor is valid");
         }
@@ -145,7 +143,6 @@ public abstract class CursorRecyclerAdapter<VH
      * Cursor, null is also returned.
      */
     public C swapCursor(C newCursor) {
-        Log.v(TAG, "swapCursor(" + "newCursor=" + newCursor + ")");
         if (newCursor == mCursor) {
             return null;
         }
@@ -169,7 +166,6 @@ public abstract class CursorRecyclerAdapter<VH
 //            notifyDataSetInvalidated();
             notifyItemRangeRemoved(0, getItemCount());
         }
-        Log.v(TAG, "mCursor=" + mCursor);
         return oldCursor;
     }
 
@@ -210,7 +206,6 @@ public abstract class CursorRecyclerAdapter<VH
      * @see #setFilterQueryProvider(android.widget.FilterQueryProvider)
      */
     public C runQueryOnBackgroundThread(CharSequence constraint) {
-        Log.v("TEST", "runOnBackground fired!");
         if (mFilterQueryProvider != null) {
             return (C) mFilterQueryProvider.runQuery(constraint);
         }

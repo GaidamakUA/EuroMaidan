@@ -5,6 +5,6 @@ package ua.com.studiovision.euromaidan.network.json_protocol.user_search;
  */
 public class MyVideo {
     public String name;
-    public String duration;
+    public Integer duration;
     public String url;
 }
