@@ -25,7 +25,9 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,12 +40,13 @@ import ua.com.studiovision.euromaidan.network.provider.users.UsersSelection;
 import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.GroupSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.NewsSearchFragment_;
+import ua.com.studiovision.euromaidan.search_fragments.SearchActivityCallbacks;
 import ua.com.studiovision.euromaidan.search_fragments.UserSearchFragment;
 import ua.com.studiovision.euromaidan.search_fragments.UserSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.VideoSearchFragment_;
 
 @EActivity(R.layout.activity_search)
-public class SearchActivity extends ActivityServiceCommunicationActivity {
+public class SearchActivity extends ActivityServiceCommunicationActivity implements SearchActivityCallbacks {
     @ViewById(R.id.view_pager)
     ViewPager viewPager;
     @ViewById(R.id.searchSlidingStrip)
@@ -58,6 +61,9 @@ public class SearchActivity extends ActivityServiceCommunicationActivity {
     private List<Fragment> fragments = new ArrayList<Fragment>();
     private Set<Fragment> disposableFragment = new HashSet<Fragment>();
     private FragmentPagerAdapter fragmentPagerAdapter;
+
+    private HashSet<Integer> mUnseenUserIds = new HashSet<Integer>();
+    private int mIdCount;
 
     public static final String USER_IDS = "user_ids";
     public static final String COUNT = "count";
@@ -122,6 +128,8 @@ public class SearchActivity extends ActivityServiceCommunicationActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                mUnseenUserIds.clear();
+
                 Message msg = Message.obtain();
                 msg.what = AppProtocol.SEARCH_BY_USERS;
                 Bundle data = new Bundle();
@@ -149,9 +157,36 @@ public class SearchActivity extends ActivityServiceCommunicationActivity {
                 Log.v(TAG, "Service connected");
                 break;
             case AppProtocol.SEARCH_BY_USERS_RESPONSE:
-                Log.v(TAG, "search_by_users_response=" + msg.getData());
+                Bundle data = msg.getData();
+                Log.v(TAG, "search_by_users_response=" + data);
+                if (mUnseenUserIds.isEmpty()) {
+                    mUnseenUserIds.addAll(data.getIntegerArrayList(USER_IDS));
+                    mIdCount = data.getInt(COUNT);
+                }
                 break;
         }
+    }
+
+    @Override
+    public void loadMoreUserIds() {
+        Bundle data = new Bundle();
+        ArrayList<Integer> idsToRequest = new ArrayList<Integer>(10);
+        int counter = 10;
+        for (Integer unseenUserId : mUnseenUserIds) {
+            if (counter-- < 0) break;
+//            mUnseenUserIds.remove(unseenUserId);
+            idsToRequest.add(unseenUserId);
+        }
+        mUnseenUserIds.removeAll(idsToRequest);
+        Log.v(TAG, "idsToRequest=" + idsToRequest);
+        data.putIntegerArrayList(USER_IDS, idsToRequest);
+        data.putInt(COUNT, mIdCount);
+
+        Message msg = Message.obtain();
+        msg.what = AppProtocol.SEARCH_BY_USERS;
+        msg.setData(data);
+
+        sendMessage(msg);
     }
 
     private class SearchFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
@@ -198,8 +233,6 @@ public class SearchActivity extends ActivityServiceCommunicationActivity {
         public int getCount() {
             return PAGE_COUNT;
         }
-
-
     }
 
 }

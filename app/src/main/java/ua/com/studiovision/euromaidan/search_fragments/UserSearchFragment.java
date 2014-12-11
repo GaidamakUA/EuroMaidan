@@ -79,6 +79,31 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
                 getLoaderManager().restartLoader(0, null, UserSearchFragment.this);
             }
         });
+        searchRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        Log.v(TAG, "SCROLL_STATE_SETTLING");
+                        ((SearchActivityCallbacks) UserSearchFragment.this.getActivity())
+                                .loadMoreUserIds();
+                        break;
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        Log.v(TAG, "SCROLL_STATE_IDLE");
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        Log.v(TAG, "SCROLL_STATE_DRAGGING");
+                        break;
+                    default:
+                        Log.v(TAG, "SCROLL_STATE_LOL");
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                Log.v(TAG, "onScrolled(" + "recyclerView=" + recyclerView + ", dx=" + dx + ", dy=" + dy + ")");
+            }
+        });
     }
 
     @Override

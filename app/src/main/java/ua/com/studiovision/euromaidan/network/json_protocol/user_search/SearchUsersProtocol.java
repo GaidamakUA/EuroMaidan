@@ -2,6 +2,8 @@ package ua.com.studiovision.euromaidan.network.json_protocol.user_search;
 
 import android.util.Log;
 
+import java.util.List;
+
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractRequest;
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractResponse;
 
@@ -19,13 +21,26 @@ public class SearchUsersProtocol {
         public Integer count; //'5', / null
         public SearchFilters filters;
 
+        public SearchUsersRequest(List<Integer> ids, Integer count, String search_query) {
+            Log.v(TAG, "SearchUsersRequest(" + "ids=" + ids + ", count=" + count + ", search_query=" + search_query + ")");
+            if (ids != null && ids.size() > 0) {
+                int length = ids.size();
+                this.ids = new int[length][1];
+                for (int i = 0; i < length; i++) {
+                    this.ids[i][0] = ids.get(i);
+                }
+            }
+            this.count = count;
+            this.filters = new SearchFilters(search_query);
+        }
+
         public SearchUsersRequest(int[] ids, Integer count, String search_query) {
             Log.v(TAG, "SearchUsersRequest(" + "ids=" + ids + ", count=" + count + ", search_query=" + search_query + ")");
             if (ids != null && ids.length > 0) {
                 int length = ids.length;
                 this.ids = new int[length][1];
                 for (int i = 0; i < length; i++) {
-                    this.ids[i][0] = ids[0];
+                    this.ids[i][0] = ids[i];
                 }
             }
             this.count = count;
