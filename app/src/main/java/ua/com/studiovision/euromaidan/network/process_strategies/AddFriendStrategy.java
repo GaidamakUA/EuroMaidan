@@ -6,6 +6,7 @@ import android.os.Message;
 
 import ua.com.studiovision.euromaidan.activities.FirstRunActivity;
 import ua.com.studiovision.euromaidan.activities.SearchActivity;
+import ua.com.studiovision.euromaidan.network.MainService;
 import ua.com.studiovision.euromaidan.network.json_protocol.friends.AddFriendProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.settings.SetSettingProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.settings.SettingsParams;

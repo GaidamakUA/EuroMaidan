@@ -10,11 +10,11 @@ public final class DeleteFriendProtocol {
     public static class DeleteFriendRequest implements AbstractRequest<DeleteFriendRequest> {
         public String key = "delete_friend";
         public String token;
-        public long idFriend = -1;
+        public long id_friend = -1;
 
-        public DeleteFriendRequest(String token, Long idFriend) {
+        public DeleteFriendRequest(String token, Long id_friend) {
             this.token = token;
-            this.idFriend = idFriend;
+            this.id_friend = id_friend;
         }
     }
 

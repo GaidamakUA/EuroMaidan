@@ -139,7 +139,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
                 mUnseenUserIds.clear();
 
                 Message msg = Message.obtain();
-                msg.what = AppProtocol.SEARCH_BY_USERS;
+                msg.what = AppProtocol.SEARCH;
                 Bundle data = new Bundle();
                 data.putString(SEARCH_QUERY, s.toString());
                 int pos = viewPager.getCurrentItem();
@@ -170,7 +170,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
             case AppProtocol.SEARCH_BY_USERS_RESPONSE:
                 Bundle data = msg.getData();
                 Log.v(TAG, "search_by_users_response=" + data);
-                if (mUnseenUserIds.isEmpty()) {
+                if (mUnseenUserIds.isEmpty() && data.getIntegerArrayList(USER_IDS) != null) {
                     mUnseenUserIds.addAll(data.getIntegerArrayList(USER_IDS));
                     mIdCount = data.getInt(USERS_COUNT);
                 }
@@ -196,7 +196,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         data.putSerializable(CONTENTS, SearchCategory.PEOPLE);
 
         Message msg = Message.obtain();
-        msg.what = AppProtocol.SEARCH_BY_USERS;
+        msg.what = AppProtocol.SEARCH;
         msg.setData(data);
 
         sendMessage(msg);
@@ -216,7 +216,14 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
 
     @Override
     public void deleteFriend(long userId) {
-
+        Log.v(TAG,"deleteFriend(" + "userId=" + userId + ")");
+        Bundle data = new Bundle();
+        data.putLong(FRIEND_ID, userId);
+        data.putString(FirstRunActivity.TOKEN, preferences.getToken().get());
+        Message msg = Message.obtain();
+        msg.what = AppProtocol.DELETE_FRIEND;
+        msg.setData(data);
+        sendMessage(msg);
     }
 
     private class SearchFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {

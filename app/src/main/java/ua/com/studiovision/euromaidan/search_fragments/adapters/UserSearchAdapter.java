@@ -3,11 +3,14 @@ package ua.com.studiovision.euromaidan.search_fragments.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -19,10 +22,12 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
 
     private ImageLoader imageLoader = ImageLoader.getInstance();
     SearchActivityCallbacks callbacks;
+    Context context;
 
     public UserSearchAdapter(UsersCursor cursor, Context context, SearchActivityCallbacks callbacks) {
         super(cursor, context);
         this.callbacks = callbacks;
+        this.context = context;
         imageLoader.init(imageLoaderConfiguration);
     }
 
@@ -51,7 +56,7 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private static final String TAG = "ViewHolder";
         long userId;
@@ -64,6 +69,7 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
             avatar = (ImageView) itemView.findViewById(R.id.avatar_imageview);
             userName = (TextView) itemView.findViewById(R.id.user_name_textview);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
             this.callbacks = callbacks;
         }
 
@@ -72,6 +78,12 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
         public void onClick(View v) {
             long userId = UserSearchAdapter.this.getUserId(getPosition());
             callbacks.addFriend(userId);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            callbacks.deleteFriend(UserSearchAdapter.this.getUserId(getPosition()));
+            return true;
         }
     }
 }

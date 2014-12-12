@@ -20,7 +20,8 @@ public class AudioSearchAdapter extends CursorRecyclerAdapter<AudioSearchAdapter
     public void onBindViewHolderCursor(ViewHolder holder, AudiosCursor cursor) {
         holder.audioName.setText(cursor.getName());
         holder.audioAuthor.setText(cursor.getAuthor());
-        holder.duration.setText(cursor.getDuration());
+        int duration = cursor.getDuration();
+        holder.duration.setText(String.valueOf(duration / 60) + ":" + duration % 60);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class AudioSearchAdapter extends CursorRecyclerAdapter<AudioSearchAdapter
             super(itemView);
             audioName = (TextView) itemView.findViewById(R.id.audio_name_textview);
             audioAuthor = (TextView) itemView.findViewById(R.id.audio_author_textview);
-            duration = (TextView) itemView.findViewById(R.id.audio_duration_textview);
+            duration = (TextView) itemView.findViewById(R.id.duration_textview);
         }
     }
 

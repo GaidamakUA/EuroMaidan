@@ -29,7 +29,7 @@ public class AppProtocol extends Protocol {
     public static final int RESPONSE_USER_SETTINGS = 14;
 
     // Search activity
-    public static final int SEARCH_BY_USERS = 15;
+    public static final int SEARCH = 15;
     public static final int SEARCH_BY_USERS_RESPONSE = 16;
 
     // Friends management

@@ -1,6 +1,7 @@
 package ua.com.studiovision.euromaidan.network;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
@@ -50,7 +51,7 @@ public class MainService extends ActivityServiceCommunicationService implements 
     private static final String BASE_URL = "http://e-m.com.ua/api";
     private static final Gson gson = new Gson();
 
-    private Handle UiThreadHandler;
+    private Handler UiThreadHandler;
 
     // Not following YAGNI principle
     @Pref
@@ -110,8 +111,8 @@ public class MainService extends ActivityServiceCommunicationService implements 
                 Log.v(TAG, "Request user settings");
                 doRequest(new GetSettingsStrategy(getApplicationContext(), msg, this));
                 break;
-            case AppProtocol.SEARCH_BY_USERS:
-                Log.v(TAG, "Search by users");
+            case AppProtocol.SEARCH:
+                Log.v(TAG, "Search");
                 doRequest(new SearchStrategy(getApplicationContext(), msg, this));
                 break;
             case AppProtocol.ADD_FRIEND:

@@ -31,6 +31,7 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
         super(context, SearchProtocol.SearchUsersResponse.class);
         Bundle bundle = message.getData();
         Log.v(TAG, "SearchActivity.SEARCH_QUERY=" + bundle.getString(SearchActivity.SEARCH_QUERY));
+
         request = new SearchProtocol.SearchUsersRequest(bundle.getIntegerArrayList(SearchActivity.USER_IDS),
                 bundle.getInt(SearchActivity.USERS_COUNT), bundle.getString(SearchActivity.SEARCH_QUERY),
                 (SearchCategory) bundle.getSerializable(SearchActivity.CONTENTS));

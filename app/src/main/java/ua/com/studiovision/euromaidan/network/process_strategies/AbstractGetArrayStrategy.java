@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Message;
 
 import ua.com.studiovision.euromaidan.activities.FirstRunActivity;
+import ua.com.studiovision.euromaidan.network.MainService;
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractGetArrayProtocol;
 
 /**

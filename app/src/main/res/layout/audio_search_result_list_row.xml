@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/play_icon_imageview"
         android:layout_marginLeft="@dimen/listContentLeftMargin"
-        android:layout_marginStart="@dimen/listContentLeftMargin" />
+        android:layout_marginStart="@dimen/listContentLeftMargin"
+        android:textSize="16sp"/>
 
     <TextView
         android:id="@+id/audio_author_textview"
@@ -30,10 +31,11 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/play_icon_imageview"
         android:layout_marginLeft="@dimen/listContentLeftMargin"
-        android:layout_marginStart="@dimen/listContentLeftMargin" />
+        android:layout_marginStart="@dimen/listContentLeftMargin"
+        android:textSize="13sp"/>
 
     <TextView
-        android:id="@+id/audio_duration_textview"
+        android:id="@+id/duration_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

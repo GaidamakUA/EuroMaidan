@@ -10,11 +10,11 @@ public final class AddFriendProtocol {
     public static class AddFriendRequest implements AbstractRequest<AddFriendRequest> {
         public String key = "add_friend";
         public String token;
-        public long idFriend = -1;
+        public long id_friend = -1;
 
-        public AddFriendRequest(String token, Long idFriend) {
+        public AddFriendRequest(String token, Long id_friend) {
             this.token = token;
-            this.idFriend = idFriend;
+            this.id_friend = id_friend;
         }
     }
 

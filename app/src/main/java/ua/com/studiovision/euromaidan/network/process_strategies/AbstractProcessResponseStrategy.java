@@ -1,6 +1,7 @@
 package ua.com.studiovision.euromaidan.network.process_strategies;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.security.Provider;
@@ -11,11 +12,13 @@ import ua.com.studiovision.euromaidan.network.json_protocol.AbstractResponse;
 
 public abstract class AbstractProcessResponseStrategy<T extends AbstractRequest, S extends AbstractResponse> {
 
-    protected MainService context;
+    private final String TAG = "AbstractProcessResponseStrategy";
+
+    protected Context context;
     protected T request;
     protected Class<S> responseClass;
 
-    public AbstractProcessResponseStrategy(MainService context, Class<S> responseClass) {
+    public AbstractProcessResponseStrategy(Context context, Class<S> responseClass) {
         this.context = context;
         this.responseClass = responseClass;
     }
@@ -52,8 +55,9 @@ public abstract class AbstractProcessResponseStrategy<T extends AbstractRequest,
             case WRITING_TO_DB_ERROR:
             case DATA_IS_NOT_VALID:
             case OPERATION_IN_NOT_POSSIBLE:
-                context.
-                Toast.makeText(context, response.message.toString(), Toast.LENGTH_SHORT).show();
+                //TODO review toast context
+                Log.v(TAG,response.message.toString());
+//                Toast.makeText(context, response.message.toString(), Toast.LENGTH_SHORT).show();
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected error message");

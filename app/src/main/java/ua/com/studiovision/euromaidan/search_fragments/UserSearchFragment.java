@@ -6,7 +6,6 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.media.ExifInterface;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +20,6 @@ import org.androidannotations.annotations.ViewById;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.activities.SearchActivity;
-import ua.com.studiovision.euromaidan.network.json_protocol.search.SearchCategory;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersCursor;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersSelection;
@@ -51,7 +49,7 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
 
     @AfterViews
     void init() {
-        userSearchAdapter = new UserSearchAdapter(null,getActivity().getBaseContext(),(SearchActivityCallbacks)UserSearchFragment.this.getActivity());
+        userSearchAdapter = new UserSearchAdapter(null, getActivity().getBaseContext(), (SearchActivityCallbacks) UserSearchFragment.this.getActivity());
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
         searchRecyclerView.setAdapter(userSearchAdapter);
@@ -79,7 +77,7 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
                 getLoaderManager().restartLoader(0, null, UserSearchFragment.this);
             }
         });
-        searchRecyclerView.setOnScrollListener(new SearchOnScrollListener((SearchActivityCallbacks)UserSearchFragment.this.getActivity()));
+        searchRecyclerView.setOnScrollListener(new SearchOnScrollListener((SearchActivityCallbacks) UserSearchFragment.this.getActivity()));
     }
 
     @Override
@@ -106,4 +104,5 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
     public void onLoaderReset(Loader<Cursor> loader) {
         userSearchAdapter.changeCursor(null);
     }
+
 }
