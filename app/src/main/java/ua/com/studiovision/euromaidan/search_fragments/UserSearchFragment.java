@@ -6,6 +6,7 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,7 +51,7 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
 
     @AfterViews
     void init() {
-        userSearchAdapter = new UserSearchAdapter(null,getActivity().getBaseContext());
+        userSearchAdapter = new UserSearchAdapter(null,getActivity().getBaseContext(),(SearchActivityCallbacks)UserSearchFragment.this.getActivity());
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
         searchRecyclerView.setAdapter(userSearchAdapter);
