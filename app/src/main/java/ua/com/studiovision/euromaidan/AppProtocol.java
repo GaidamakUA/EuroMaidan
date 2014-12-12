@@ -31,4 +31,8 @@ public class AppProtocol extends Protocol {
     // Search activity
     public static final int SEARCH_BY_USERS = 15;
     public static final int SEARCH_BY_USERS_RESPONSE = 16;
+
+    // Friends management
+    public static final int ADD_FRIEND = 17;
+    public static final int DELETE_FRIEND = 18;
 }

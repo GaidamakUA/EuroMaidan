@@ -39,40 +39,43 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
 
     @Override
     protected void onResponse(SearchProtocol.SearchUsersResponse response) {
-        // handle response here
-        if (response.result.users == null || response.result.users.users.length < 1) {
-            return;
+        if (response.result.users != null) {
+            UsersContentValues usersContentValues = new UsersContentValues();
+            for (User user : response.result.users.users) {
+                usersContentValues.putUserId(user.id)
+                        .putUserName(user.name)
+                        .putUserSurname(user.surname)
+                        .putAvatar(user.avatar);
+                usersContentValues.insert(context.getContentResolver());
+            }
         }
-        // uncommon
-        UsersContentValues usersContentValues = new UsersContentValues();
-        for (User user : response.result.users.users) {
-            usersContentValues.putUserId(user.id)
-                    .putUserName(user.name)
-                    .putUserSurname(user.surname)
-                    .putAvatar(user.avatar);
-            // common
-            usersContentValues.insert(context.getContentResolver());
+        Log.v(TAG, "FUCKING AUDIOS EXISTS=" + response.result.audios);
+        if (response.result.audios != null) {
+            AudiosContentValues audioContentValues = new AudiosContentValues();
+            for (MyAudio audio : response.result.audios.audios) {
+                audioContentValues
+                        .putName(audio.name)
+                        .putAuthor(audio.author)
+                        .putDuration(audio.duration)
+                        .putAudioUrl(audio.url);
+                audioContentValues.insert(context.getContentResolver());
+            }
         }
-        AudiosContentValues audioContentValues = new AudiosContentValues();
-        for (MyAudio audio : response.result.audios.audios) {
-            audioContentValues
-                    .putName(audio.name)
-                    .putAuthor(audio.author)
-                    .putDuration(audio.duration)
-                    .putAudioUrl(audio.url);
-            audioContentValues.insert(context.getContentResolver());
-        }
-        VideosContentValues videosContentValues = new VideosContentValues();
-        for (MyVideo video : response.result.videos.videos) {
-            videosContentValues
-                    .putName(video.name)
-                    .putDuration(video.duration)
-                    .putVideoUrl(video.url);
-            videosContentValues.insert(context.getContentResolver());
+        if (response.result.videos != null) {
+            VideosContentValues videosContentValues = new VideosContentValues();
+            for (MyVideo video : response.result.videos.videos) {
+                videosContentValues
+                        .putName(video.name)
+                        .putDuration(video.duration)
+                        .putVideoUrl(video.url);
+                videosContentValues.insert(context.getContentResolver());
+            }
         }
 
         Bundle bundle = new Bundle();
         addStuffToBundle(bundle, response.result.users);
+        addStuffToBundle(bundle, response.result.audios);
+        addStuffToBundle(bundle, response.result.videos);
 
         Message msg = Message.obtain();
         msg.what = AppProtocol.SEARCH_BY_USERS_RESPONSE;
@@ -81,11 +84,19 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
     }
 
     private void addStuffToBundle(Bundle bundle, InfiniteScrollResponse infiniteScrollResponse) {
+        if (infiniteScrollResponse == null) return;
         String id_key;
         String count_key;
         if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.UsersResponse) {
             id_key = SearchActivity.USER_IDS;
             count_key = SearchActivity.USERS_COUNT;
+        } else if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.MusicResponse) {
+            Log.v(TAG, "MUSIC");
+            id_key = SearchActivity.MUSIC_IDS;
+            count_key = SearchActivity.MUSIC_COUNT;
+        } else if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.VideosResponse) {
+            id_key = SearchActivity.VIDEOS_IDS;
+            count_key = SearchActivity.VIDEOS_COUNT;
         } else {
             throw new IllegalArgumentException("unexpected instance of InfiniteScrollResponse:"
                     + infiniteScrollResponse.getClass().getName());

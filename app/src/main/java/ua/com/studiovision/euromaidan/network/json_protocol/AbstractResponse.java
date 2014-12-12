@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public abstract class AbstractResponse<T extends AbstractResponse<T>> {
     public QueryStatus status;
-    public ErrorMessageCode message;
+    public MessageCode message;
 
     public enum QueryStatus {
         @SerializedName("success")

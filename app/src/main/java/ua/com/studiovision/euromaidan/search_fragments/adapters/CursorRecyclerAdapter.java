@@ -21,9 +21,9 @@ public abstract class CursorRecyclerAdapter<VH
         extends android.support.v7.widget.RecyclerView.ViewHolder, C extends Cursor> extends RecyclerView.Adapter<VH>
         implements Filterable, CursorFilter.CursorFilterClient<C> {
     private static final String TAG = "CursorRecyclerAdapter";
-    private boolean mDataValid;
-    private int mRowIDColumn;
-    private C mCursor;
+    protected boolean mDataValid;
+    protected int mRowIDColumn;
+    protected C mCursor;
     private ChangeObserver mChangeObserver;
     private DataSetObserver mDataSetObserver;
     private CursorFilter<C> mCursorFilter;

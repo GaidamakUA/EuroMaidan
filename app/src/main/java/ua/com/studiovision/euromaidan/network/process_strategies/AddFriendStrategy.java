@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Message;
 
+import ua.com.studiovision.euromaidan.activities.FirstRunActivity;
+import ua.com.studiovision.euromaidan.activities.SearchActivity;
 import ua.com.studiovision.euromaidan.network.json_protocol.friends.AddFriendProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.settings.SetSettingProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.settings.SettingsParams;
@@ -17,8 +19,7 @@ public class AddFriendStrategy extends AbstractProcessResponseStrategy
         super(context, AddFriendProtocol.AddFriendResponse.class);
         Bundle bundle = msg.getData();
         String token = bundle.getString(SetSettingProtocol.TOKEN);
-        SettingsParams settingsParams =
-                bundle.getParcelable(SetSettingProtocol.SETTINGS_PARAMS);
-//        request = new ;
+        long friendId = bundle.getLong(SearchActivity.FRIEND_ID);
+        request = new AddFriendProtocol.AddFriendRequest(token, friendId);
     }
 }

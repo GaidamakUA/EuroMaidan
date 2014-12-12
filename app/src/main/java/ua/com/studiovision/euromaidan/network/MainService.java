@@ -31,6 +31,8 @@ import ua.com.studiovision.euromaidan.network.json_protocol.AbstractResponse;
 import ua.com.studiovision.euromaidan.network.json_protocol.LoginProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.RegistrationProtocol;
 import ua.com.studiovision.euromaidan.network.process_strategies.AbstractProcessResponseStrategy;
+import ua.com.studiovision.euromaidan.network.process_strategies.AddFriendStrategy;
+import ua.com.studiovision.euromaidan.network.process_strategies.DeleteFriendStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetCitiesStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetCountriesStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetSchoolsStrategy;
@@ -47,6 +49,8 @@ public class MainService extends ActivityServiceCommunicationService implements 
     private static final String TAG = "MainService";
     private static final String BASE_URL = "http://e-m.com.ua/api";
     private static final Gson gson = new Gson();
+
+    private Handle UiThreadHandler;
 
     // Not following YAGNI principle
     @Pref
@@ -109,6 +113,14 @@ public class MainService extends ActivityServiceCommunicationService implements 
             case AppProtocol.SEARCH_BY_USERS:
                 Log.v(TAG, "Search by users");
                 doRequest(new SearchStrategy(getApplicationContext(), msg, this));
+                break;
+            case AppProtocol.ADD_FRIEND:
+                Log.v(TAG, "Add friend");
+                doRequest(new AddFriendStrategy(getApplicationContext(), msg));
+                break;
+            case AppProtocol.DELETE_FRIEND:
+                Log.v(TAG, "Delete friend");
+                doRequest(new DeleteFriendStrategy(getApplicationContext(), msg));
                 break;
         }
     }
@@ -213,5 +225,11 @@ public class MainService extends ActivityServiceCommunicationService implements 
     @Override
     public void sendMessageToActivity(Message message) {
         sendMessage(message);
+    }
+
+    public void executeOnUiThread (Runnable runnable) {
+        if (UiThreadHandler == null) {
+            UiThreadHandler = new Handler();
+        }
     }
 }

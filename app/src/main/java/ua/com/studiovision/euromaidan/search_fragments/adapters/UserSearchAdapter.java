@@ -1,6 +1,5 @@
 package ua.com.studiovision.euromaidan.search_fragments.adapters;
 
-import android.app.Application;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -31,12 +29,7 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
     @Override
     public UserSearchAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.user_search_result_list_row, viewGroup, false);
-        return new UserSearchAdapter.ViewHolder(v, new ViewHolder.IViewHolderClicks() {
-            @Override
-            public void onUserClicked(View caller) {
-
-            }
-        });
+        return new UserSearchAdapter.ViewHolder(v, callbacks);
     }
 
     @Override
@@ -46,29 +39,39 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
         imageLoader.displayImage(cursor.getAvatar(), holder.avatar);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public long getUserId(int position) {
+        if (mDataValid && mCursor != null) {
+            if (mCursor.moveToPosition(position)) {
+                return mCursor.getUserId();
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    }
 
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private static final String TAG = "ViewHolder";
         long userId;
         ImageView avatar;
         TextView userName;
-        IViewHolderClicks mListener;
+        SearchActivityCallbacks  callbacks;
 
-        public ViewHolder(View itemView, IViewHolderClicks listener) {
+        public ViewHolder(View itemView, SearchActivityCallbacks callbacks) {
             super(itemView);
-            mListener = listener;
             avatar = (ImageView) itemView.findViewById(R.id.avatar_imageview);
             userName = (TextView) itemView.findViewById(R.id.user_name_textview);
             itemView.setOnClickListener(this);
+            this.callbacks = callbacks;
         }
 
 
         @Override
         public void onClick(View v) {
-            mListener.onUserClicked(v);
-        }
-
-        public static interface IViewHolderClicks {
-            public void onUserClicked(View caller);
+            long userId = UserSearchAdapter.this.getUserId(getPosition());
+            callbacks.addFriend(userId);
         }
     }
 }

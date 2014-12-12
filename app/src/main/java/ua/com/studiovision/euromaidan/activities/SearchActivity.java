@@ -23,6 +23,7 @@ import com.softevol.activity_service_communication.ActivityServiceCommunicationA
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,6 +32,7 @@ import java.util.Set;
 
 import ua.com.studiovision.euromaidan.AppProtocol;
 import ua.com.studiovision.euromaidan.R;
+import ua.com.studiovision.euromaidan.SharedPrefs_;
 import ua.com.studiovision.euromaidan.network.MainService_;
 import ua.com.studiovision.euromaidan.network.json_protocol.search.SearchCategory;
 import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment_;
@@ -42,6 +44,9 @@ import ua.com.studiovision.euromaidan.search_fragments.VideoSearchFragment_;
 
 @EActivity(R.layout.activity_search)
 public class SearchActivity extends ActivityServiceCommunicationActivity implements SearchActivityCallbacks {
+    @Pref
+    SharedPrefs_ preferences;
+
     @ViewById(R.id.view_pager)
     ViewPager viewPager;
     @ViewById(R.id.searchSlidingStrip)
@@ -70,6 +75,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
     public static final String VIDEOS_IDS = "videos_ids";
     public static final String VIDEOS_COUNT = "videos_count";
     public static final String SEARCH_QUERY = "search_query";
+    public static final String FRIEND_ID = "friend_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +143,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
                 Bundle data = new Bundle();
                 data.putString(SEARCH_QUERY, s.toString());
                 int pos = viewPager.getCurrentItem();
-                Log.v(TAG,"Position set to -> "+pos);
+                Log.v(TAG, "Position set to -> " + pos);
                 data.putSerializable(CONTENTS, SearchCategory.values()[viewPager.getCurrentItem()]);
                 msg.setData(data);
                 sendMessage(msg);
@@ -194,6 +200,23 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         msg.setData(data);
 
         sendMessage(msg);
+    }
+
+    @Override
+    public void addFriend(long userId) {
+        Log.v(TAG, "addFriend(" + "userId=" + userId + ")");
+        Bundle data = new Bundle();
+        data.putLong(FRIEND_ID, userId);
+        data.putString(FirstRunActivity.TOKEN, preferences.getToken().get());
+        Message msg = Message.obtain();
+        msg.what = AppProtocol.ADD_FRIEND;
+        msg.setData(data);
+        sendMessage(msg);
+    }
+
+    @Override
+    public void deleteFriend(long userId) {
+
     }
 
     private class SearchFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
