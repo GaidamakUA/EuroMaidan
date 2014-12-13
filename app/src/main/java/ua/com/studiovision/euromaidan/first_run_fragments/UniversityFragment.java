@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AutoCompleteTextView;
 import android.widget.CursorAdapter;
 import android.widget.FilterQueryProvider;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
@@ -56,6 +60,10 @@ public class UniversityFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        cityAutoCompleteTextView.setFocusable(false);
+        universityAutoCompleteTextView.setFocusable(false);
+
         //---------------Country autoCompleteTextView adapter--------------------------//
         countryCursorAdapter = new SimpleCursorAdapter(getActivity().getBaseContext(),
                 android.R.layout.simple_dropdown_item_1line,
@@ -65,6 +73,27 @@ public class UniversityFragment extends Fragment {
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         countryAutoCompleteTextView.setAdapter(countryCursorAdapter);
         countryAutoCompleteTextView.setDropDownBackgroundDrawable(getResources().getDrawable(R.color.light_blue));
+        countryAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (countryId==-1L)
+                    cityAutoCompleteTextView.setFocusable(false);
+                else {
+                    cityAutoCompleteTextView.setFocusableInTouchMode(true);
+                    cityAutoCompleteTextView.setFocusable(true);
+                }
+            }
+        });
 
         countryCursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
             public Cursor runQuery(CharSequence str) {
@@ -92,6 +121,36 @@ public class UniversityFragment extends Fragment {
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         cityAutoCompleteTextView.setAdapter(cityCursorAdapter);
         cityAutoCompleteTextView.setDropDownBackgroundDrawable(getResources().getDrawable(R.color.light_blue));
+        cityAutoCompleteTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!cityAutoCompleteTextView.isFocusable()) {
+                    cityAutoCompleteTextView.startAnimation(shake);
+                    Toast.makeText(getActivity().getBaseContext(), "Выберите страну", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        cityAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (cityId==-1L)
+                    universityAutoCompleteTextView.setFocusable(false);
+                else {
+                    universityAutoCompleteTextView.setFocusableInTouchMode(true);
+                    universityAutoCompleteTextView.setFocusable(true);
+                }
+            }
+        });
 
         cityCursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
@@ -121,6 +180,15 @@ public class UniversityFragment extends Fragment {
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         universityAutoCompleteTextView.setAdapter(universityCursorAdapter);
         universityAutoCompleteTextView.setDropDownBackgroundDrawable(getResources().getDrawable(R.color.light_blue));
+        universityAutoCompleteTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!universityAutoCompleteTextView.isFocusable()) {
+                    universityAutoCompleteTextView.startAnimation(shake);
+                    Toast.makeText(getActivity().getBaseContext(), "Выберите город", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         universityCursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
