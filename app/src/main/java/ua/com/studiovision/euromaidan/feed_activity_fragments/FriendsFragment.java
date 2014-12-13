@@ -58,8 +58,8 @@ public class FriendsFragment extends Fragment {
     void initPager() {
         Log.v(TAG, "FriendsFragment.initPager(" + (fragmentPagerAdapter == null) + ")");
         Log.v(TAG, "this=" + this);
-        fragments.add(new FriendsRequestsFragment_());
         fragments.add(new UserFriendsFragment_());
+        fragments.add(new FriendsRequestsFragment_());
 
         fragmentPagerAdapter = new FriendsFragmentPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(fragmentPagerAdapter);

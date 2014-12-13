@@ -55,4 +55,7 @@
         <item>@drawable/settings_icon</item>
     </array>
 
+    <string name="add_user">Добавить</string>
+    <string name="subscribers">Подписчики</string>
+
 </resources>
