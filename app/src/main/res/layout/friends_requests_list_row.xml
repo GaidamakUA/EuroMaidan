@@ -1,42 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/listItemHeight">
+    android:layout_height="112dp">
 
     <ImageView
         android:id="@+id/user_avatar_imageview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:padding="@dimen/touchTargetPadding"
         android:layout_marginLeft="@dimen/listImageLeftRightMargin"
         android:layout_marginStart="@dimen/listImageLeftRightMargin"
-        android:padding="@dimen/touchTargetPadding"
         android:layout_centerVertical="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/listContentLeftMargin"
-        android:layout_marginStart="@dimen/listContentLeftMargin"
+        android:layout_marginLeft="112dp"
+        android:layout_marginStart="112dp"
+        android:paddingTop="10dp"
         android:layout_alignTop="@+id/user_avatar_imageview"
         android:textSize="16sp"
+        android:textColor="@android:color/black"
         android:id="@+id/user_name_textview"/>
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:id="@+id/add_user_btn"
-        android:layout_toRightOf="@+id/user_avatar_imageview"
-        android:layout_toEndOf="@+id/user_avatar_imageview"
+        android:layout_marginLeft="112dp"
+        android:layout_marginStart="112dp"
         android:layout_alignBottom="@+id/user_avatar_imageview"
         android:text="@string/add_user"
         android:textAllCaps="false"
         android:textSize="13sp"/>
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:id="@+id/subscribers_btn"
         android:layout_toRightOf="@+id/add_user_btn"
         android:layout_toEndOf="@+id/add_user_btn"
         android:layout_alignBottom="@+id/add_user_btn"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:text="@string/subscribers"
         android:textAllCaps="false"
         android:textSize="13sp"/>
