@@ -29,6 +29,7 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/light_blue</item>
         <item name="android:textColorHint">@color/light_blue</item>
+        <item name="android:dropDownSelector">@drawable/drop_down_selector</item>
     </style>
 
     <style name="TextViewForgotPassStyle">

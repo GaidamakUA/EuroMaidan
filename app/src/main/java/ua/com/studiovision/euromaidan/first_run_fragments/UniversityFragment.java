@@ -64,6 +64,7 @@ public class UniversityFragment extends Fragment {
                 new int[]{android.R.id.text1},
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         countryAutoCompleteTextView.setAdapter(countryCursorAdapter);
+        countryAutoCompleteTextView.setDropDownBackgroundDrawable(getResources().getDrawable(R.color.light_blue));
 
         countryCursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
             public Cursor runQuery(CharSequence str) {
@@ -90,6 +91,7 @@ public class UniversityFragment extends Fragment {
                 new int[]{android.R.id.text1},
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         cityAutoCompleteTextView.setAdapter(cityCursorAdapter);
+        cityAutoCompleteTextView.setDropDownBackgroundDrawable(getResources().getDrawable(R.color.light_blue));
 
         cityCursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
@@ -118,6 +120,7 @@ public class UniversityFragment extends Fragment {
                 new int[]{android.R.id.text1},
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         universityAutoCompleteTextView.setAdapter(universityCursorAdapter);
+        universityAutoCompleteTextView.setDropDownBackgroundDrawable(getResources().getDrawable(R.color.light_blue));
 
         universityCursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
