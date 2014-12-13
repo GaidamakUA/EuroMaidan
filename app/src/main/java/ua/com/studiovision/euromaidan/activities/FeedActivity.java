@@ -43,6 +43,7 @@ import ua.com.studiovision.euromaidan.NavDrawerListAdapter;
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.SharedPrefs_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.FriendsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.SettingsFragmentListener;
 import ua.com.studiovision.euromaidan.network.MainService_;
@@ -77,6 +78,7 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
         mServiceClass = MainService_.class;
 
         fragments.put(0, new FeedFragment_());
+        fragments.put(2, new FriendsFragment_());
         fragments.put(7, new SettingsFragment_());
 
         if (savedInstanceState == null) {
