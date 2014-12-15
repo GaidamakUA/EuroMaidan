@@ -9,6 +9,7 @@ import ua.com.studiovision.euromaidan.network.json_protocol.AbstractGetArrayProt
 import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsContent;
 import ua.com.studiovision.euromaidan.network.json_protocol.friends.GetFriendsProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.search.User;
+import ua.com.studiovision.euromaidan.network.provider.friends.FriendsContentValues;
 
 public class GetFriendsStrategy extends AbstractProcessResponseStrategy
         <GetFriendsProtocol.GetFriendsRequest, GetFriendsProtocol.GetFriendsResponse> {
@@ -26,8 +27,13 @@ public class GetFriendsStrategy extends AbstractProcessResponseStrategy
 
     @Override
     protected void onResponse(GetFriendsProtocol.GetFriendsResponse response) {
+        FriendsContentValues contentValues;
         for (User user : response.content) {
-            
+            contentValues = new FriendsContentValues();
+            contentValues.putFriendAvatar(user.avatar);
+            contentValues.putFriendId(user.id);
+            contentValues.putFriendName(user.name);
+            contentValues.putFriendSurname(user.surname);
         }
     }
 
