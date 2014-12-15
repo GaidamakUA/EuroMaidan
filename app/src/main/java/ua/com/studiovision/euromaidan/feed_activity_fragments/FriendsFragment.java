@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Set;
 
 import ua.com.studiovision.euromaidan.R;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FollowersFragment;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FollowersFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FriendsRequestsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.UserFriendsFragment_;
 
@@ -32,7 +34,7 @@ public class FriendsFragment extends Fragment {
     PagerSlidingTabStrip pagerSlidingTabStrip;
 
     private static final String TAG = "FriendsFragment";
-    private static final int PAGE_COUNT = 2;
+    private static final int PAGE_COUNT = 3;
 
     private List<Fragment> fragments = new ArrayList<>();
     private Set<Fragment> disposableFragment = new HashSet<>();
@@ -59,6 +61,7 @@ public class FriendsFragment extends Fragment {
         Log.v(TAG, "FriendsFragment.initPager(" + (fragmentPagerAdapter == null) + ")");
         Log.v(TAG, "this=" + this);
         fragments.add(new UserFriendsFragment_());
+        fragments.add(new FollowersFragment_());
         fragments.add(new FriendsRequestsFragment_());
 
         fragmentPagerAdapter = new FriendsFragmentPagerAdapter(getChildFragmentManager());
@@ -87,6 +90,7 @@ public class FriendsFragment extends Fragment {
 
         protected final String[] TITLES = new String[]{
                 "Друзья",
+                "Подписчики",
                 "Заявки"
         };
 

@@ -1,0 +1,36 @@
+{
+  "documentation": "Represents friends entity",
+  "fields": [
+    {
+      "documentation": "Friend id from server",
+      "name": "friend_id",
+      "type": "Long",
+      "nullable": "false",
+    },
+    {
+      "documentation": "Friend name",
+      "name": "friend_name",
+      "type": "String",
+      "nullable": "false",
+    },
+    {
+      "documentation": "Friend surname",
+      "name": "friend_surname",
+      "type": "String",
+      "nullable": "false",
+    },
+    {
+      "documentation": "Friend avatar",
+      "name": "friend_avatar",
+      "type": "String",
+      "nullable": "false",
+    }
+  ],
+
+  "constraints": [
+    {
+      "name": "unique_name",
+      "definition": "UNIQUE (friend_id) ON CONFLICT REPLACE"
+    },
+  ]
+}

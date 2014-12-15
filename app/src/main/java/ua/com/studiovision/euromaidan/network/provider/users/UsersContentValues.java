@@ -36,7 +36,6 @@ public class UsersContentValues extends AbstractContentValues {
     public UsersContentValues putUserName(String value) {
         if (value == null) throw new IllegalArgumentException("value for userName must not be null");
         mContentValues.put(UsersColumns.USER_NAME, value);
-        putUserNameLowercase(value.toLowerCase());
         return this;
     }
 
@@ -45,7 +44,6 @@ public class UsersContentValues extends AbstractContentValues {
     public UsersContentValues putUserSurname(String value) {
         if (value == null) throw new IllegalArgumentException("value for userSurname must not be null");
         mContentValues.put(UsersColumns.USER_SURNAME, value);
-        putUserSurnameLowercase(value.toLowerCase());
         return this;
     }
 

@@ -36,6 +36,7 @@ import ua.com.studiovision.euromaidan.network.process_strategies.AddFriendStrate
 import ua.com.studiovision.euromaidan.network.process_strategies.DeleteFriendStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetCitiesStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetCountriesStrategy;
+import ua.com.studiovision.euromaidan.network.process_strategies.GetFriendsStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetSchoolsStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetSettingsStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetUniversitiesStrategy;
@@ -122,6 +123,10 @@ public class MainService extends ActivityServiceCommunicationService implements 
             case AppProtocol.DELETE_FRIEND:
                 Log.v(TAG, "Delete friend");
                 doRequest(new DeleteFriendStrategy(getApplicationContext(), msg));
+                break;
+            case AppProtocol.GET_FRIENDS:
+                Log.v(TAG, "Get friends");
+                doRequest(new GetFriendsStrategy(getApplicationContext(),msg));
                 break;
         }
     }

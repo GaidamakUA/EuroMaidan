@@ -18,11 +18,12 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import ua.com.studiovision.euromaidan.BuildConfig;
+import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
+import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
+import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
+import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
 import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
 import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
-import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
-import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
-import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 import ua.com.studiovision.euromaidan.network.provider.videos.VideosColumns;
 
@@ -40,42 +41,47 @@ public class EmContentProvider extends ContentProvider {
     public static final String QUERY_NOTIFY = "QUERY_NOTIFY";
     public static final String QUERY_GROUP_BY = "QUERY_GROUP_BY";
 
-    private static final int URI_TYPE_SCHOOL = 0;
-    private static final int URI_TYPE_SCHOOL_ID = 1;
+    private static final int URI_TYPE_AUDIOS = 0;
+    private static final int URI_TYPE_AUDIOS_ID = 1;
 
-    private static final int URI_TYPE_UNIVERSITY = 2;
-    private static final int URI_TYPE_UNIVERSITY_ID = 3;
+    private static final int URI_TYPE_CITY = 2;
+    private static final int URI_TYPE_CITY_ID = 3;
 
     private static final int URI_TYPE_COUNTRY = 4;
     private static final int URI_TYPE_COUNTRY_ID = 5;
 
-    private static final int URI_TYPE_CITY = 6;
-    private static final int URI_TYPE_CITY_ID = 7;
+    private static final int URI_TYPE_FRIENDS = 6;
+    private static final int URI_TYPE_FRIENDS_ID = 7;
 
-    private static final int URI_TYPE_AUDIOS = 8;
-    private static final int URI_TYPE_AUDIOS_ID = 9;
+    private static final int URI_TYPE_SCHOOL = 8;
+    private static final int URI_TYPE_SCHOOL_ID = 9;
 
-    private static final int URI_TYPE_USERS = 10;
-    private static final int URI_TYPE_USERS_ID = 11;
+    private static final int URI_TYPE_UNIVERSITY = 10;
+    private static final int URI_TYPE_UNIVERSITY_ID = 11;
 
-    private static final int URI_TYPE_VIDEOS = 12;
-    private static final int URI_TYPE_VIDEOS_ID = 13;
+    private static final int URI_TYPE_USERS = 12;
+    private static final int URI_TYPE_USERS_ID = 13;
+
+    private static final int URI_TYPE_VIDEOS = 14;
+    private static final int URI_TYPE_VIDEOS_ID = 15;
 
 
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
+        URI_MATCHER.addURI(AUTHORITY, AudiosColumns.TABLE_NAME, URI_TYPE_AUDIOS);
+        URI_MATCHER.addURI(AUTHORITY, AudiosColumns.TABLE_NAME + "/#", URI_TYPE_AUDIOS_ID);
+        URI_MATCHER.addURI(AUTHORITY, CityColumns.TABLE_NAME, URI_TYPE_CITY);
+        URI_MATCHER.addURI(AUTHORITY, CityColumns.TABLE_NAME + "/#", URI_TYPE_CITY_ID);
+        URI_MATCHER.addURI(AUTHORITY, CountryColumns.TABLE_NAME, URI_TYPE_COUNTRY);
+        URI_MATCHER.addURI(AUTHORITY, CountryColumns.TABLE_NAME + "/#", URI_TYPE_COUNTRY_ID);
+        URI_MATCHER.addURI(AUTHORITY, FriendsColumns.TABLE_NAME, URI_TYPE_FRIENDS);
+        URI_MATCHER.addURI(AUTHORITY, FriendsColumns.TABLE_NAME + "/#", URI_TYPE_FRIENDS_ID);
         URI_MATCHER.addURI(AUTHORITY, SchoolColumns.TABLE_NAME, URI_TYPE_SCHOOL);
         URI_MATCHER.addURI(AUTHORITY, SchoolColumns.TABLE_NAME + "/#", URI_TYPE_SCHOOL_ID);
         URI_MATCHER.addURI(AUTHORITY, UniversityColumns.TABLE_NAME, URI_TYPE_UNIVERSITY);
         URI_MATCHER.addURI(AUTHORITY, UniversityColumns.TABLE_NAME + "/#", URI_TYPE_UNIVERSITY_ID);
-        URI_MATCHER.addURI(AUTHORITY, CountryColumns.TABLE_NAME, URI_TYPE_COUNTRY);
-        URI_MATCHER.addURI(AUTHORITY, CountryColumns.TABLE_NAME + "/#", URI_TYPE_COUNTRY_ID);
-        URI_MATCHER.addURI(AUTHORITY, CityColumns.TABLE_NAME, URI_TYPE_CITY);
-        URI_MATCHER.addURI(AUTHORITY, CityColumns.TABLE_NAME + "/#", URI_TYPE_CITY_ID);
-        URI_MATCHER.addURI(AUTHORITY, AudiosColumns.TABLE_NAME, URI_TYPE_AUDIOS);
-        URI_MATCHER.addURI(AUTHORITY, AudiosColumns.TABLE_NAME + "/#", URI_TYPE_AUDIOS_ID);
         URI_MATCHER.addURI(AUTHORITY, UsersColumns.TABLE_NAME, URI_TYPE_USERS);
         URI_MATCHER.addURI(AUTHORITY, UsersColumns.TABLE_NAME + "/#", URI_TYPE_USERS_ID);
         URI_MATCHER.addURI(AUTHORITY, VideosColumns.TABLE_NAME, URI_TYPE_VIDEOS);
@@ -111,6 +117,26 @@ public class EmContentProvider extends ContentProvider {
     public String getType(Uri uri) {
         int match = URI_MATCHER.match(uri);
         switch (match) {
+            case URI_TYPE_AUDIOS:
+                return TYPE_CURSOR_DIR + AudiosColumns.TABLE_NAME;
+            case URI_TYPE_AUDIOS_ID:
+                return TYPE_CURSOR_ITEM + AudiosColumns.TABLE_NAME;
+
+            case URI_TYPE_CITY:
+                return TYPE_CURSOR_DIR + CityColumns.TABLE_NAME;
+            case URI_TYPE_CITY_ID:
+                return TYPE_CURSOR_ITEM + CityColumns.TABLE_NAME;
+
+            case URI_TYPE_COUNTRY:
+                return TYPE_CURSOR_DIR + CountryColumns.TABLE_NAME;
+            case URI_TYPE_COUNTRY_ID:
+                return TYPE_CURSOR_ITEM + CountryColumns.TABLE_NAME;
+
+            case URI_TYPE_FRIENDS:
+                return TYPE_CURSOR_DIR + FriendsColumns.TABLE_NAME;
+            case URI_TYPE_FRIENDS_ID:
+                return TYPE_CURSOR_ITEM + FriendsColumns.TABLE_NAME;
+
             case URI_TYPE_SCHOOL:
                 return TYPE_CURSOR_DIR + SchoolColumns.TABLE_NAME;
             case URI_TYPE_SCHOOL_ID:
@@ -120,21 +146,6 @@ public class EmContentProvider extends ContentProvider {
                 return TYPE_CURSOR_DIR + UniversityColumns.TABLE_NAME;
             case URI_TYPE_UNIVERSITY_ID:
                 return TYPE_CURSOR_ITEM + UniversityColumns.TABLE_NAME;
-
-            case URI_TYPE_COUNTRY:
-                return TYPE_CURSOR_DIR + CountryColumns.TABLE_NAME;
-            case URI_TYPE_COUNTRY_ID:
-                return TYPE_CURSOR_ITEM + CountryColumns.TABLE_NAME;
-
-            case URI_TYPE_CITY:
-                return TYPE_CURSOR_DIR + CityColumns.TABLE_NAME;
-            case URI_TYPE_CITY_ID:
-                return TYPE_CURSOR_ITEM + CityColumns.TABLE_NAME;
-
-            case URI_TYPE_AUDIOS:
-                return TYPE_CURSOR_DIR + AudiosColumns.TABLE_NAME;
-            case URI_TYPE_AUDIOS_ID:
-                return TYPE_CURSOR_ITEM + AudiosColumns.TABLE_NAME;
 
             case URI_TYPE_USERS:
                 return TYPE_CURSOR_DIR + UsersColumns.TABLE_NAME;
@@ -279,6 +290,34 @@ public class EmContentProvider extends ContentProvider {
         String id = null;
         int matchedId = URI_MATCHER.match(uri);
         switch (matchedId) {
+            case URI_TYPE_AUDIOS:
+            case URI_TYPE_AUDIOS_ID:
+                res.table = AudiosColumns.TABLE_NAME;
+                res.tablesWithJoins = AudiosColumns.TABLE_NAME;
+                res.orderBy = AudiosColumns.DEFAULT_ORDER;
+                break;
+
+            case URI_TYPE_CITY:
+            case URI_TYPE_CITY_ID:
+                res.table = CityColumns.TABLE_NAME;
+                res.tablesWithJoins = CityColumns.TABLE_NAME;
+                res.orderBy = CityColumns.DEFAULT_ORDER;
+                break;
+
+            case URI_TYPE_COUNTRY:
+            case URI_TYPE_COUNTRY_ID:
+                res.table = CountryColumns.TABLE_NAME;
+                res.tablesWithJoins = CountryColumns.TABLE_NAME;
+                res.orderBy = CountryColumns.DEFAULT_ORDER;
+                break;
+
+            case URI_TYPE_FRIENDS:
+            case URI_TYPE_FRIENDS_ID:
+                res.table = FriendsColumns.TABLE_NAME;
+                res.tablesWithJoins = FriendsColumns.TABLE_NAME;
+                res.orderBy = FriendsColumns.DEFAULT_ORDER;
+                break;
+
             case URI_TYPE_SCHOOL:
             case URI_TYPE_SCHOOL_ID:
                 res.table = SchoolColumns.TABLE_NAME;
@@ -291,27 +330,6 @@ public class EmContentProvider extends ContentProvider {
                 res.table = UniversityColumns.TABLE_NAME;
                 res.tablesWithJoins = UniversityColumns.TABLE_NAME;
                 res.orderBy = UniversityColumns.DEFAULT_ORDER;
-                break;
-
-            case URI_TYPE_COUNTRY:
-            case URI_TYPE_COUNTRY_ID:
-                res.table = CountryColumns.TABLE_NAME;
-                res.tablesWithJoins = CountryColumns.TABLE_NAME;
-                res.orderBy = CountryColumns.DEFAULT_ORDER;
-                break;
-
-            case URI_TYPE_CITY:
-            case URI_TYPE_CITY_ID:
-                res.table = CityColumns.TABLE_NAME;
-                res.tablesWithJoins = CityColumns.TABLE_NAME;
-                res.orderBy = CityColumns.DEFAULT_ORDER;
-                break;
-
-            case URI_TYPE_AUDIOS:
-            case URI_TYPE_AUDIOS_ID:
-                res.table = AudiosColumns.TABLE_NAME;
-                res.tablesWithJoins = AudiosColumns.TABLE_NAME;
-                res.orderBy = AudiosColumns.DEFAULT_ORDER;
                 break;
 
             case URI_TYPE_USERS:
@@ -333,11 +351,12 @@ public class EmContentProvider extends ContentProvider {
         }
 
         switch (matchedId) {
+            case URI_TYPE_AUDIOS_ID:
+            case URI_TYPE_CITY_ID:
+            case URI_TYPE_COUNTRY_ID:
+            case URI_TYPE_FRIENDS_ID:
             case URI_TYPE_SCHOOL_ID:
             case URI_TYPE_UNIVERSITY_ID:
-            case URI_TYPE_COUNTRY_ID:
-            case URI_TYPE_CITY_ID:
-            case URI_TYPE_AUDIOS_ID:
             case URI_TYPE_USERS_ID:
             case URI_TYPE_VIDEOS_ID:
                 id = uri.getLastPathSegment();

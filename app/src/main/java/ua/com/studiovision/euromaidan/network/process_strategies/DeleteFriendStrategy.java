@@ -11,7 +11,7 @@ import ua.com.studiovision.euromaidan.network.json_protocol.settings.SetSettingP
 public class DeleteFriendStrategy extends AbstractProcessResponseStrategy
         <DeleteFriendProtocol.DeleteFriendRequest, DeleteFriendProtocol.DeleteFriendResponse> {
 
-    private static final String TAG = "SendSettingsStrategy";
+    private static final String TAG = "DeleteFriendStrategy";
 
     public DeleteFriendStrategy(Context context, Message msg) {
         super(context, DeleteFriendProtocol.DeleteFriendResponse.class);

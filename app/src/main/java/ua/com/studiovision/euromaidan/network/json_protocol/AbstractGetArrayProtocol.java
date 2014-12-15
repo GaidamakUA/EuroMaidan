@@ -1,5 +1,8 @@
 package ua.com.studiovision.euromaidan.network.json_protocol;
 
+import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsContent;
+import ua.com.studiovision.euromaidan.network.process_strategies.AbstractGetArrayStrategy;
+
 public class AbstractGetArrayProtocol {
 
     public static class AbstractArrayRequest implements AbstractRequest<AbstractArrayRequest> {
@@ -9,10 +12,17 @@ public class AbstractGetArrayProtocol {
         // TODO review maybe replace with anonymous or named child class
         public Long id_country;
         public Long id_city;
+        public Long id_user;
+        public FriendsContent content;
 
         public AbstractArrayRequest(String key, String lotName) {
             this.key = key;
             this.lotName = lotName;
+        }
+
+        public AbstractArrayRequest(Long id_user, FriendsContent content) {
+            this.id_user = id_user;
+            this.content = content;
         }
     }
 
@@ -49,5 +59,9 @@ public class AbstractGetArrayProtocol {
         AbstractArrayRequest request = new AbstractArrayRequest("getSchools", lotName);
         request.id_city = cityId;
         return request;
+    }
+
+    public static AbstractArrayRequest getFriends(long userId, FriendsContent content){
+        return new AbstractArrayRequest(userId, content);
     }
 }
