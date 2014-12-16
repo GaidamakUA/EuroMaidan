@@ -3,6 +3,7 @@ package ua.com.studiovision.euromaidan.network;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 

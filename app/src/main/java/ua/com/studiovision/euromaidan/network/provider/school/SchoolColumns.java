@@ -4,13 +4,15 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import ua.com.studiovision.euromaidan.network.provider.EmContentProvider;
-import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
-import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
-import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
-import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
 import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
+import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
 import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
+import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
+import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
+import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
+import ua.com.studiovision.euromaidan.network.provider.followers.FollowersColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
+import ua.com.studiovision.euromaidan.network.provider.applicant.ApplicantColumns;
 import ua.com.studiovision.euromaidan.network.provider.videos.VideosColumns;
 
 /**
