@@ -64,7 +64,5 @@ public class GetFriendsStrategy extends AbstractProcessResponseStrategy
                 }
                 break;
         }
-
     }
-
 }

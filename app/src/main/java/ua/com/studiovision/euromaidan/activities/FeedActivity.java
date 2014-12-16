@@ -11,6 +11,8 @@ import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
@@ -82,8 +84,7 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
         fragments.put(7, new SettingsFragment_());
 
         if (savedInstanceState == null) {
-            FeedFragment_ feedFragment = new FeedFragment_();
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_holder, feedFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_holder, fragments.get(0)).commit();
         }
 
     }
@@ -100,7 +101,14 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     }
 
     private void replace(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, fragment).commit();
+        if(!fragment.isAdded()) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_holder, fragment);
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                transaction.addToBackStack(fragment.getClass().getName());
+            }
+            transaction.commit();
+        }
     }
 
     @Override
