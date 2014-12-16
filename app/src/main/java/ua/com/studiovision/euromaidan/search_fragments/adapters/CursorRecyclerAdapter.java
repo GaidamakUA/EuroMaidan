@@ -35,7 +35,6 @@ public abstract class CursorRecyclerAdapter<VH
         DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
-                .showImageOnLoading(R.drawable.progress)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();

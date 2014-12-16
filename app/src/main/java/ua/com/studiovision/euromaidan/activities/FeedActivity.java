@@ -86,7 +86,6 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_holder, fragments.get(0)).commit();
         }
-
     }
 
     @Override

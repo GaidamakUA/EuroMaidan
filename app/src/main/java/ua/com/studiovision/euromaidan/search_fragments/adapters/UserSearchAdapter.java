@@ -1,6 +1,7 @@
 package ua.com.studiovision.euromaidan.search_fragments.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -9,10 +10,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersCursor;
@@ -23,12 +27,15 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
     private ImageLoader imageLoader = ImageLoader.getInstance();
     SearchActivityCallbacks callbacks;
     Context context;
+    private ProgressBar spinner;
 
     public UserSearchAdapter(UsersCursor cursor, Context context, SearchActivityCallbacks callbacks) {
         super(cursor, context);
         this.callbacks = callbacks;
         this.context = context;
         imageLoader.init(imageLoaderConfiguration);
+        spinner = new ProgressBar(context);
+        spinner.setIndeterminate(true);
     }
 
     @Override
@@ -41,7 +48,22 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
     public void onBindViewHolderCursor(ViewHolder holder, UsersCursor cursor) {
         holder.userId = cursor.getUserId();
         holder.userName.setText(cursor.getUserName());
-        imageLoader.displayImage(cursor.getAvatar(), holder.avatar);
+        imageLoader.displayImage(cursor.getAvatar(), holder.avatar, new SimpleImageLoadingListener(){
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                spinner.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+                spinner.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                spinner.setVisibility(View.GONE);
+            }
+        });
     }
 
     public long getUserId(int position) {
