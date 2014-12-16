@@ -1,0 +1,36 @@
+{
+    "documentation": "Represents applicants entity",
+    "fields": [
+        {
+            "documentation": "Applicant id from server",
+            "name": "applicant_id",
+            "type": "Long",
+            "nullable": "false",
+        },
+        {
+            "documentation": "Applicant name",
+            "name": "applicant_name",
+            "type": "String",
+            "nullable": "false",
+        },
+        {
+            "documentation": "Applicant surname",
+            "name": "applicant_surname",
+            "type": "String",
+            "nullable": "false",
+        },
+        {
+            "documentation": "Applicant avatar",
+            "name": "applicant_avatar",
+            "type": "String",
+            "nullable": "false",
+        }
+    ],
+
+    "constraints": [
+        {
+            "name": "unique_name",
+            "definition": "UNIQUE (applicant_id) ON CONFLICT REPLACE"
+        },
+    ]
+}

@@ -1,0 +1,36 @@
+{
+    "documentation": "Represents followers entity",
+    "fields": [
+        {
+            "documentation": "Follower id from server",
+            "name": "follower_id",
+            "type": "Long",
+            "nullable": "false",
+        },
+        {
+            "documentation": "Follower name",
+            "name": "follower_name",
+            "type": "String",
+            "nullable": "false",
+        },
+        {
+            "documentation": "Follower surname",
+            "name": "follower_surname",
+            "type": "String",
+            "nullable": "false",
+        },
+        {
+            "documentation": "Follower avatar",
+            "name": "follower_avatar",
+            "type": "String",
+            "nullable": "false",
+        }
+    ],
+
+    "constraints": [
+        {
+            "name": "unique_name",
+            "definition": "UNIQUE (follower_id) ON CONFLICT REPLACE"
+        },
+    ]
+}
