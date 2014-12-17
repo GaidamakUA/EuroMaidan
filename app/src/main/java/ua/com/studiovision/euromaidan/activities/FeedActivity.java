@@ -11,7 +11,6 @@ import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v8.renderscript.Allocation;
@@ -47,15 +46,18 @@ import ua.com.studiovision.euromaidan.SharedPrefs_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FriendsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FriendsFragmentCallbacks;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.SettingsFragmentListener;
 import ua.com.studiovision.euromaidan.network.MainService_;
+import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsContent;
+import ua.com.studiovision.euromaidan.network.json_protocol.friends.GetFriendsProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.settings.GetSettingProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.settings.SetSettingProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.settings.SettingsParams;
 
 @EActivity(R.layout.activity_feed)
 public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
-        implements SettingsFragmentListener {
+        implements SettingsFragmentListener, FriendsFragmentCallbacks {
     private static final String TAG = "FeedActivity";
 
     @ViewById(R.id.avatar)
@@ -219,6 +221,28 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
                 drawer.closeDrawer(Gravity.START);
             }
         }, 250);
+    }
+
+    @Override
+    public void loadFriends(long userId, FriendsContent content) {
+        Log.v(TAG, "FeedActivity.loadFriends(" + ")");
+        Bundle bundle = new Bundle();
+        bundle.putLong(GetFriendsProtocol.ID_USER, userId);
+        bundle.putSerializable(GetFriendsProtocol.CONTENT, content);
+        Message message = Message.obtain();
+        message.setData(bundle);
+        message.what = AppProtocol.GET_FRIENDS;
+        sendMessage(message);
+    }
+
+    @Override
+    public void toFriends(long userId) {
+
+    }
+
+    @Override
+    public void toSubscribers(long userId) {
+
     }
 
     private class SlideMenuClickListener implements ListView.OnItemClickListener {

@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.followers;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;

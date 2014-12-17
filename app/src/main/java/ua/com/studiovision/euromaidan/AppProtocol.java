@@ -36,4 +36,5 @@ public class AppProtocol extends Protocol {
     public static final int ADD_FRIEND = 17;
     public static final int DELETE_FRIEND = 18;
     public static final int GET_FRIENDS = 19;
+
 }

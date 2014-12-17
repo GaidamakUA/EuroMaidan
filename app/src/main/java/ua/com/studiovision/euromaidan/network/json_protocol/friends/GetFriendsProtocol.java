@@ -5,6 +5,10 @@ import ua.com.studiovision.euromaidan.network.json_protocol.AbstractResponse;
 import ua.com.studiovision.euromaidan.network.json_protocol.search.User;
 
 public final class GetFriendsProtocol {
+
+    public static final String ID_USER = "id_user";
+    public static final String CONTENT = "content";
+
     private GetFriendsProtocol() {
     }
 

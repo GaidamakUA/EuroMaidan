@@ -184,6 +184,7 @@ public class MainService extends ActivityServiceCommunicationService implements 
                 msg.what = AppProtocol.LOG_IN_SUCCESSFUL;
                 sendMessage(msg);
                 mSharedPrefs.getToken().put(response.token);
+                mSharedPrefs.getUserId().put(response.id_user);
             } else if (response.status == AbstractResponse.QueryStatus.ERROR) {
                 Message msg = Message.obtain();
                 msg.what = AppProtocol.LOG_IN_UNSUCCESSFUL;

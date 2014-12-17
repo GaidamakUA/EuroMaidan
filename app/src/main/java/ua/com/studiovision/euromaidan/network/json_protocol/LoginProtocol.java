@@ -18,5 +18,6 @@ public class LoginProtocol {
 
     public static class Response extends AbstractResponse<Response> {
         public String token;
+        public long id_user;
     }
 }
