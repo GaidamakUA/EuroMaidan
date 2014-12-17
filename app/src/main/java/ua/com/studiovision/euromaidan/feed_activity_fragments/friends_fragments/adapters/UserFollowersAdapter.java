@@ -39,7 +39,7 @@ public class UserFollowersAdapter extends CursorRecyclerAdapter<UserFollowersAda
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.user_search_result_list_row, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.friends_and_followers_list_row, viewGroup, false);
         return new UserFollowersAdapter.ViewHolder(v, callbacks);
     }
 
@@ -64,7 +64,7 @@ public class UserFollowersAdapter extends CursorRecyclerAdapter<UserFollowersAda
 
         public ViewHolder(View itemView, FriendsFragmentCallbacks callbacks) {
             super(itemView);
-            avatar = (ImageView) itemView.findViewById(R.id.avatar_imageview);
+            avatar = (ImageView) itemView.findViewById(R.id.user_avatar_imageview);
             followerFullName = (TextView) itemView.findViewById(R.id.user_name_textview);
             this.callbacks = callbacks;
         }

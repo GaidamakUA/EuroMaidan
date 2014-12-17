@@ -39,10 +39,9 @@ public class FriendsRequestsFragment extends Fragment implements LoaderManager.L
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        getActivity().getLoaderManager().initLoader(0, null, this);
+        getActivity().getLoaderManager().initLoader(2, null, this);
         callbacks = (FriendsFragmentCallbacks) FriendsRequestsFragment.this.getActivity();
     }
-
 
     @Override
     public void onDetach() {

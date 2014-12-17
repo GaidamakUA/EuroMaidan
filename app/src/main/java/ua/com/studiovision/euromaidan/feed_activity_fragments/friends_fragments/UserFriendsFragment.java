@@ -19,24 +19,22 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.SharedPrefs_;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.adapters.UserFollowersAdapter;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.adapters.UserFriendsAdapter;
 import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsContent;
-import ua.com.studiovision.euromaidan.network.provider.followers.FollowersColumns;
-import ua.com.studiovision.euromaidan.network.provider.followers.FollowersCursor;
+import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
 import ua.com.studiovision.euromaidan.network.provider.friends.FriendsCursor;
 
 //TODO COMPLETE
 
 @EFragment(R.layout.fragment_user_friends)
-public class UserFriendsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class UserFriendsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     @ViewById(R.id.user_friends_recycler_view)
     RecyclerView userFriendsRecyclerView;
 
     @Pref
     SharedPrefs_ mSharedPrefs;
 
-    private static final String TAG = "UserFollowersFragment";
+    private static final String TAG = "UserFriendsFragment";
     UserFriendsAdapter friendsRequestsAdapter;
     FriendsFragmentCallbacks callbacks;
 
@@ -73,8 +71,8 @@ public class UserFriendsFragment extends Fragment implements LoaderManager.Loade
         Log.v(TAG, "onCreateLoader(" + "i=" + i + ", bundle=" + bundle + ")");
         return new CursorLoader(
                 getActivity().getBaseContext(),
-                FollowersColumns.CONTENT_URI,
-                FollowersColumns.ALL_COLUMNS,
+                FriendsColumns.CONTENT_URI,
+                FriendsColumns.ALL_COLUMNS,
                 null, null, null);
     }
 
