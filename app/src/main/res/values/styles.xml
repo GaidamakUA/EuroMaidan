@@ -31,6 +31,7 @@
         <item name="android:textColor">@color/light_blue</item>
         <item name="android:textColorHint">@color/light_blue</item>
         <item name="android:dropDownSelector">@drawable/drop_down_selector</item>
+        <item name="android:popupBackground">@color/light_blue</item>
         <item name="android:singleLine">true</item>
     </style>
 
