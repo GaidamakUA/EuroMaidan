@@ -44,6 +44,7 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Log.v(TAG,"OnAttach("+")");
     }
 
     @Override

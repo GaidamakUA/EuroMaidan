@@ -12,6 +12,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FriendsFragmentCallbacks;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.UserFriendsFragment;
+import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsContent;
 import ua.com.studiovision.euromaidan.network.provider.friends.FriendsCursor;
 import ua.com.studiovision.euromaidan.search_fragments.adapters.CursorRecyclerAdapter;
 
@@ -22,11 +24,13 @@ public class UserFriendsAdapter extends CursorRecyclerAdapter<UserFriendsAdapter
     private ImageLoader imageLoader = ImageLoader.getInstance();
     FriendsFragmentCallbacks callbacks;
     Context context;
+    long currentUserId;
 
-    public UserFriendsAdapter(FriendsCursor cursor, Context context, FriendsFragmentCallbacks callbacks) {
+    public UserFriendsAdapter(FriendsCursor cursor, Context context, FriendsFragmentCallbacks callbacks, long currentUserId) {
         super(cursor, context);
         this.callbacks = callbacks;
         this.context = context;
+        this.currentUserId = currentUserId;
         imageLoader.init(imageLoaderConfiguration);
     }
 
@@ -55,11 +59,12 @@ public class UserFriendsAdapter extends CursorRecyclerAdapter<UserFriendsAdapter
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         long friendId;
         ImageView avatar;
         TextView friendFullName;
+        // TODO refactor duplicate callbacks
         FriendsFragmentCallbacks callbacks;
 
         public ViewHolder(View itemView, FriendsFragmentCallbacks callbacks) {
@@ -67,6 +72,13 @@ public class UserFriendsAdapter extends CursorRecyclerAdapter<UserFriendsAdapter
             avatar = (ImageView) itemView.findViewById(R.id.user_avatar_imageview);
             friendFullName = (TextView) itemView.findViewById(R.id.user_name_textview);
             this.callbacks = callbacks;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            callbacks.deleteFriend(UserFriendsAdapter.this.getFriendId(getPosition()));
+            callbacks.loadFriends(currentUserId, FriendsContent.FRIENDS);
         }
     }
 }

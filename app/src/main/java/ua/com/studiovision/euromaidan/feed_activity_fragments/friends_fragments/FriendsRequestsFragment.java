@@ -50,14 +50,15 @@ public class FriendsRequestsFragment extends Fragment implements LoaderManager.L
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
+        Log.v(TAG,"Loading requests...");
         callbacks.loadFriends(mSharedPrefs.getUserId().get(), FriendsContent.FRIENDS_REQUESTS);
     }
 
     @AfterViews
     void init() {
-        friendsRequestsAdapter = new FriendsRequestsAdapter(null, getActivity().getBaseContext(), callbacks);
+        friendsRequestsAdapter = new FriendsRequestsAdapter(null, getActivity().getBaseContext(), callbacks, mSharedPrefs.getUserId().get());
         friendsRequestsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         friendsRequestsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         friendsRequestsRecyclerView.setAdapter(friendsRequestsAdapter);

@@ -214,18 +214,6 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         sendMessage(msg);
     }
 
-    @Override
-    public void deleteFriend(long userId) {
-        Log.v(TAG,"deleteFriend(" + "userId=" + userId + ")");
-        Bundle data = new Bundle();
-        data.putLong(FRIEND_ID, userId);
-        data.putString(FirstRunActivity.TOKEN, preferences.getToken().get());
-        Message msg = Message.obtain();
-        msg.what = AppProtocol.DELETE_FRIEND;
-        msg.setData(data);
-        sendMessage(msg);
-    }
-
     private class SearchFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
 
         private int[] ICONS = new int[]{

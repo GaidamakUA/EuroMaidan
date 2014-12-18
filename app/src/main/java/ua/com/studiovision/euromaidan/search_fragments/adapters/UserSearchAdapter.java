@@ -52,7 +52,7 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private static final String TAG = "ViewHolder";
         long userId;
@@ -65,7 +65,6 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
             avatar = (ImageView) itemView.findViewById(R.id.avatar_imageview);
             userFullName = (TextView) itemView.findViewById(R.id.user_name_textview);
             itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
             this.callbacks = callbacks;
         }
 
@@ -76,10 +75,10 @@ public class UserSearchAdapter extends CursorRecyclerAdapter<UserSearchAdapter.V
             callbacks.addFriend(userId);
         }
 
-        @Override
-        public boolean onLongClick(View view) {
-            callbacks.deleteFriend(UserSearchAdapter.this.getUserId(getPosition()));
-            return true;
-        }
+//        @Override
+//        public boolean onLongClick(View view) {
+//            callbacks.deleteFriend(UserSearchAdapter.this.getUserId(getPosition()));
+//            return true;
+//        }
     }
 }

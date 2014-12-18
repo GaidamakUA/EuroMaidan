@@ -9,8 +9,11 @@ import ua.com.studiovision.euromaidan.network.json_protocol.AbstractGetArrayProt
 import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsContent;
 import ua.com.studiovision.euromaidan.network.json_protocol.friends.GetFriendsProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.search.User;
+import ua.com.studiovision.euromaidan.network.provider.applicant.ApplicantColumns;
 import ua.com.studiovision.euromaidan.network.provider.applicant.ApplicantContentValues;
+import ua.com.studiovision.euromaidan.network.provider.followers.FollowersColumns;
 import ua.com.studiovision.euromaidan.network.provider.followers.FollowersContentValues;
+import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
 import ua.com.studiovision.euromaidan.network.provider.friends.FriendsContentValues;
 
 public class GetFriendsStrategy extends AbstractProcessResponseStrategy
@@ -32,6 +35,7 @@ public class GetFriendsStrategy extends AbstractProcessResponseStrategy
         switch (friendsContent) {
             case FRIENDS:
                 FriendsContentValues friendsContentValues;
+                context.getContentResolver().delete(FriendsColumns.CONTENT_URI,null,null);
                 for (User user : response.content) {
                     friendsContentValues = new FriendsContentValues();
                     friendsContentValues.putFriendAvatar(user.avatar);
@@ -43,6 +47,7 @@ public class GetFriendsStrategy extends AbstractProcessResponseStrategy
                 break;
             case FRIENDS_REQUESTS:
                 ApplicantContentValues applicantContentValues;
+                context.getContentResolver().delete(ApplicantColumns.CONTENT_URI,null,null);
                 for (User user : response.content) {
                     applicantContentValues = new ApplicantContentValues();
                     applicantContentValues.putApplicantAvatar(user.avatar);
@@ -54,6 +59,7 @@ public class GetFriendsStrategy extends AbstractProcessResponseStrategy
                 break;
             case FOLLOWERS:
                 FollowersContentValues followerContentValues;
+                context.getContentResolver().delete(FollowersColumns.CONTENT_URI,null,null);
                 for (User user : response.content) {
                     followerContentValues = new FollowersContentValues();
                     followerContentValues.putFollowerAvatar(user.avatar);

@@ -102,11 +102,14 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     }
 
     private void replace(Fragment fragment) {
-        if(!fragment.isAdded()) {
+        if (!fragment.isAdded()) {
+            Log.v(TAG, "Try to add fragment " + fragment.toString() + "with state: " + fragment.isAdded());
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_holder, fragment);
-            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            Log.v(TAG, "Backstack count = " + getSupportFragmentManager().getBackStackEntryCount());
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0 && !(fragment instanceof FeedFragment_)) {
                 transaction.addToBackStack(fragment.getClass().getName());
+                Log.v(TAG, "Added to backstack");
             }
             transaction.commit();
         }
@@ -236,13 +239,27 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     }
 
     @Override
-    public void toFriends(long userId) {
-
+    public void deleteFriend(long userId) {
+        Log.v(TAG, "deleteFriend(" + "userId=" + userId + ")");
+        Bundle data = new Bundle();
+        data.putLong(SearchActivity.FRIEND_ID, userId);
+        data.putString(FirstRunActivity.TOKEN, preferences.getToken().get());
+        Message msg = Message.obtain();
+        msg.what = AppProtocol.DELETE_FRIEND;
+        msg.setData(data);
+        sendMessage(msg);
     }
 
     @Override
-    public void toSubscribers(long userId) {
-
+    public void addFriend(long userId) {
+        Log.v(TAG, "addFriend(" + "userId=" + userId + ")");
+        Bundle data = new Bundle();
+        data.putLong(SearchActivity.FRIEND_ID, userId);
+        data.putString(FirstRunActivity.TOKEN, preferences.getToken().get());
+        Message msg = Message.obtain();
+        msg.what = AppProtocol.ADD_FRIEND;
+        msg.setData(data);
+        sendMessage(msg);
     }
 
     private class SlideMenuClickListener implements ListView.OnItemClickListener {
@@ -251,7 +268,10 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
                                 long id) {
             drawer.closeDrawer(Gravity.START);
             if (fragments.containsKey(position)) {
-                replace(fragments.get(position));
+                if (getSupportFragmentManager().getBackStackEntryCount()==0)
+                    replace(fragments.get(position));
+                else
+                    getSupportFragmentManager().popBackStack();
             }
         }
     }

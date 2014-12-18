@@ -14,6 +14,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FriendsFragmentCallbacks;
+import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsContent;
 import ua.com.studiovision.euromaidan.network.provider.applicant.ApplicantCursor;
 import ua.com.studiovision.euromaidan.search_fragments.adapters.CursorRecyclerAdapter;
 
@@ -24,11 +25,13 @@ public class FriendsRequestsAdapter extends CursorRecyclerAdapter<FriendsRequest
     private ImageLoader imageLoader = ImageLoader.getInstance();
     FriendsFragmentCallbacks callbacks;
     Context context;
+    long currentUserId;
 
-    public FriendsRequestsAdapter(ApplicantCursor cursor, Context context, FriendsFragmentCallbacks callbacks) {
+    public FriendsRequestsAdapter(ApplicantCursor cursor, Context context, FriendsFragmentCallbacks callbacks, long currentUserId) {
         super(cursor, context);
         this.callbacks = callbacks;
         this.context = context;
+        this.currentUserId = currentUserId;
         imageLoader.init(imageLoaderConfiguration);
     }
 
@@ -82,10 +85,12 @@ public class FriendsRequestsAdapter extends CursorRecyclerAdapter<FriendsRequest
             long friendId = FriendsRequestsAdapter.this.getApplicantId(getPosition());
             switch (v.getId()) {
                 case R.id.add_to_friends_btn:
-                    callbacks.toFriends(friendId);
+                    Log.v(TAG,"Add to friends clicked");
+                    callbacks.addFriend(friendId);
+                    callbacks.loadFriends(currentUserId, FriendsContent.FRIENDS_REQUESTS);
                     break;
                 case R.id.add_to_subscribers_btn:
-                    callbacks.toSubscribers(friendId);
+                    Log.v(TAG,"Add to subscribers clicked");
                     break;
             }
         }

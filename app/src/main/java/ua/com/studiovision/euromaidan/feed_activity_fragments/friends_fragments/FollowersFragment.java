@@ -51,8 +51,9 @@ public class FollowersFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
+        Log.v(TAG,"Loading followers...");
         callbacks.loadFriends(mSharedPrefs.getUserId().get(), FriendsContent.FOLLOWERS);
     }
 

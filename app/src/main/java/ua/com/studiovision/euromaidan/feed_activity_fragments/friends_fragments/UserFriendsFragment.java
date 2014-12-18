@@ -24,8 +24,6 @@ import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsConte
 import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
 import ua.com.studiovision.euromaidan.network.provider.friends.FriendsCursor;
 
-//TODO COMPLETE
-
 @EFragment(R.layout.fragment_user_friends)
 public class UserFriendsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     @ViewById(R.id.user_friends_recycler_view)
@@ -49,18 +47,19 @@ public class UserFriendsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onDetach() {
         super.onDetach();
+        Log.v(TAG,"Loading users...");
         Log.v(TAG, "onDetach(" + ")");
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         callbacks.loadFriends(mSharedPrefs.getUserId().get(), FriendsContent.FRIENDS);
     }
 
     @AfterViews
     void init() {
-        friendsRequestsAdapter = new UserFriendsAdapter(null, getActivity().getBaseContext(), callbacks);
+        friendsRequestsAdapter = new UserFriendsAdapter(null, getActivity().getBaseContext(), callbacks,mSharedPrefs.getUserId().get());
         userFriendsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         userFriendsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         userFriendsRecyclerView.setAdapter(friendsRequestsAdapter);

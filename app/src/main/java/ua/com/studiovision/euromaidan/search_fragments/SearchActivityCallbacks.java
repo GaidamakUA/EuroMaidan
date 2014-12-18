@@ -1,7 +1,7 @@
 package ua.com.studiovision.euromaidan.search_fragments;
 
-public interface SearchActivityCallbacks {
+import ua.com.studiovision.euromaidan.UserActionsCallbacks;
+
+public interface SearchActivityCallbacks extends UserActionsCallbacks {
     void loadMoreUserIds();
-    void addFriend(long userId);
-    void deleteFriend(long userId);
 }
