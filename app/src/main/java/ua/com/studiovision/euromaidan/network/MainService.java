@@ -3,7 +3,6 @@ package ua.com.studiovision.euromaidan.network;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 
@@ -23,6 +22,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import ua.com.studiovision.euromaidan.AppProtocol;
 import ua.com.studiovision.euromaidan.SharedPrefs_;
@@ -127,7 +127,7 @@ public class MainService extends ActivityServiceCommunicationService implements 
                 break;
             case AppProtocol.GET_FRIENDS:
                 Log.v(TAG, "Get friends");
-                doRequest(new GetFriendsStrategy(getApplicationContext(),msg));
+                doRequest(new GetFriendsStrategy(getApplicationContext(), msg));
                 break;
         }
     }
@@ -203,7 +203,14 @@ public class MainService extends ActivityServiceCommunicationService implements 
     <T extends AbstractResponse<T>> T executeRequest(AbstractRequest request, Class<T> tClass) throws IOException {
         String requestString = gson.toJson(request);
         Log.v(TAG, "beforeEncode=" + requestString);
-        requestString = "data=" + Base64.encodeToString(requestString.getBytes("UTF-8"), Base64.DEFAULT);
+        requestString = "data=" + URLEncoder.encode(
+                Base64.encodeToString(requestString.getBytes("UTF-8"), Base64.DEFAULT), "UTF-8")
+                .replaceAll("\\%28", "(")
+                .replaceAll("\\%29", ")")
+                .replaceAll("\\+", "%20")
+                .replaceAll("\\%27", "'")
+                .replaceAll("\\%21", "!")
+                .replaceAll("\\%7E", "~");
 //        requestString = URLEncoder.encode(requestString, "UTF-8");
         return gson.fromJson(doPost(requestString), tClass);
     }
@@ -235,7 +242,7 @@ public class MainService extends ActivityServiceCommunicationService implements 
         sendMessage(message);
     }
 
-    public void executeOnUiThread (Runnable runnable) {
+    public void executeOnUiThread(Runnable runnable) {
         if (UiThreadHandler == null) {
             UiThreadHandler = new Handler();
         }

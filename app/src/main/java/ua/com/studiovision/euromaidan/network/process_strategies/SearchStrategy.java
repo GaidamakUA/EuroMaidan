@@ -40,6 +40,7 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
 
     @Override
     protected void onResponse(SearchProtocol.SearchUsersResponse response) {
+        if (response.result == null) return;
         if (response.result.users != null) {
             UsersContentValues usersContentValues = new UsersContentValues();
             for (User user : response.result.users.users) {
@@ -50,7 +51,6 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
                 usersContentValues.insert(context.getContentResolver());
             }
         }
-        Log.v(TAG, "FUCKING AUDIOS EXISTS=" + response.result.audios);
         if (response.result.audios != null) {
             AudiosContentValues audioContentValues = new AudiosContentValues();
             for (MyAudio audio : response.result.audios.audios) {
