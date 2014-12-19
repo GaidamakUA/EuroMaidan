@@ -43,7 +43,6 @@ public class FollowersFragment extends Fragment implements LoaderManager.LoaderC
         callbacks = (FriendsFragmentCallbacks) FollowersFragment.this.getActivity();
     }
 
-
     @Override
     public void onDetach() {
         super.onDetach();
