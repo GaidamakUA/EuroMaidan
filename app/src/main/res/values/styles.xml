@@ -78,6 +78,9 @@
     <style name="familyStatusRadioButton">
         <item name="android:button">@drawable/family_status_radio_button</item>
         <item name="android:textColor">@color/light_blue</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
+        <item name="android:paddingLeft">12dp</item>
     </style>
 
     <style name="TextView" parent="android:Widget.TextView">

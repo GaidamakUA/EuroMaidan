@@ -2,9 +2,9 @@ package ua.com.studiovision.euromaidan.feed_activity_fragments;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,13 +15,13 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import ua.com.studiovision.euromaidan.R;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FollowersFragment;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FollowersFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FriendsRequestsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.UserFriendsFragment_;
@@ -44,7 +44,7 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.v(TAG,"OnAttach("+")");
+        Log.v(TAG, "OnAttach(" + ")");
     }
 
     @Override
@@ -83,8 +83,6 @@ public class FriendsFragment extends Fragment {
         assert actionBar != null;
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(pagerSlidingTabStrip);
-
-
     }
 
     private class FriendsFragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
@@ -117,5 +115,4 @@ public class FriendsFragment extends Fragment {
             return TITLES[position];
         }
     }
-
 }
