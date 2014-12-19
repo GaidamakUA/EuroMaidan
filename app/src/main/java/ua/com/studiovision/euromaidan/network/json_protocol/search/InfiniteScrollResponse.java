@@ -5,5 +5,5 @@ package ua.com.studiovision.euromaidan.network.json_protocol.search;
  */
 public class InfiniteScrollResponse {
     public Integer count;
-    public int[][] ids;
+    public long[] ids;
 }

@@ -6,11 +6,13 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -39,7 +41,6 @@ public class UserFriendsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        getActivity().getLoaderManager().initLoader(0, null, this);
         callbacks = (FriendsFragmentCallbacks) UserFriendsFragment.this.getActivity();
     }
 
@@ -56,6 +57,12 @@ public class UserFriendsFragment extends Fragment implements LoaderManager.Loade
     public void onResume() {
         super.onResume();
         callbacks.loadFriends(mSharedPrefs.getUserId().get(), FriendsContent.FRIENDS);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().getLoaderManager().initLoader(0, null, this);
     }
 
     @AfterViews

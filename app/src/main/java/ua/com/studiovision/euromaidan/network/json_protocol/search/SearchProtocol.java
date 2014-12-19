@@ -2,8 +2,6 @@ package ua.com.studiovision.euromaidan.network.json_protocol.search;
 
 import android.util.Log;
 
-import java.util.List;
-
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractRequest;
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractResponse;
 
@@ -17,33 +15,27 @@ public class SearchProtocol {
         // all,people,publics,audios,videos
         public SearchCategory content;
         // ай-ди по которым вибирать данные
-        public int[][] ids; //[[58],[59],[23]]; // null
+        public long[] ids; //[[58],[59],[23]]; // null
         // количество результатов найденных ранее(при поиске)!
         public Integer count; //'5', / null
         public SearchFilters filters;
 
-        public SearchUsersRequest(List<Integer> ids, Integer count, String search_query, SearchCategory content) {
+        public SearchUsersRequest(long[] ids, Integer count, String search_query, SearchCategory content) {
             Log.v(TAG, "SearchUsersRequest(" + "ids=" + ids + ", count=" + count + ", search_query=" + search_query + ")");
-            if (ids != null && ids.size() > 0) {
-                int length = ids.size();
-                this.ids = new int[length][1];
-                for (int i = 0; i < length; i++) {
-                    this.ids[i][0] = ids.get(i);
-                }
+            if (ids != null && ids.length > 0) {
+                int length = ids.length;
+                this.ids = ids;
             }
             this.count = count;
             this.filters = new SearchFilters(search_query);
             this.content = content;
         }
 
-        public SearchUsersRequest(int[] ids, Integer count, String search_query) {
+        public SearchUsersRequest(long[] ids, Integer count, String search_query) {
             Log.v(TAG, "SearchUsersRequest(" + "ids=" + ids + ", count=" + count + ", search_query=" + search_query + ")");
             if (ids != null && ids.length > 0) {
                 int length = ids.length;
-                this.ids = new int[length][1];
-                for (int i = 0; i < length; i++) {
-                    this.ids[i][0] = ids[i];
-                }
+                this.ids = ids;
             }
             this.count = count;
             this.filters = new SearchFilters(search_query);

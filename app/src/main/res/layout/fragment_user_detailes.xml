@@ -18,26 +18,26 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/nameDetails"
+                android:id="@+id/name_details_edit_text"
                 style="@style/editTextAndButtonDimensionsLowSpacing"
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/name" />
 
             <EditText
-                android:id="@+id/surnameDetails"
+                android:id="@+id/surname_details_edit_text"
                 style="@style/editTextAndButtonDimensionsLowSpacing"
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/surname" />
 
             <RadioGroup
-                android:id="@+id/genderGroup"
+                android:id="@+id/gender_radio_group"
                 style="@style/sexRadioGroup"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
                 <RadioButton
-                    android:id="@+id/rb_female"
+                    android:id="@+id/female_radio_button"
                     style="@style/sexRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_weight=".5"
@@ -46,7 +46,7 @@
                     android:text="@string/female" />
 
                 <RadioButton
-                    android:id="@+id/rb_male"
+                    android:id="@+id/male_radio_button"
                     style="@style/sexRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_weight=".5"
@@ -55,19 +55,19 @@
             </RadioGroup>
 
             <Button
-                android:id="@+id/btn_birthday"
+                android:id="@+id/birthday_button"
                 style="@style/datePickerButton"
                 android:layout_height="wrap_content"
                 android:text="@string/pickBirthDate" />
 
             <EditText
-                android:id="@+id/native_city"
+                android:id="@+id/native_city_edit_text"
                 style="@style/editTextAndButtonDimensionsLowSpacing"
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/native_city" />
 
             <RadioGroup
-                android:id="@+id/relationshipGroup"
+                android:id="@+id/relationship_radio_group"
                 android:layout_width="@dimen/loginComponentWidth"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

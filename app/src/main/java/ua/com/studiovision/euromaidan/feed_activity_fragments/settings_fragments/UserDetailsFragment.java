@@ -27,28 +27,28 @@ import ua.com.studiovision.euromaidan.network.json_protocol.settings.SettingsPar
 
 @EFragment(R.layout.fragment_user_detailes)
 public class UserDetailsFragment extends Fragment {
-    @ViewById(R.id.nameDetails)
+    @ViewById(R.id.name_details_edit_text)
     EditText userName;
-    @ViewById(R.id.surnameDetails)
+    @ViewById(R.id.surname_details_edit_text)
     EditText userSurname;
-    @ViewById(R.id.genderGroup)
+    @ViewById(R.id.gender_radio_group)
     RadioGroup genderGroup;
-    @ViewById(R.id.rb_female)
-    RadioButton rbFemale;
-    @ViewById(R.id.rb_male)
-    RadioButton rbMale;
-    @ViewById(R.id.btn_birthday)
+    @ViewById(R.id.female_radio_button)
+    RadioButton femaleRadioButton;
+    @ViewById(R.id.male_radio_button)
+    RadioButton maleRadioButton;
+    @ViewById(R.id.birthday_button)
     Button birthdayButton;
-    @ViewById(R.id.native_city)
-    EditText nativeCity;
-    @ViewById(R.id.relationshipGroup)
-    RadioGroup relationshipGroup;
+    @ViewById(R.id.native_city_edit_text)
+    EditText nativeCityEditText;
+    @ViewById(R.id.relationship_radio_group)
+    RadioGroup relationshipRadioGroup;
     @ViewById(R.id.save_button)
     Button saveButton;
 
     private final String TAG = "User details fragment";
 
-    SettingsFragmentListener settingsFragmentListener;
+//    SettingsFragmentListener settingsFragmentListener;
 
     final static Calendar calendar = Calendar.getInstance();
     SimpleDateFormat sdFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -56,16 +56,16 @@ public class UserDetailsFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        settingsFragmentListener = (SettingsFragmentListener) activity;
+//        settingsFragmentListener = (SettingsFragmentListener) activity;
     }
 
     @AfterViews
     void init() {
-        rbFemale.setTextColor(getActivity().getBaseContext().getResources().getColorStateList(R.color.sex_rb_text_colors));
-        rbMale.setTextColor(getActivity().getBaseContext().getResources().getColorStateList(R.color.sex_rb_text_colors));
+        femaleRadioButton.setTextColor(getActivity().getBaseContext().getResources().getColorStateList(R.color.sex_rb_text_colors));
+        maleRadioButton.setTextColor(getActivity().getBaseContext().getResources().getColorStateList(R.color.sex_rb_text_colors));
     }
 
-    @Click(R.id.btn_birthday)
+    @Click(R.id.birthday_button)
     void pickBirthDate() {
         Log.v(TAG, "Pick date pressed");
         DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -84,9 +84,9 @@ public class UserDetailsFragment extends Fragment {
     void save() {
         final String name = userName.getText().toString();
         final String surname = userSurname.getText().toString();
-        final Genders gender = genderGroup.getCheckedRadioButtonId() == R.id.rb_female ? Genders.FEMALE : Genders.MALE;
+        final Genders gender = genderGroup.getCheckedRadioButtonId() == R.id.female_radio_button ? Genders.FEMALE : Genders.MALE;
         final String dob;
-        final String city = nativeCity.getText().toString();
+        final String city = nativeCityEditText.getText().toString();
 
         if (!birthdayButton.getText().toString().equals(getResources().getString(R.string.pickBirthDate))) {
             dob = sdFormat.format(calendar.getTime());
@@ -97,7 +97,7 @@ public class UserDetailsFragment extends Fragment {
 
         final RelationshipStatus status;
 
-        switch (relationshipGroup.getCheckedRadioButtonId()) {
+        switch (relationshipRadioGroup.getCheckedRadioButtonId()) {
             case R.id.relationSingle:
                 status = RelationshipStatus.SINGLE;
                 break;

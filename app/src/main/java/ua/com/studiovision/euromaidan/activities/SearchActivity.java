@@ -25,7 +25,9 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -62,7 +64,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
     private Set<Fragment> disposableFragment = new HashSet<Fragment>();
     private FragmentPagerAdapter fragmentPagerAdapter;
 
-    private HashSet<Integer> mUnseenUserIds = new HashSet<Integer>();
+    private HashSet<Long> mUnseenUserIds = new HashSet<Long>();
     private int mIdCount;
 
     public static final String CONTENTS = "contents";
@@ -170,8 +172,10 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
             case AppProtocol.SEARCH_BY_USERS_RESPONSE:
                 Bundle data = msg.getData();
                 Log.v(TAG, "search_by_users_response=" + data);
-                if (mUnseenUserIds.isEmpty() && data.getIntegerArrayList(USER_IDS) != null) {
-                    mUnseenUserIds.addAll(data.getIntegerArrayList(USER_IDS));
+                if (mUnseenUserIds.isEmpty() && data.getLongArray(USER_IDS) != null) {
+                    for (long element : data.getLongArray(USER_IDS)) {
+                        mUnseenUserIds.add(element);
+                    };
                     mIdCount = data.getInt(USERS_COUNT);
                 }
                 break;
@@ -182,16 +186,19 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
     public void loadMoreUserIds() {
         if (mUnseenUserIds.isEmpty()) return;
         Bundle data = new Bundle();
-        ArrayList<Integer> idsToRequest = new ArrayList<Integer>(10);
-        int counter = 10;
-        for (Integer unseenUserId : mUnseenUserIds) {
-            if (counter-- < 0) break;
-//            mUnseenUserIds.remove(unseenUserId);
-            idsToRequest.add(unseenUserId);
+        int counter = mUnseenUserIds.size() > 10 ? 10 : mUnseenUserIds.size();
+        long[] idsToRequest = new long[counter];
+        for (Long unseenUserId : mUnseenUserIds) {
+            if (--counter < 0) break;
+            Log.v(TAG, "counter=" + counter);
+            idsToRequest[counter] = unseenUserId;
         }
-        mUnseenUserIds.removeAll(idsToRequest);
-        Log.v(TAG, "idsToRequest=" + idsToRequest);
-        data.putIntegerArrayList(USER_IDS, idsToRequest);
+        for (long i : idsToRequest) {
+            mUnseenUserIds.remove(i);
+        }
+        Log.v(TAG, "idsToRequest=" + Arrays.toString(idsToRequest));
+
+        data.putLongArray(USER_IDS, idsToRequest);
         data.putInt(USERS_COUNT, mIdCount);
         data.putSerializable(CONTENTS, SearchCategory.PEOPLE);
 
