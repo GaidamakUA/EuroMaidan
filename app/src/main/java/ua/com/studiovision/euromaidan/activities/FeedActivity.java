@@ -267,12 +267,11 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             drawer.closeDrawer(Gravity.START);
-            if (fragments.containsKey(position)) {
-                if (getSupportFragmentManager().getBackStackEntryCount()==0)
-                    replace(fragments.get(position));
-                else
+            if (fragments.containsKey(position))
+                if (getSupportFragmentManager().getBackStackEntryCount()==1 && position==0)
                     getSupportFragmentManager().popBackStack();
-            }
+                else
+                    replace(fragments.get(position));
         }
     }
 }
