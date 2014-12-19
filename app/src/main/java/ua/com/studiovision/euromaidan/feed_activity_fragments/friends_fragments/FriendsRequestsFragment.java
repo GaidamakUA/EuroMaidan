@@ -47,6 +47,7 @@ public class FriendsRequestsFragment extends Fragment implements LoaderManager.L
     public void onDetach() {
         super.onDetach();
         Log.v(TAG, "onDetach(" + ")");
+        getActivity().getLoaderManager().destroyLoader(2);
     }
 
     @Override

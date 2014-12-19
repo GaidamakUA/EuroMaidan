@@ -48,6 +48,7 @@ public class FollowersFragment extends Fragment implements LoaderManager.LoaderC
     public void onDetach() {
         super.onDetach();
         Log.v(TAG, "onDetach(" + ")");
+        getActivity().getLoaderManager().destroyLoader(1);
     }
 
     @Override

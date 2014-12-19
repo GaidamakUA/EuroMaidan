@@ -33,7 +33,7 @@ public class UserFriendsFragment extends Fragment implements LoaderManager.Loade
     SharedPrefs_ mSharedPrefs;
 
     private static final String TAG = "UserFriendsFragment";
-    UserFriendsAdapter friendsRequestsAdapter;
+    UserFriendsAdapter userFriendsAdapter;
     FriendsFragmentCallbacks callbacks;
 
     @Override
@@ -49,6 +49,7 @@ public class UserFriendsFragment extends Fragment implements LoaderManager.Loade
         super.onDetach();
         Log.v(TAG,"Loading users...");
         Log.v(TAG, "onDetach(" + ")");
+        getActivity().getLoaderManager().destroyLoader(0);
     }
 
     @Override
@@ -59,10 +60,10 @@ public class UserFriendsFragment extends Fragment implements LoaderManager.Loade
 
     @AfterViews
     void init() {
-        friendsRequestsAdapter = new UserFriendsAdapter(null, getActivity().getBaseContext(), callbacks,mSharedPrefs.getUserId().get());
+        userFriendsAdapter = new UserFriendsAdapter(null, getActivity().getBaseContext(), callbacks,mSharedPrefs.getUserId().get());
         userFriendsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         userFriendsRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        userFriendsRecyclerView.setAdapter(friendsRequestsAdapter);
+        userFriendsRecyclerView.setAdapter(userFriendsAdapter);
     }
 
     @Override
@@ -78,11 +79,11 @@ public class UserFriendsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.v(TAG, "onLoadFinished(" + "loader=" + loader + ", cursor=" + cursor.getCount() + ")");
-        friendsRequestsAdapter.changeCursor(new FriendsCursor(cursor));
+        userFriendsAdapter.changeCursor(new FriendsCursor(cursor));
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        friendsRequestsAdapter.changeCursor(null);
+        userFriendsAdapter.changeCursor(null);
     }
 }
