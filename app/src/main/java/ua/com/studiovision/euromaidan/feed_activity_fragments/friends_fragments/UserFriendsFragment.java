@@ -41,6 +41,7 @@ public class UserFriendsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        getActivity().getLoaderManager().initLoader(0,null,this);
         callbacks = (FriendsFragmentCallbacks) UserFriendsFragment.this.getActivity();
     }
 
@@ -48,7 +49,6 @@ public class UserFriendsFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.v(TAG,"Loading users...");
         Log.v(TAG, "onDetach(" + ")");
         getActivity().getLoaderManager().destroyLoader(0);
     }
@@ -57,12 +57,6 @@ public class UserFriendsFragment extends Fragment implements LoaderManager.Loade
     public void onResume() {
         super.onResume();
         callbacks.loadFriends(mSharedPrefs.getUserId().get(), FriendsContent.FRIENDS);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getActivity().getLoaderManager().initLoader(0, null, this);
     }
 
     @AfterViews

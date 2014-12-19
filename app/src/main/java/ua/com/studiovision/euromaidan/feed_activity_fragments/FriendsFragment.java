@@ -2,6 +2,7 @@ package ua.com.studiovision.euromaidan.feed_activity_fragments;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -48,6 +49,16 @@ public class FriendsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Log.v(TAG,"FLIP");
+        ActionBar actionBar = getActivity().getActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(pagerSlidingTabStrip);
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         Log.v(TAG, "FriendsFragment.onDetach(" + ")");
@@ -78,11 +89,6 @@ public class FriendsFragment extends Fragment {
         pagerSlidingTabStrip.setViewPager(viewPager);
         pagerSlidingTabStrip.setAllCaps(false);
         pagerSlidingTabStrip.setTextColor(getResources().getColor(android.R.color.white));
-
-        ActionBar actionBar = getActivity().getActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(pagerSlidingTabStrip);
     }
 
     private class FriendsFragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
