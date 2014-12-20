@@ -5,7 +5,7 @@
     <dimen name="textSize">20sp</dimen>
     <dimen name="textSizeSmaller">18sp</dimen>
     <dimen name="loginComponentWidth">300dp</dimen>
-    <dimen name="loginComponentHeight">30dp</dimen>
+    <dimen name="editTextAndButtonHeight">30dp</dimen>
     <dimen name="rectangleStrokeWidth">1dp</dimen>
     <dimen name="rectangleCornerRadius">7dp</dimen>
     <dimen name="topBottomMargin">30dp</dimen>

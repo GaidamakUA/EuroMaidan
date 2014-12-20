@@ -51,7 +51,6 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.v(TAG,"FLIP");
         ActionBar actionBar = getActivity().getActionBar();
         assert actionBar != null;
         actionBar.setDisplayShowCustomEnabled(true);

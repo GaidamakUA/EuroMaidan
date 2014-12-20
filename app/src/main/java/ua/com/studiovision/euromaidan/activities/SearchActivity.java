@@ -25,7 +25,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -93,7 +92,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         assert actionBar != null;
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(searchActionBar, layoutParams);
-        actionBar.setBackgroundDrawable(new ColorDrawable(R.color.grey_bg_search));
+        actionBar.setBackgroundDrawable(new ColorDrawable(R.color.darker_grey));
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayUseLogoEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);

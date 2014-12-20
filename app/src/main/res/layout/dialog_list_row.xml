@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="72dp">
+
+    <ImageView
+        android:id="@+id/user_avatar_imageview"
+        android:layout_width="63dp"
+        android:layout_height="63dp"
+        android:layout_marginLeft="@dimen/listImageLeftRightMargin"
+        android:layout_marginStart="@dimen/listImageLeftRightMargin"
+        android:layout_centerVertical="true"
+        android:src="@drawable/fail_avatar"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="95dp"
+        android:layout_marginStart="95dp"
+        android:paddingTop="10dp"
+        android:layout_alignTop="@+id/user_avatar_imageview"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/user_name_textview"
+        android:text="Name Surname"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="95dp"
+        android:layout_marginStart="95dp"
+        android:layout_marginRight="@dimen/listImageLeftRightMargin"
+        android:layout_marginEnd="@dimen/listImageLeftRightMargin"
+        android:layout_below="@+id/user_name_textview"
+        android:paddingTop="8dp"
+        android:textSize="15sp"
+        android:textColor="@color/darker_grey"
+        android:text="This is stub for cut representation of text of user message"
+        android:ellipsize="end"
+        android:singleLine="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/user_name_textview"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="@dimen/listImageLeftRightMargin"
+        android:layout_marginEnd="@dimen/listImageLeftRightMargin"
+        android:layout_below="@+id/user_name_textview"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:text="20.12.2014"
+        android:ellipsize="end"
+        android:singleLine="true"/>
+
+</RelativeLayout>

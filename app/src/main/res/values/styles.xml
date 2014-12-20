@@ -48,13 +48,13 @@
     </style>
 
     <style name="editTextAndButtonDimensions">
-        <item name="android:layout_height">@dimen/loginComponentHeight</item>
+        <item name="android:layout_height">@dimen/editTextAndButtonHeight</item>
         <item name="android:layout_width">@dimen/loginComponentWidth</item>
         <item name="android:layout_marginTop">@dimen/topBottomMargin</item>
     </style>
 
     <style name="editTextAndButtonDimensionsLowSpacing">
-        <item name="android:layout_height">@dimen/loginComponentHeight</item>
+        <item name="android:layout_height">@dimen/editTextAndButtonHeight</item>
         <item name="android:layout_width">@dimen/loginComponentWidth</item>
         <item name="android:layout_marginTop">@dimen/topBottomMarginLow</item>
     </style>
@@ -70,7 +70,7 @@
     </style>
 
     <style name="sexRadioButton">
-        <item name="android:layout_height">@dimen/loginComponentHeight</item>
+        <item name="android:layout_height">@dimen/editTextAndButtonHeight</item>
         <item name="android:background">@drawable/sex_radio_button</item>
         <item name="android:button">@android:color/transparent</item>
     </style>
@@ -118,6 +118,11 @@
 
     <style name="ActionBarStyle" parent="android:Widget.Holo.ActionBar">
         <item name="android:background">@color/light_blue</item>
+    </style>
+    
+    <style name="NewMessageEditText">
+        <item name="android:layout_height">@dimen/</item>
+        <item name="android:background">@drawable/new_message_edit_text_bg</item>
     </style>
 
 </resources>
