@@ -121,7 +121,7 @@
     </style>
     
     <style name="NewMessageEditText">
-        <item name="android:layout_height">@dimen/</item>
+        <item name="android:layout_height">@dimen/editTextAndButtonHeight</item>
         <item name="android:background">@drawable/new_message_edit_text_bg</item>
     </style>
 
