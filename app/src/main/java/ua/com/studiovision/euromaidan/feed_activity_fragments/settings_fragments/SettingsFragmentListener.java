@@ -7,7 +7,4 @@ public interface SettingsFragmentListener {
 
     // synchronized
     void requestProfileDataFromServer();
-
-    // synchronized
-    void pullProfileData();
 }

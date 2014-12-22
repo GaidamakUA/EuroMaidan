@@ -83,7 +83,7 @@
                     android:textSize="@dimen/textSize" />
 
                 <RadioButton
-                    android:id="@+id/relationSingle"
+                    android:id="@+id/relationship_single_radio_button"
                     style="@style/familyStatusRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,42 +91,42 @@
                     android:text="@string/single" />
 
                 <RadioButton
-                    android:id="@+id/relationDating"
+                    android:id="@+id/relationshop_dating_radio_button"
                     style="@style/familyStatusRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dating" />
 
                 <RadioButton
-                    android:id="@+id/relationEngaged"
+                    android:id="@+id/relationship_engaged_radio_button"
                     style="@style/familyStatusRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/engaged" />
 
                 <RadioButton
-                    android:id="@+id/relationMarried"
+                    android:id="@+id/relationship_married_radio_button"
                     style="@style/familyStatusRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/married" />
 
                 <RadioButton
-                    android:id="@+id/relationInLove"
+                    android:id="@+id/relationship_in_love_radio_button"
                     style="@style/familyStatusRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/in_love" />
 
                 <RadioButton
-                    android:id="@+id/relationComplicated"
+                    android:id="@+id/relationship_complicated_radio_button"
                     style="@style/familyStatusRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/its_complicated" />
 
                 <RadioButton
-                    android:id="@+id/relationActiveSearch"
+                    android:id="@+id/relationship_active_search_radio_button"
                     style="@style/familyStatusRadioButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

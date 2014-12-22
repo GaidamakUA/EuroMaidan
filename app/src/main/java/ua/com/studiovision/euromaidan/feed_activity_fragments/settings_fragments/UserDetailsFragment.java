@@ -16,21 +16,24 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import ua.com.studiovision.euromaidan.R;
-import ua.com.studiovision.euromaidan.network.json_protocol.settings.Genders;
+import ua.com.studiovision.euromaidan.network.json_protocol.settings.Gender;
+import ua.com.studiovision.euromaidan.network.json_protocol.settings.GetSettingsResponseContent;
 import ua.com.studiovision.euromaidan.network.json_protocol.settings.RelationshipStatus;
 import ua.com.studiovision.euromaidan.network.json_protocol.settings.SettingsParamsBuilder;
 
 @EFragment(R.layout.fragment_user_detailes)
 public class UserDetailsFragment extends Fragment {
     @ViewById(R.id.name_details_edit_text)
-    EditText userName;
+    EditText userNameEditText;
     @ViewById(R.id.surname_details_edit_text)
-    EditText userSurname;
+    EditText userSurnameEditText;
     @ViewById(R.id.gender_radio_group)
     RadioGroup genderGroup;
     @ViewById(R.id.female_radio_button)
@@ -50,8 +53,11 @@ public class UserDetailsFragment extends Fragment {
 
 //    SettingsFragmentListener settingsFragmentListener;
 
+    // TODO Button should be updated with value from calendar to fallow MVC pattern
     final static Calendar calendar = Calendar.getInstance();
-    SimpleDateFormat sdFormat = new SimpleDateFormat("dd-MM-yyyy");
+    SimpleDateFormat sendDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+    SimpleDateFormat displayDateFormat = new SimpleDateFormat("d MMMM yyyy");
 
     @Override
     public void onAttach(Activity activity) {
@@ -82,46 +88,22 @@ public class UserDetailsFragment extends Fragment {
 
     @Click(R.id.save_button)
     void save() {
-        final String name = userName.getText().toString();
-        final String surname = userSurname.getText().toString();
-        final Genders gender = genderGroup.getCheckedRadioButtonId() == R.id.female_radio_button ? Genders.FEMALE : Genders.MALE;
+        final String name = userNameEditText.getText().toString();
+        final String surname = userSurnameEditText.getText().toString();
+        final Gender gender = genderGroup.getCheckedRadioButtonId() == R.id.female_radio_button ? Gender.FEMALE : Gender.MALE;
         final String dob;
         final String city = nativeCityEditText.getText().toString();
 
         if (!birthdayButton.getText().toString().equals(getResources().getString(R.string.pickBirthDate))) {
-            dob = sdFormat.format(calendar.getTime());
+            dob = sendDateFormat.format(calendar.getTime());
+            Log.v(TAG, "Date of birth=" + dob);
         } else {
             Toast.makeText(getActivity().getBaseContext(), "Введите пожалуйста дату рождения", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        final RelationshipStatus status;
-
-        switch (relationshipRadioGroup.getCheckedRadioButtonId()) {
-            case R.id.relationSingle:
-                status = RelationshipStatus.SINGLE;
-                break;
-            case R.id.relationDating:
-                status = RelationshipStatus.DATING;
-                break;
-            case R.id.relationEngaged:
-                status = RelationshipStatus.ENGAGED;
-                break;
-            case R.id.relationMarried:
-                status = RelationshipStatus.MARRIED;
-                break;
-            case R.id.relationInLove:
-                status = RelationshipStatus.IN_LOVE;
-                break;
-            case R.id.relationComplicated:
-                status = RelationshipStatus.COMPLICATED;
-                break;
-            case R.id.relationActiveSearch:
-                status = RelationshipStatus.IN_ACTIVE_SEARCH;
-                break;
-            default:
-                status = RelationshipStatus.NONE;
-        }
+        final RelationshipStatus status = RelationshipStatus
+                .getRelationshipStatus(relationshipRadioGroup.getCheckedRadioButtonId());
 
         Log.v(TAG, "UserDetailsFragment.save(" + ")");
         SettingsParamsBuilder builder = new SettingsParamsBuilder();
@@ -133,5 +115,37 @@ public class UserDetailsFragment extends Fragment {
                 .setDob(dob);
         ((SettingsFragmentListener) getActivity())
                 .sendProfileDataToServer(builder.createRequestParams());
+    }
+
+    public void setData(GetSettingsResponseContent content) {
+        userNameEditText.setText(content.user_name);
+        userSurnameEditText.setText(content.user_surname);
+        switch (content.user_gender) {
+            case FEMALE:
+                Log.v(TAG, "Go to kitchen.");
+                maleRadioButton.setChecked(true);
+                break;
+            case MALE:
+                Log.v(TAG, "Have a beer.");
+                femaleRadioButton.setChecked(true);
+                break;
+            case UNKNOWN:
+                Log.v(TAG, "Not a fan of futa");
+                break;
+            default:
+                throw new IllegalArgumentException("Your sex is sick");
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = dateFormat.parse(content.date_of_birth);
+            calendar.setTime(date);
+            birthdayButton.setText(displayDateFormat.format(date));
+        } catch (ParseException e) {
+            Log.w(TAG, "", e);
+        }
+        nativeCityEditText.setText(content.native_city);
+
+        relationshipRadioGroup.check(content.family_status.getId());
     }
 }

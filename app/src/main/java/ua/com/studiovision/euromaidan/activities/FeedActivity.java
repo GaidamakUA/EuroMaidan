@@ -46,6 +46,7 @@ import ua.com.studiovision.euromaidan.SharedPrefs_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FriendsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.InboxFragment_;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FriendsFragmentCallbacks;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.SettingsFragmentListener;
@@ -53,6 +54,7 @@ import ua.com.studiovision.euromaidan.network.MainService_;
 import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsContent;
 import ua.com.studiovision.euromaidan.network.json_protocol.friends.GetFriendsProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.settings.GetSettingProtocol;
+import ua.com.studiovision.euromaidan.network.json_protocol.settings.GetSettingsResponseContent;
 import ua.com.studiovision.euromaidan.network.json_protocol.settings.SetSettingProtocol;
 import ua.com.studiovision.euromaidan.network.json_protocol.settings.SettingsParams;
 
@@ -150,11 +152,6 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     }
 
     @Override
-    public void pullProfileData() {
-
-    }
-
-    @Override
     protected void handleMessage(Message msg) {
         switch (msg.what) {
             case AppProtocol.ON_SERVICE_CONNECTED:
@@ -162,6 +159,9 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
                 break;
             case AppProtocol.RESPONSE_USER_SETTINGS:
                 Log.v(TAG, "Response:" + msg.getData());
+                ((SettingsFragment)fragments.get(7)).pushData(
+                        (GetSettingsResponseContent) msg.getData()
+                                .getParcelable(GetSettingProtocol.RESPONSE_OBJECT));
                 break;
         }
     }
@@ -169,10 +169,14 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     @SuppressWarnings("deprecation")
     @AfterViews
     void init() {
-        avatar.setImageBitmap(ImageProcessor.getRoundedCornersImage(BitmapFactory.decodeResource(getResources(), R.drawable.fail_avatar)));
-        Bitmap overlay = Bitmap.createBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.fail_background_user));
+        avatar.setImageBitmap(ImageProcessor.getRoundedCornersImage(
+                BitmapFactory.decodeResource(getResources(), R.drawable.fail_avatar)));
+        Bitmap overlay = Bitmap.createBitmap(
+                BitmapFactory.decodeResource(getResources(), R.drawable.fail_background_user));
         final RenderScript rs = RenderScript.create(getApplicationContext());
-        final Allocation input = Allocation.createFromBitmapResource(rs, getResources(), R.drawable.fail_background_user, Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
+        final Allocation input = Allocation.createFromBitmapResource(rs, getResources(),
+                R.drawable.fail_background_user, Allocation.MipmapControl.MIPMAP_NONE,
+                Allocation.USAGE_SCRIPT);
         final Allocation output = Allocation.createTyped(rs, input.getType());
         final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
         script.setRadius(5.f);

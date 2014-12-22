@@ -23,9 +23,11 @@ import java.util.Set;
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.ChangePasswordFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.SettingsFragmentListener;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserDetailsFragment;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserDetailsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserEducationPlacesFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.UserPictureFragment_;
+import ua.com.studiovision.euromaidan.network.json_protocol.settings.GetSettingsResponseContent;
 
 @EFragment(R.layout.fragment_settings)
 public class SettingsFragment extends Fragment {
@@ -123,5 +125,11 @@ public class SettingsFragment extends Fragment {
         public int getPageIconResId(int i) {
             return ICONS[i];
         }
+    }
+
+    public void pushData(GetSettingsResponseContent content) {
+        Log.v(TAG, "Data has been received content=" + content);
+        // XXX Very dangerous hardcode.
+        ((UserDetailsFragment) fragments.get(0)).setData(content);
     }
 }

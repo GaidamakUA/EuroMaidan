@@ -3,7 +3,7 @@ package ua.com.studiovision.euromaidan.network.json_protocol.settings;
 public class SettingsParamsBuilder {
     private String name;
     private String surname;
-    private Genders gender;
+    private Gender gender;
     private RelationshipStatus family_status;
     private Long family_person_id;
     private String native_city;
@@ -19,7 +19,7 @@ public class SettingsParamsBuilder {
         return this;
     }
 
-    public SettingsParamsBuilder setGender(Genders gender) {
+    public SettingsParamsBuilder setGender(Gender gender) {
         this.gender = gender;
         return this;
     }
