@@ -9,11 +9,15 @@ import android.widget.TextView;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosCursor;
+import ua.com.studiovision.euromaidan.search_fragments.SearchActivityCallbacks;
 
 public class AudioSearchAdapter extends CursorRecyclerAdapter<AudioSearchAdapter.ViewHolder, AudiosCursor> {
 
-    public AudioSearchAdapter(AudiosCursor cursor, Context context) {
+    SearchActivityCallbacks callbacks;
+
+    public AudioSearchAdapter(AudiosCursor cursor, Context context, SearchActivityCallbacks callbacks) {
         super(cursor, context);
+        this.callbacks = callbacks;
     }
 
     @Override
@@ -30,7 +34,7 @@ public class AudioSearchAdapter extends CursorRecyclerAdapter<AudioSearchAdapter
         return new AudioSearchAdapter.ViewHolder(v);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView audioName;
         TextView audioAuthor;
@@ -41,6 +45,12 @@ public class AudioSearchAdapter extends CursorRecyclerAdapter<AudioSearchAdapter
             audioName = (TextView) itemView.findViewById(R.id.audio_name_textview);
             audioAuthor = (TextView) itemView.findViewById(R.id.audio_author_textview);
             duration = (TextView) itemView.findViewById(R.id.duration_textview);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            callbacks.playAudio();
         }
     }
 

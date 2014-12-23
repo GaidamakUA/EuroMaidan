@@ -68,6 +68,7 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
                 audioContentValues.insert(context.getContentResolver());
             }
         }
+
         if (response.result.videos != null) {
             VideosContentValues videosContentValues = new VideosContentValues();
             for (MyVideo video : response.result.videos.videos) {

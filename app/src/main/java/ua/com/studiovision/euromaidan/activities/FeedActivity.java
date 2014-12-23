@@ -45,10 +45,10 @@ import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.SharedPrefs_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FeedFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.FriendsFragment_;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.InboxFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FriendsFragmentCallbacks;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.inbox_fragments.DialogsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.SettingsFragmentListener;
 import ua.com.studiovision.euromaidan.network.MainService_;
 import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsContent;
@@ -85,7 +85,7 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
         mServiceClass = MainService_.class;
 
         fragments.put(0, new FeedFragment_());
-        fragments.put(1, new InboxFragment_());
+        fragments.put(1, new DialogsFragment_());
         fragments.put(2, new FriendsFragment_());
         fragments.put(7, new SettingsFragment_());
 
@@ -159,7 +159,7 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
                 break;
             case AppProtocol.RESPONSE_USER_SETTINGS:
                 Log.v(TAG, "Response:" + msg.getData());
-                ((SettingsFragment)fragments.get(7)).pushData(
+                ((SettingsFragment) fragments.get(7)).pushData(
                         (GetSettingsResponseContent) msg.getData()
                                 .getParcelable(GetSettingProtocol.RESPONSE_OBJECT));
                 break;
@@ -277,10 +277,10 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
                 public void run() {
                     drawer.closeDrawer(Gravity.START);
                 }
-            },250);
+            }, 250);
 
             if (fragments.containsKey(position))
-                if (getSupportFragmentManager().getBackStackEntryCount()==1 && position==0)
+                if (getSupportFragmentManager().getBackStackEntryCount() == 1 && position == 0)
                     getSupportFragmentManager().popBackStack();
                 else
                     replace(fragments.get(position));

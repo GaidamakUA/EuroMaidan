@@ -1,7 +1,6 @@
 package ua.com.studiovision.euromaidan.feed_activity_fragments.inbox_fragments;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,20 +16,24 @@ import org.androidannotations.annotations.ViewById;
 import ua.com.studiovision.euromaidan.R;
 
 @EFragment(R.layout.fragment_dialogs)
-public class DialogsFragment extends Fragment{
+public class DialogsFragment extends Fragment {
     @ViewById(R.id.dialogs_recycler_view)
     RecyclerView dialogsRecyclerView;
     DialogsAdapter dialogsAdapter;
 
+    public DialogsFragment() {
+        this.getArguments();
+    }
+
     @AfterViews
-    void init(){
+    void init() {
         dialogsAdapter = new DialogsAdapter();
         dialogsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         dialogsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         dialogsRecyclerView.setAdapter(dialogsAdapter);
     }
 
-    class DialogsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    class DialogsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -47,22 +50,23 @@ public class DialogsFragment extends Fragment{
         public int getItemCount() {
             return 1;
         }
+
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
         }
 
-        //TODO callback implement
+
         @Override
         public void onClick(View view) {
-//            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//            transaction.replace(R.id.fragment_holder,new MessagesFragment_());
-//            transaction.addToBackStack(MessagesFragment.class.getName());
-//            transaction.commit();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_holder, new MessagesFragment_());
+            transaction.addToBackStack(MessagesFragment.class.getName());
+            transaction.commit();
         }
     }
 

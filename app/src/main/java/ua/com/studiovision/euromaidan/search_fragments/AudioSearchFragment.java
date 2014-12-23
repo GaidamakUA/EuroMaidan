@@ -49,7 +49,7 @@ public class AudioSearchFragment extends Fragment implements LoaderManager.Loade
 
     @AfterViews
     void init() {
-        audioSearchAdapter = new AudioSearchAdapter(null,getActivity().getBaseContext());
+        audioSearchAdapter = new AudioSearchAdapter(null,getActivity().getBaseContext(), (SearchActivityCallbacks) AudioSearchFragment.this.getActivity());
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
         searchRecyclerView.setAdapter(audioSearchAdapter);
