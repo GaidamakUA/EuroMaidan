@@ -20,16 +20,11 @@ import org.androidannotations.annotations.ViewById;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.activities.SearchActivity;
-import ua.com.studiovision.euromaidan.network.json_protocol.search.SearchCategory;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosCursor;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosSelection;
-import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
-import ua.com.studiovision.euromaidan.network.provider.users.UsersCursor;
-import ua.com.studiovision.euromaidan.network.provider.users.UsersSelection;
 import ua.com.studiovision.euromaidan.search_fragments.adapters.AudioSearchAdapter;
 import ua.com.studiovision.euromaidan.search_fragments.adapters.SearchOnScrollListener;
-import ua.com.studiovision.euromaidan.search_fragments.adapters.UserSearchAdapter;
 
 @EFragment(R.layout.fragment_audio_search)
 public class AudioSearchFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -74,7 +69,8 @@ public class AudioSearchFragment extends Fragment implements LoaderManager.Loade
                 String query = editable.toString();
                 AudiosSelection selection = new AudiosSelection();
                 if (query.length() > 0) {
-                    filter = selection.nameLike("%" + editable.toString().toLowerCase() + "%");
+                    filter = selection.nameLike("%" + editable.toString().toLowerCase() + "%")
+                            .or().authorLike("%" + editable.toString().toLowerCase() + "%");
                 } else {
                     // XXX looking for -1 just to find nothing and clear list
                     filter = selection.id(-1l);

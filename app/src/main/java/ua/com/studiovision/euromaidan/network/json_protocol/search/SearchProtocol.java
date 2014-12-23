@@ -71,13 +71,10 @@ public class SearchProtocol {
         }
 
         public class MusicResponse extends InfiniteScrollResponse {
-            public MyAudios audios;
-            public AudioIds audio_ids;
+            public MyAudio[] users;
+            public MyAudio[] publics;
+            public AudioIds audios_ids;
 
-            public class MyAudios {
-                public MyAudio[] users;
-                public MyAudio[] publics;
-            }
             public class AudioIds {
                 public long[] users;
                 public long[] publics;

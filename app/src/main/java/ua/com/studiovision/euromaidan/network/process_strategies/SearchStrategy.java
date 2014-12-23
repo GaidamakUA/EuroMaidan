@@ -51,7 +51,7 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
         }
         if (response.result.audios != null) {
             AudiosContentValues audioContentValues = new AudiosContentValues();
-            for (MyAudio audio : response.result.audios.audios.publics) {
+            for (MyAudio audio : response.result.audios.publics) {
                 audioContentValues
                         .putName(audio.name)
                         .putAuthor(audio.author)
@@ -59,7 +59,7 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
                         .putAudioUrl(audio.url);
                 audioContentValues.insert(context.getContentResolver());
             }
-            for (MyAudio audio : response.result.audios.audios.users) {
+            for (MyAudio audio : response.result.audios.users) {
                 audioContentValues
                         .putName(audio.name)
                         .putAuthor(audio.author)
@@ -92,11 +92,22 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
 
     private void addStuffToBundle(Bundle bundle, InfiniteScrollResponse infiniteScrollResponse) {
         if (infiniteScrollResponse == null) return;
-        String id_key;
-        String count_key;
+        String id_key = null;
+        String count_key = null;
         if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.UsersResponse) {
             id_key = SearchActivity.USER_IDS;
             count_key = SearchActivity.USERS_COUNT;
+        } else if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.MusicResponse) {
+            // TODO rewrite after hack removed from server
+            Log.v(TAG, "MUSIC");
+            bundle.putLongArray(SearchActivity.MUSIC_FROM_PUBLICS_IDS,
+                    ((SearchProtocol.SearchUsersResponse.MusicResponse) infiniteScrollResponse)
+                            .audios_ids.publics);
+            bundle.putLongArray(SearchActivity.MUSIC_FROM_USERS_IDS,
+                    ((SearchProtocol.SearchUsersResponse.MusicResponse) infiniteScrollResponse)
+                            .audios_ids.users);
+            bundle.putInt(SearchActivity.MUSIC_COUNT, infiniteScrollResponse.count);
+            return;
         } else if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.VideosResponse) {
             id_key = SearchActivity.VIDEOS_IDS;
             count_key = SearchActivity.VIDEOS_COUNT;

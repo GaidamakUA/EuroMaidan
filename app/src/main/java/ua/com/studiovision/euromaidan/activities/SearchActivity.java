@@ -71,7 +71,8 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
     public static final String USERS_COUNT = "users_count";
     public static final String GROUPS_IDS = "groups_ids";
     public static final String GROUPS_COUNT = "groups_count";
-    public static final String MUSIC_IDS = "music_ids";
+    public static final String MUSIC_FROM_PUBLICS_IDS = "music_from_publics_ids";
+    public static final String MUSIC_FROM_USERS_IDS = "music_from_users_ids";
     public static final String MUSIC_COUNT = "music_count";
     public static final String VIDEOS_IDS = "videos_ids";
     public static final String VIDEOS_COUNT = "videos_count";
