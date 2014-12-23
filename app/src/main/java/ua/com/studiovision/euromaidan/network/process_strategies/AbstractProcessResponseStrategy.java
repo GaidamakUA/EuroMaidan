@@ -2,11 +2,7 @@ package ua.com.studiovision.euromaidan.network.process_strategies;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.security.Provider;
-
-import ua.com.studiovision.euromaidan.network.MainService;
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractRequest;
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractResponse;
 
@@ -78,6 +74,4 @@ public abstract class AbstractProcessResponseStrategy<T extends AbstractRequest,
     public Class<S> getResponseClass() {
         return responseClass;
     }
-
-    ;
 }

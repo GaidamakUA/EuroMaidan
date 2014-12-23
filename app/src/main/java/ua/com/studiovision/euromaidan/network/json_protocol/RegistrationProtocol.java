@@ -1,14 +1,12 @@
 package ua.com.studiovision.euromaidan.network.json_protocol;
 
-public class RegistrationProtocol {
+public final class RegistrationProtocol {
 
     // Do not create class
     private RegistrationProtocol() {
     }
 
-    ;
-
-    public static class Request implements AbstractRequest<Request> {
+    public static class RegistrationRequest implements AbstractRequest<RegistrationRequest> {
         // TODO make final
         public String key = "user_registration";
         public String name; // min 2
@@ -17,8 +15,8 @@ public class RegistrationProtocol {
         public String password_check; // repeat password
         public String email; // valid email
 
-        public Request(String name, String surname, String password, String password_check,
-                       String email) {
+        public RegistrationRequest(String name, String surname, String password,
+                                   String password_check, String email) {
             this.name = name;
             this.surname = surname;
             this.password = password;
@@ -27,6 +25,6 @@ public class RegistrationProtocol {
         }
     }
 
-    public static class Response extends AbstractResponse<Response> {
+    public static class RegistrationResponse extends AbstractResponse<RegistrationResponse> {
     }
 }

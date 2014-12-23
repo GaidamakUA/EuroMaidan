@@ -37,8 +37,8 @@ import ua.com.studiovision.euromaidan.SharedPrefs_;
 import ua.com.studiovision.euromaidan.network.MainService_;
 import ua.com.studiovision.euromaidan.network.json_protocol.search.SearchCategory;
 import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment_;
-import ua.com.studiovision.euromaidan.search_fragments.PublicSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.NewsSearchFragment_;
+import ua.com.studiovision.euromaidan.search_fragments.PublicSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.SearchActivityCallbacks;
 import ua.com.studiovision.euromaidan.search_fragments.UserSearchFragment_;
 import ua.com.studiovision.euromaidan.search_fragments.VideoSearchFragment_;
@@ -174,7 +174,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
                 if (mUnseenUserIds.isEmpty() && data.getLongArray(USER_IDS) != null) {
                     for (long element : data.getLongArray(USER_IDS)) {
                         mUnseenUserIds.add(element);
-                    };
+                    }
                     mIdCount = data.getInt(USERS_COUNT);
                 }
                 break;

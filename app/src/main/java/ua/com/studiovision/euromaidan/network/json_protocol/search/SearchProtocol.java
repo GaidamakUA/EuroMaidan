@@ -15,7 +15,7 @@ public class SearchProtocol {
         // all,people,publics,audios,videos
         public SearchCategory content;
         // ай-ди по которым вибирать данные
-        public long[] ids; //[[58],[59],[23]]; // null
+        public long[] ids;
         // количество результатов найденных ранее(при поиске)!
         public Integer count; //'5', / null
         public SearchFilters filters;
@@ -71,7 +71,17 @@ public class SearchProtocol {
         }
 
         public class MusicResponse extends InfiniteScrollResponse {
-            public MyAudio[] audios;
+            public MyAudios audios;
+            public AudioIds audio_ids;
+
+            public class MyAudios {
+                public MyAudio[] users;
+                public MyAudio[] publics;
+            }
+            public class AudioIds {
+                public long[] users;
+                public long[] publics;
+            }
         }
 
         public class VideosResponse extends InfiniteScrollResponse {

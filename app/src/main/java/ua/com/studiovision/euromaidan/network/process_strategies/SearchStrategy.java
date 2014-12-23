@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 
-import java.util.ArrayList;
-
 import ua.com.studiovision.euromaidan.AppProtocol;
 import ua.com.studiovision.euromaidan.activities.SearchActivity;
 import ua.com.studiovision.euromaidan.network.json_protocol.search.InfiniteScrollResponse;
@@ -53,7 +51,15 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
         }
         if (response.result.audios != null) {
             AudiosContentValues audioContentValues = new AudiosContentValues();
-            for (MyAudio audio : response.result.audios.audios) {
+            for (MyAudio audio : response.result.audios.audios.publics) {
+                audioContentValues
+                        .putName(audio.name)
+                        .putAuthor(audio.author)
+                        .putDuration(audio.duration)
+                        .putAudioUrl(audio.url);
+                audioContentValues.insert(context.getContentResolver());
+            }
+            for (MyAudio audio : response.result.audios.audios.users) {
                 audioContentValues
                         .putName(audio.name)
                         .putAuthor(audio.author)
@@ -91,10 +97,6 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
         if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.UsersResponse) {
             id_key = SearchActivity.USER_IDS;
             count_key = SearchActivity.USERS_COUNT;
-        } else if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.MusicResponse) {
-            Log.v(TAG, "MUSIC");
-            id_key = SearchActivity.MUSIC_IDS;
-            count_key = SearchActivity.MUSIC_COUNT;
         } else if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.VideosResponse) {
             id_key = SearchActivity.VIDEOS_IDS;
             count_key = SearchActivity.VIDEOS_COUNT;

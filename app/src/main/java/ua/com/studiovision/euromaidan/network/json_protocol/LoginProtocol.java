@@ -4,19 +4,19 @@ public class LoginProtocol {
     private LoginProtocol() {
     }
 
-    public static class Request implements AbstractRequest<Request> {
+    public static class LogInRequest implements AbstractRequest<LogInRequest> {
         // TODO make final
         public String key = "user_authorization";
         public String email;
         public String password;
 
-        public Request(String email, String password) {
+        public LogInRequest(String email, String password) {
             this.email = email;
             this.password = password;
         }
     }
 
-    public static class Response extends AbstractResponse<Response> {
+    public static class LogInResponse extends AbstractResponse<LogInResponse> {
         public String token;
         public long id_user;
     }

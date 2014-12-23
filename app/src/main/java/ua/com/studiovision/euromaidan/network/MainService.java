@@ -1,6 +1,5 @@
 package ua.com.studiovision.euromaidan.network;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Base64;
@@ -13,25 +12,19 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EService;
 import org.androidannotations.annotations.SupposeBackground;
 import org.androidannotations.annotations.sharedpreferences.Pref;
-import org.androidannotations.api.BackgroundExecutor;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
 import ua.com.studiovision.euromaidan.AppProtocol;
 import ua.com.studiovision.euromaidan.SharedPrefs_;
-import ua.com.studiovision.euromaidan.activities.LoginActivity;
-import ua.com.studiovision.euromaidan.activities.RegisterActivity;
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractRequest;
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractResponse;
-import ua.com.studiovision.euromaidan.network.json_protocol.LoginProtocol;
-import ua.com.studiovision.euromaidan.network.json_protocol.RegistrationProtocol;
 import ua.com.studiovision.euromaidan.network.process_strategies.AbstractProcessResponseStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.AddFriendStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.DeleteFriendStrategy;
@@ -41,6 +34,8 @@ import ua.com.studiovision.euromaidan.network.process_strategies.GetFriendsStrat
 import ua.com.studiovision.euromaidan.network.process_strategies.GetSchoolsStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetSettingsStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetUniversitiesStrategy;
+import ua.com.studiovision.euromaidan.network.process_strategies.LogInStrategy;
+import ua.com.studiovision.euromaidan.network.process_strategies.RegisterStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.SearchStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.SendSchoolStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.SendSettingsStrategy;
@@ -64,22 +59,11 @@ public class MainService extends ActivityServiceCommunicationService implements 
         switch (msg.what) {
             case AppProtocol.DO_LOG_IN:
                 Log.v(TAG, "Log in");
-                Bundle loginData = msg.getData();
-                String login = loginData.getString(LoginActivity.LOGIN);
-                String password = loginData.getString(LoginActivity.PASSWORD);
-                // true is for may interrupt if running
-                BackgroundExecutor.cancelAll(LoginActivity.LOGIN, true);
-                doLogIn(login, password);
+                doRequest(new LogInStrategy(getApplicationContext(), msg, this));
                 break;
             case AppProtocol.DO_REGISTER:
                 Log.v(TAG, "Registration");
-                Bundle registrationData = msg.getData();
-                String name = registrationData.getString(RegisterActivity.NAME);
-                String surname = registrationData.getString(RegisterActivity.SURNAME);
-                password = registrationData.getString(RegisterActivity.PASSWORD);
-                String confirmPassword = registrationData.getString(RegisterActivity.CONFIRM_PASSWORD);
-                String email = registrationData.getString(RegisterActivity.EMAIL);
-                doRegister(name, surname, password, confirmPassword, email);
+                doRequest(new RegisterStrategy(getApplicationContext(), msg, this));
                 break;
             case AppProtocol.REQUEST_COUNTRIES:
                 Log.v(TAG, "Countries");
@@ -143,62 +127,6 @@ public class MainService extends ActivityServiceCommunicationService implements 
         }
     }
 
-    // TODO rewrite as strategy
-    @Background
-    void doRegister(String name, String surname, String password, String confirmPassword,
-                    String email) {
-        Log.v(TAG, "MainService.doRegister(" + "name=" + name + ", surname=" + surname
-                + ", password=" + password + ", confirmPassword=" + confirmPassword + ", email="
-                + email + ")");
-        try {
-            RegistrationProtocol.Request request = new RegistrationProtocol.Request(name, surname,
-                    password, confirmPassword, email);
-            RegistrationProtocol.Response response =
-                    executeRequest(request, RegistrationProtocol.Response.class);
-            if (response.status == AbstractResponse.QueryStatus.SUCCESS) {
-                Message msg = Message.obtain();
-                msg.what = AppProtocol.REGISTRATION_SUCCESSFUL;
-                sendMessage(msg);
-            } else if (response.status == AbstractResponse.QueryStatus.ERROR) {
-                Message msg = Message.obtain();
-                msg.what = AppProtocol.REGISTRATION_UNSUCCESSFUL;
-                sendMessage(msg);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // TODO rewrite as strategy
-    @Background(id = LoginActivity.LOGIN)
-    void doLogIn(String login, String password) {
-        Log.v(TAG, "MainService.doLogIn(" + "login=" + login + ", password=" + password + ")");
-        try {
-            LoginProtocol.Request request = new LoginProtocol.Request(login, password);
-            LoginProtocol.Response response = executeRequest(request, LoginProtocol.Response.class);
-
-            assert (response.status != null);
-
-            if (response.status == AbstractResponse.QueryStatus.SUCCESS) {
-                Message msg = Message.obtain();
-                msg.what = AppProtocol.LOG_IN_SUCCESSFUL;
-                sendMessage(msg);
-                mSharedPrefs.getToken().put(response.token);
-                mSharedPrefs.getUserId().put(response.id_user);
-            } else if (response.status == AbstractResponse.QueryStatus.ERROR) {
-                Message msg = Message.obtain();
-                msg.what = AppProtocol.LOG_IN_UNSUCCESSFUL;
-                sendMessage(msg);
-            } else {
-                throw new RuntimeException("Illegal answer from server");
-            }
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "", e);
-        } catch (IOException e) {
-            Log.e(TAG, "", e);
-        }
-    }
-
     @SupposeBackground
     <T extends AbstractResponse<T>> T executeRequest(AbstractRequest request, Class<T> tClass) throws IOException {
         String requestString = gson.toJson(request);
@@ -242,6 +170,7 @@ public class MainService extends ActivityServiceCommunicationService implements 
         sendMessage(message);
     }
 
+    // TODO make toast
     public void executeOnUiThread(Runnable runnable) {
         if (UiThreadHandler == null) {
             UiThreadHandler = new Handler();

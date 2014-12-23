@@ -93,12 +93,14 @@ public class RegisterActivity extends ActivityServiceCommunicationActivity {
 
     @Override
     protected void handleMessage(Message msg) {
+        Log.v(TAG, "what=" + msg.what);
         switch (msg.what) {
             case AppProtocol.ON_SERVICE_CONNECTED:
                 Log.v(TAG, "Service connected");
                 break;
             case AppProtocol.REGISTRATION_SUCCESSFUL:
                 Log.v(TAG, "REGISTRATION_SUCCESSFUL");
+                finish();
                 break;
             case AppProtocol.REGISTRATION_UNSUCCESSFUL:
                 Log.v(TAG, "REGISTRATION_UNSUCCESSFUL");
