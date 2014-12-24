@@ -10,8 +10,15 @@
             "name": "city_name",
             "type": "String",
             "nullable": "false",
+        },
+        {
+            "documentation": "City name lowercase",
+            "name": "city_name_lowercase",
+            "type": "String",
+            "nullable": "false",
         }
-            ],
+
+    ],
 
     "constraints": [
         {

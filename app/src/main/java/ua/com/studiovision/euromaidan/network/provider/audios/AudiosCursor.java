@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.audios;
 
-import java.util.Date;
-
 import android.database.Cursor;
 
 import ua.com.studiovision.euromaidan.network.provider.base.AbstractCursor;
@@ -24,11 +22,29 @@ public class AudiosCursor extends AbstractCursor {
     }
 
     /**
+     * Get the {@code name_lowercase} value.
+     * Cannot be {@code null}.
+     */
+    public String getNameLowercase() {
+        Integer index = getCachedColumnIndexOrThrow(AudiosColumns.NAME_LOWERCASE);
+        return getString(index);
+    }
+
+    /**
      * Get the {@code author} value.
      * Cannot be {@code null}.
      */
     public String getAuthor() {
         Integer index = getCachedColumnIndexOrThrow(AudiosColumns.AUTHOR);
+        return getString(index);
+    }
+
+    /**
+     * Get the {@code author_lowercase} value.
+     * Cannot be {@code null}.
+     */
+    public String getAuthorLowercase() {
+        Integer index = getCachedColumnIndexOrThrow(AudiosColumns.AUTHOR_LOWERCASE);
         return getString(index);
     }
 

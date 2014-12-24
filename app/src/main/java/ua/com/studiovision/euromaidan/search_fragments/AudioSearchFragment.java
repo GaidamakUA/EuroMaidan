@@ -69,8 +69,8 @@ public class AudioSearchFragment extends Fragment implements LoaderManager.Loade
                 String query = editable.toString();
                 AudiosSelection selection = new AudiosSelection();
                 if (query.length() > 0) {
-                    filter = selection.nameLike("%" + editable.toString().toLowerCase() + "%")
-                            .or().authorLike("%" + editable.toString().toLowerCase() + "%");
+                    filter = selection.nameLowercaseLike("%" + editable.toString().toLowerCase() + "%")
+                            .or().authorLowercaseLike("%" + editable.toString().toLowerCase() + "%");
                 } else {
                     // XXX looking for -1 just to find nothing and clear list
                     filter = selection.id(-1l);

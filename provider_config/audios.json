@@ -6,7 +6,17 @@
             "nullable": "false",
         },
         {
+            "name": "name_lowercase",
+            "type": "String",
+            "nullable": "false",
+        },
+        {
             "name": "author",
+            "type": "String",
+            "nullable": "false",
+        },
+        {
+            "name": "author_lowercase",
             "type": "String",
             "nullable": "false",
         },

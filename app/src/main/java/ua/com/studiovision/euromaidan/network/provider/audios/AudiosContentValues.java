@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.audios;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.net.Uri;
 
@@ -29,6 +27,15 @@ public class AudiosContentValues extends AbstractContentValues {
     public AudiosContentValues putName(String value) {
         if (value == null) throw new IllegalArgumentException("value for name must not be null");
         mContentValues.put(AudiosColumns.NAME, value);
+        putNameLowercase(value.toLowerCase());
+        return this;
+    }
+
+
+
+    public AudiosContentValues putNameLowercase(String value) {
+        if (value == null) throw new IllegalArgumentException("value for nameLowercase must not be null");
+        mContentValues.put(AudiosColumns.NAME_LOWERCASE, value);
         return this;
     }
 
@@ -37,6 +44,15 @@ public class AudiosContentValues extends AbstractContentValues {
     public AudiosContentValues putAuthor(String value) {
         if (value == null) throw new IllegalArgumentException("value for author must not be null");
         mContentValues.put(AudiosColumns.AUTHOR, value);
+        putAuthorLowercase(value.toLowerCase());
+        return this;
+    }
+
+
+
+    public AudiosContentValues putAuthorLowercase(String value) {
+        if (value == null) throw new IllegalArgumentException("value for authorLowercase must not be null");
+        mContentValues.put(AudiosColumns.AUTHOR_LOWERCASE, value);
         return this;
     }
 

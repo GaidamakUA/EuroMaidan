@@ -4,16 +4,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import ua.com.studiovision.euromaidan.network.provider.EmContentProvider;
-import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
-import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
-import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
-import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
-import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
-import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
-import ua.com.studiovision.euromaidan.network.provider.followers.FollowersColumns;
-import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
-import ua.com.studiovision.euromaidan.network.provider.applicant.ApplicantColumns;
-import ua.com.studiovision.euromaidan.network.provider.videos.VideosColumns;
 
 /**
  * Columns for the {@code audios} table.
@@ -29,7 +19,11 @@ public class AudiosColumns implements BaseColumns {
 
     public static final String NAME = "name";
 
+    public static final String NAME_LOWERCASE = "name_lowercase";
+
     public static final String AUTHOR = "author";
+
+    public static final String AUTHOR_LOWERCASE = "author_lowercase";
 
     public static final String DURATION = "duration";
 
@@ -42,7 +36,9 @@ public class AudiosColumns implements BaseColumns {
     public static final String[] ALL_COLUMNS = new String[] {
             _ID,
             NAME,
+            NAME_LOWERCASE,
             AUTHOR,
+            AUTHOR_LOWERCASE,
             DURATION,
             AUDIO_URL
     };
@@ -52,7 +48,9 @@ public class AudiosColumns implements BaseColumns {
         if (projection == null) return true;
         for (String c : projection) {
             if (c == NAME || c.contains("." + NAME)) return true;
+            if (c == NAME_LOWERCASE || c.contains("." + NAME_LOWERCASE)) return true;
             if (c == AUTHOR || c.contains("." + AUTHOR)) return true;
+            if (c == AUTHOR_LOWERCASE || c.contains("." + AUTHOR_LOWERCASE)) return true;
             if (c == DURATION || c.contains("." + DURATION)) return true;
             if (c == AUDIO_URL || c.contains("." + AUDIO_URL)) return true;
         }

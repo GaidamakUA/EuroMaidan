@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.school;
 
-import java.util.Date;
-
 import android.database.Cursor;
 
 import ua.com.studiovision.euromaidan.network.provider.base.AbstractCursor;
@@ -27,6 +25,15 @@ public class SchoolCursor extends AbstractCursor {
      */
     public String getSchoolName() {
         Integer index = getCachedColumnIndexOrThrow(SchoolColumns.SCHOOL_NAME);
+        return getString(index);
+    }
+
+    /**
+     * School name lowercase
+     * Cannot be {@code null}.
+     */
+    public String getSchoolNameLowercase() {
+        Integer index = getCachedColumnIndexOrThrow(SchoolColumns.SCHOOL_NAME_LOWERCASE);
         return getString(index);
     }
 }

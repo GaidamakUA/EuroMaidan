@@ -12,6 +12,12 @@
             "name": "country_name",
             "type": "String",
             "nullable": "false",
+        },
+        {
+            "documentation": "Country name lowercase",
+            "name": "country_name_lowercase",
+            "type": "String",
+            "nullable": "false",
         }
             ],
 

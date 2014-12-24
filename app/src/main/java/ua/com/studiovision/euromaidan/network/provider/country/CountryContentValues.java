@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.country;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.net.Uri;
 
@@ -42,6 +40,18 @@ public class CountryContentValues extends AbstractContentValues {
     public CountryContentValues putCountryName(String value) {
         if (value == null) throw new IllegalArgumentException("value for countryName must not be null");
         mContentValues.put(CountryColumns.COUNTRY_NAME, value);
+        putCountryNameLowercase(value.toLowerCase());
+        return this;
+    }
+
+
+
+    /**
+     * Country name lowercase
+     */
+    public CountryContentValues putCountryNameLowercase(String value) {
+        if (value == null) throw new IllegalArgumentException("value for countryNameLowercase must not be null");
+        mContentValues.put(CountryColumns.COUNTRY_NAME_LOWERCASE, value);
         return this;
     }
 

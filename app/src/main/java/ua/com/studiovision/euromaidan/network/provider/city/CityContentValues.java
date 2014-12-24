@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.city;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.net.Uri;
 
@@ -39,6 +37,18 @@ public class CityContentValues extends AbstractContentValues {
     public CityContentValues putCityName(String value) {
         if (value == null) throw new IllegalArgumentException("value for cityName must not be null");
         mContentValues.put(CityColumns.CITY_NAME, value);
+        putCityNameLowercase(value.toLowerCase());
+        return this;
+    }
+
+
+
+    /**
+     * City name lowercase
+     */
+    public CityContentValues putCityNameLowercase(String value) {
+        if (value == null) throw new IllegalArgumentException("value for cityNameLowercase must not be null");
+        mContentValues.put(CityColumns.CITY_NAME_LOWERCASE, value);
         return this;
     }
 

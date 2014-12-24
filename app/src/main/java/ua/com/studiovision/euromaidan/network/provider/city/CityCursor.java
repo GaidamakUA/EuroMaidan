@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.city;
 
-import java.util.Date;
-
 import android.database.Cursor;
 
 import ua.com.studiovision.euromaidan.network.provider.base.AbstractCursor;
@@ -27,6 +25,15 @@ public class CityCursor extends AbstractCursor {
      */
     public String getCityName() {
         Integer index = getCachedColumnIndexOrThrow(CityColumns.CITY_NAME);
+        return getString(index);
+    }
+
+    /**
+     * City name lowercase
+     * Cannot be {@code null}.
+     */
+    public String getCityNameLowercase() {
+        Integer index = getCachedColumnIndexOrThrow(CityColumns.CITY_NAME_LOWERCASE);
         return getString(index);
     }
 }

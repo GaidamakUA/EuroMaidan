@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.city;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -95,6 +93,21 @@ public class CitySelection extends AbstractSelection<CitySelection> {
 
     public CitySelection cityNameLike(String... value) {
         addLike(CityColumns.CITY_NAME, value);
+        return this;
+    }
+
+    public CitySelection cityNameLowercase(String... value) {
+        addEquals(CityColumns.CITY_NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public CitySelection cityNameLowercaseNot(String... value) {
+        addNotEquals(CityColumns.CITY_NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public CitySelection cityNameLowercaseLike(String... value) {
+        addLike(CityColumns.CITY_NAME_LOWERCASE, value);
         return this;
     }
 }

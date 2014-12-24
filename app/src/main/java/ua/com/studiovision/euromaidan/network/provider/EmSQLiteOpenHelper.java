@@ -11,15 +11,15 @@ import android.os.Build;
 import android.util.Log;
 
 import ua.com.studiovision.euromaidan.BuildConfig;
-import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
-import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
-import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
-import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
-import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
-import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
-import ua.com.studiovision.euromaidan.network.provider.followers.FollowersColumns;
-import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 import ua.com.studiovision.euromaidan.network.provider.applicant.ApplicantColumns;
+import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
+import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
+import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
+import ua.com.studiovision.euromaidan.network.provider.followers.FollowersColumns;
+import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
+import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
+import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
+import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 import ua.com.studiovision.euromaidan.network.provider.videos.VideosColumns;
 
 public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
@@ -36,7 +36,8 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
             + SchoolColumns.TABLE_NAME + " ( "
             + SchoolColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + SchoolColumns.SCHOOL_ID + " INTEGER NOT NULL, "
-            + SchoolColumns.SCHOOL_NAME + " TEXT NOT NULL "
+            + SchoolColumns.SCHOOL_NAME + " TEXT NOT NULL, "
+            + SchoolColumns.SCHOOL_NAME_LOWERCASE + " TEXT NOT NULL "
             + ", CONSTRAINT unique_name UNIQUE (school_id, school_name) ON CONFLICT REPLACE"
             + " );";
 
@@ -63,7 +64,8 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
             + CountryColumns.TABLE_NAME + " ( "
             + CountryColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + CountryColumns.COUNTRY_ID + " INTEGER NOT NULL, "
-            + CountryColumns.COUNTRY_NAME + " TEXT NOT NULL "
+            + CountryColumns.COUNTRY_NAME + " TEXT NOT NULL, "
+            + CountryColumns.COUNTRY_NAME_LOWERCASE + " TEXT NOT NULL "
             + ", CONSTRAINT unique_name UNIQUE (country_id, country_name) ON CONFLICT REPLACE"
             + " );";
 
@@ -71,7 +73,8 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
             + CityColumns.TABLE_NAME + " ( "
             + CityColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + CityColumns.CITY_ID + " INTEGER NOT NULL, "
-            + CityColumns.CITY_NAME + " TEXT NOT NULL "
+            + CityColumns.CITY_NAME + " TEXT NOT NULL, "
+            + CityColumns.CITY_NAME_LOWERCASE + " TEXT NOT NULL "
             + ", CONSTRAINT unique_name UNIQUE (city_id, city_name) ON CONFLICT REPLACE"
             + " );";
 
@@ -79,7 +82,9 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
             + AudiosColumns.TABLE_NAME + " ( "
             + AudiosColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + AudiosColumns.NAME + " TEXT NOT NULL, "
+            + AudiosColumns.NAME_LOWERCASE + " TEXT NOT NULL, "
             + AudiosColumns.AUTHOR + " TEXT NOT NULL, "
+            + AudiosColumns.AUTHOR_LOWERCASE + " TEXT NOT NULL, "
             + AudiosColumns.DURATION + " INTEGER NOT NULL, "
             + AudiosColumns.AUDIO_URL + " TEXT NOT NULL "
             + " );";

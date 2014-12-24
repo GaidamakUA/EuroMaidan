@@ -4,16 +4,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import ua.com.studiovision.euromaidan.network.provider.EmContentProvider;
-import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
-import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
-import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
-import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
-import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
-import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
-import ua.com.studiovision.euromaidan.network.provider.followers.FollowersColumns;
-import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
-import ua.com.studiovision.euromaidan.network.provider.applicant.ApplicantColumns;
-import ua.com.studiovision.euromaidan.network.provider.videos.VideosColumns;
 
 /**
  * Represents school entity
@@ -37,6 +27,11 @@ public class SchoolColumns implements BaseColumns {
      */
     public static final String SCHOOL_NAME = "school_name";
 
+    /**
+     * School name lowercase
+     */
+    public static final String SCHOOL_NAME_LOWERCASE = "school_name_lowercase";
+
 
     public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
 
@@ -44,7 +39,8 @@ public class SchoolColumns implements BaseColumns {
     public static final String[] ALL_COLUMNS = new String[] {
             _ID,
             SCHOOL_ID,
-            SCHOOL_NAME
+            SCHOOL_NAME,
+            SCHOOL_NAME_LOWERCASE
     };
     // @formatter:on
 
@@ -53,6 +49,7 @@ public class SchoolColumns implements BaseColumns {
         for (String c : projection) {
             if (c == SCHOOL_ID || c.contains("." + SCHOOL_ID)) return true;
             if (c == SCHOOL_NAME || c.contains("." + SCHOOL_NAME)) return true;
+            if (c == SCHOOL_NAME_LOWERCASE || c.contains("." + SCHOOL_NAME_LOWERCASE)) return true;
         }
         return false;
     }

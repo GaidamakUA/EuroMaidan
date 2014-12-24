@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.school;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.net.Uri;
 
@@ -42,6 +40,18 @@ public class SchoolContentValues extends AbstractContentValues {
     public SchoolContentValues putSchoolName(String value) {
         if (value == null) throw new IllegalArgumentException("value for schoolName must not be null");
         mContentValues.put(SchoolColumns.SCHOOL_NAME, value);
+        putSchoolNameLowercase(value.toLowerCase());
+        return this;
+    }
+
+
+
+    /**
+     * School name lowercase
+     */
+    public SchoolContentValues putSchoolNameLowercase(String value) {
+        if (value == null) throw new IllegalArgumentException("value for schoolNameLowercase must not be null");
+        mContentValues.put(SchoolColumns.SCHOOL_NAME_LOWERCASE, value);
         return this;
     }
 

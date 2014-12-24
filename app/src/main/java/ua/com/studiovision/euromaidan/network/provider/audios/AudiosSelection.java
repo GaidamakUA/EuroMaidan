@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.audios;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -68,6 +66,21 @@ public class AudiosSelection extends AbstractSelection<AudiosSelection> {
         return this;
     }
 
+    public AudiosSelection nameLowercase(String... value) {
+        addEquals(AudiosColumns.NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public AudiosSelection nameLowercaseNot(String... value) {
+        addNotEquals(AudiosColumns.NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public AudiosSelection nameLowercaseLike(String... value) {
+        addLike(AudiosColumns.NAME_LOWERCASE, value);
+        return this;
+    }
+
     public AudiosSelection author(String... value) {
         addEquals(AudiosColumns.AUTHOR, value);
         return this;
@@ -80,6 +93,21 @@ public class AudiosSelection extends AbstractSelection<AudiosSelection> {
 
     public AudiosSelection authorLike(String... value) {
         addLike(AudiosColumns.AUTHOR, value);
+        return this;
+    }
+
+    public AudiosSelection authorLowercase(String... value) {
+        addEquals(AudiosColumns.AUTHOR_LOWERCASE, value);
+        return this;
+    }
+
+    public AudiosSelection authorLowercaseNot(String... value) {
+        addNotEquals(AudiosColumns.AUTHOR_LOWERCASE, value);
+        return this;
+    }
+
+    public AudiosSelection authorLowercaseLike(String... value) {
+        addLike(AudiosColumns.AUTHOR_LOWERCASE, value);
         return this;
     }
 

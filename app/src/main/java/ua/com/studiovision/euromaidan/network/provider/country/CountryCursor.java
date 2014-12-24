@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.country;
 
-import java.util.Date;
-
 import android.database.Cursor;
 
 import ua.com.studiovision.euromaidan.network.provider.base.AbstractCursor;
@@ -27,6 +25,15 @@ public class CountryCursor extends AbstractCursor {
      */
     public String getCountryName() {
         Integer index = getCachedColumnIndexOrThrow(CountryColumns.COUNTRY_NAME);
+        return getString(index);
+    }
+
+    /**
+     * Country name lowercase
+     * Cannot be {@code null}.
+     */
+    public String getCountryNameLowercase() {
+        Integer index = getCachedColumnIndexOrThrow(CountryColumns.COUNTRY_NAME_LOWERCASE);
         return getString(index);
     }
 }

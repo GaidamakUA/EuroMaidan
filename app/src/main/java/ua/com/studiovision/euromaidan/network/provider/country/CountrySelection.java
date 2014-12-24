@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.country;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -95,6 +93,21 @@ public class CountrySelection extends AbstractSelection<CountrySelection> {
 
     public CountrySelection countryNameLike(String... value) {
         addLike(CountryColumns.COUNTRY_NAME, value);
+        return this;
+    }
+
+    public CountrySelection countryNameLowercase(String... value) {
+        addEquals(CountryColumns.COUNTRY_NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public CountrySelection countryNameLowercaseNot(String... value) {
+        addNotEquals(CountryColumns.COUNTRY_NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public CountrySelection countryNameLowercaseLike(String... value) {
+        addLike(CountryColumns.COUNTRY_NAME_LOWERCASE, value);
         return this;
     }
 }

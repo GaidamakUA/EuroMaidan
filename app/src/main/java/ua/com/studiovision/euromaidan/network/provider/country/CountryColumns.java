@@ -4,16 +4,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import ua.com.studiovision.euromaidan.network.provider.EmContentProvider;
-import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
-import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
-import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
-import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
-import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
-import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
-import ua.com.studiovision.euromaidan.network.provider.followers.FollowersColumns;
-import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
-import ua.com.studiovision.euromaidan.network.provider.applicant.ApplicantColumns;
-import ua.com.studiovision.euromaidan.network.provider.videos.VideosColumns;
 
 /**
  * Represents country entity
@@ -37,6 +27,11 @@ public class CountryColumns implements BaseColumns {
      */
     public static final String COUNTRY_NAME = "country_name";
 
+    /**
+     * Country name lowercase
+     */
+    public static final String COUNTRY_NAME_LOWERCASE = "country_name_lowercase";
+
 
     public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
 
@@ -44,7 +39,8 @@ public class CountryColumns implements BaseColumns {
     public static final String[] ALL_COLUMNS = new String[] {
             _ID,
             COUNTRY_ID,
-            COUNTRY_NAME
+            COUNTRY_NAME,
+            COUNTRY_NAME_LOWERCASE
     };
     // @formatter:on
 
@@ -53,6 +49,7 @@ public class CountryColumns implements BaseColumns {
         for (String c : projection) {
             if (c == COUNTRY_ID || c.contains("." + COUNTRY_ID)) return true;
             if (c == COUNTRY_NAME || c.contains("." + COUNTRY_NAME)) return true;
+            if (c == COUNTRY_NAME_LOWERCASE || c.contains("." + COUNTRY_NAME_LOWERCASE)) return true;
         }
         return false;
     }

@@ -4,16 +4,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import ua.com.studiovision.euromaidan.network.provider.EmContentProvider;
-import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
-import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
-import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
-import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
-import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
-import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
-import ua.com.studiovision.euromaidan.network.provider.followers.FollowersColumns;
-import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
-import ua.com.studiovision.euromaidan.network.provider.applicant.ApplicantColumns;
-import ua.com.studiovision.euromaidan.network.provider.videos.VideosColumns;
 
 /**
  * Columns for the {@code city} table.
@@ -34,6 +24,11 @@ public class CityColumns implements BaseColumns {
      */
     public static final String CITY_NAME = "city_name";
 
+    /**
+     * City name lowercase
+     */
+    public static final String CITY_NAME_LOWERCASE = "city_name_lowercase";
+
 
     public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
 
@@ -41,7 +36,8 @@ public class CityColumns implements BaseColumns {
     public static final String[] ALL_COLUMNS = new String[] {
             _ID,
             CITY_ID,
-            CITY_NAME
+            CITY_NAME,
+            CITY_NAME_LOWERCASE
     };
     // @formatter:on
 
@@ -50,6 +46,7 @@ public class CityColumns implements BaseColumns {
         for (String c : projection) {
             if (c == CITY_ID || c.contains("." + CITY_ID)) return true;
             if (c == CITY_NAME || c.contains("." + CITY_NAME)) return true;
+            if (c == CITY_NAME_LOWERCASE || c.contains("." + CITY_NAME_LOWERCASE)) return true;
         }
         return false;
     }

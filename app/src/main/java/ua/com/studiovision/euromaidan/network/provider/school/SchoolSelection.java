@@ -1,7 +1,5 @@
 package ua.com.studiovision.euromaidan.network.provider.school;
 
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -95,6 +93,21 @@ public class SchoolSelection extends AbstractSelection<SchoolSelection> {
 
     public SchoolSelection schoolNameLike(String... value) {
         addLike(SchoolColumns.SCHOOL_NAME, value);
+        return this;
+    }
+
+    public SchoolSelection schoolNameLowercase(String... value) {
+        addEquals(SchoolColumns.SCHOOL_NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public SchoolSelection schoolNameLowercaseNot(String... value) {
+        addNotEquals(SchoolColumns.SCHOOL_NAME_LOWERCASE, value);
+        return this;
+    }
+
+    public SchoolSelection schoolNameLowercaseLike(String... value) {
+        addLike(SchoolColumns.SCHOOL_NAME_LOWERCASE, value);
         return this;
     }
 }
