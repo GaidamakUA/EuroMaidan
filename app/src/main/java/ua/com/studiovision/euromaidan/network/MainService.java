@@ -11,7 +11,6 @@ import com.softevol.activity_service_communication.ActivityServiceCommunicationS
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EService;
 import org.androidannotations.annotations.SupposeBackground;
-import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -22,7 +21,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import ua.com.studiovision.euromaidan.AppProtocol;
-import ua.com.studiovision.euromaidan.SharedPrefs_;
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractRequest;
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractResponse;
 import ua.com.studiovision.euromaidan.network.process_strategies.AbstractProcessResponseStrategy;
@@ -49,10 +47,6 @@ public class MainService extends ActivityServiceCommunicationService implements 
     private static final Gson gson = new Gson();
 
     private Handler UiThreadHandler;
-
-    // Not following YAGNI principle
-    @Pref
-    SharedPrefs_ mSharedPrefs;
 
     @Override
     protected void handleMessage(Message msg) {

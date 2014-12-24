@@ -64,13 +64,15 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
     private FragmentPagerAdapter fragmentPagerAdapter;
 
     private HashSet<Long> mUnseenUserIds = new HashSet<Long>();
-    private int mIdCount;
+    private int mUserIdCount;
+    private HashSet<AudioId> mUnseenAudioIds = new HashSet<AudioId>();
+    private int mAudioIdCount;
 
     public static final String CONTENTS = "contents";
     public static final String USER_IDS = "user_ids";
-    public static final String USERS_COUNT = "users_count";
-    public static final String GROUPS_IDS = "groups_ids";
-    public static final String GROUPS_COUNT = "groups_count";
+    public static final String COUNT = "users_count";
+//    public static final String GROUPS_IDS = "groups_ids";
+//    public static final String GROUPS_COUNT = "groups_count";
     public static final String MUSIC_FROM_PUBLICS_IDS = "music_from_publics_ids";
     public static final String MUSIC_FROM_USERS_IDS = "music_from_users_ids";
     public static final String MUSIC_COUNT = "music_count";
@@ -176,14 +178,27 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
                     for (long element : data.getLongArray(USER_IDS)) {
                         mUnseenUserIds.add(element);
                     }
-                    mIdCount = data.getInt(USERS_COUNT);
+                    mUserIdCount = data.getInt(COUNT);
+                }
+                if (mUnseenAudioIds.isEmpty()) {
+                    if (data.getLongArray(MUSIC_FROM_PUBLICS_IDS) != null) {
+                        for (long l : data.getLongArray(MUSIC_FROM_PUBLICS_IDS)) {
+                            mUnseenAudioIds.add(new AudioId(l, IdType.PUBLICS_AUDIO));
+                        }
+                    }
+                    if (data.getLongArray(MUSIC_FROM_USERS_IDS) != null) {
+                        for (long l : data.getLongArray(MUSIC_FROM_USERS_IDS)) {
+                            mUnseenAudioIds.add(new AudioId(l, IdType.USERS_AUDIO));
+                        }
+                    }
+                    mAudioIdCount = data.getInt(MUSIC_COUNT);
                 }
                 break;
         }
     }
 
     @Override
-    public void loadMoreUserIds() {
+    public void loadMoreUsers() {
         if (mUnseenUserIds.isEmpty()) return;
         Bundle data = new Bundle();
         int counter = mUnseenUserIds.size() > 10 ? 10 : mUnseenUserIds.size();
@@ -199,7 +214,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         Log.v(TAG, "idsToRequest=" + Arrays.toString(idsToRequest));
 
         data.putLongArray(USER_IDS, idsToRequest);
-        data.putInt(USERS_COUNT, mIdCount);
+        data.putInt(COUNT, mUserIdCount);
         data.putSerializable(CONTENTS, SearchCategory.PEOPLE);
 
         Message msg = Message.obtain();
@@ -207,6 +222,13 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         msg.setData(data);
 
         sendMessage(msg);
+    }
+
+    @Override
+    public void loadMoreAudio() {
+        if (mUnseenAudioIds.isEmpty()) return;
+        Bundle data = new Bundle();
+        int counter = mUnseenUserIds.size() > 10 ? 10 : mUnseenUserIds.size();
     }
 
     @Override
@@ -272,4 +294,18 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         }
     }
 
+    private class AudioId {
+        long id;
+        IdType type;
+
+        private AudioId(long id, IdType type) {
+            this.id = id;
+            this.type = type;
+        }
+    }
+
+    private enum IdType {
+        USERS_AUDIO,
+        PUBLICS_AUDIO
+    }
 }

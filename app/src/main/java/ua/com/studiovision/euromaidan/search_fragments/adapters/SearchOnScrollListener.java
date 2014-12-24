@@ -18,7 +18,7 @@ public class SearchOnScrollListener extends RecyclerView.OnScrollListener {
     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         switch (newState) {
             case RecyclerView.SCROLL_STATE_SETTLING:
-                callbacks.loadMoreUserIds();
+                callbacks.loadMoreUsers();
                 break;
             case RecyclerView.SCROLL_STATE_IDLE:
                 break;

@@ -30,9 +30,13 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
         Bundle bundle = message.getData();
         Log.v(TAG, "SearchActivity.SEARCH_QUERY=" + bundle.getString(SearchActivity.SEARCH_QUERY));
 
-        request = new SearchProtocol.SearchUsersRequest(bundle.getLongArray(SearchActivity.USER_IDS),
-                bundle.getInt(SearchActivity.USERS_COUNT), bundle.getString(SearchActivity.SEARCH_QUERY),
-                (SearchCategory) bundle.getSerializable(SearchActivity.CONTENTS));
+        request = new SearchProtocol.SearchUsersRequest(
+                (SearchCategory) bundle.getSerializable(SearchActivity.CONTENTS),
+                bundle.getLongArray(SearchActivity.USER_IDS),
+                bundle.getLongArray(SearchActivity.MUSIC_FROM_PUBLICS_IDS),
+                bundle.getLongArray(SearchActivity.MUSIC_FROM_USERS_IDS),
+                bundle.getInt(SearchActivity.COUNT),
+                bundle.getString(SearchActivity.SEARCH_QUERY));
         this.callbacks = callbacks;
     }
 
@@ -97,7 +101,7 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
         String count_key = null;
         if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.UsersResponse) {
             id_key = SearchActivity.USER_IDS;
-            count_key = SearchActivity.USERS_COUNT;
+            count_key = SearchActivity.COUNT;
         } else if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.MusicResponse) {
             // TODO rewrite after hack removed from server
             Log.v(TAG, "MUSIC");
