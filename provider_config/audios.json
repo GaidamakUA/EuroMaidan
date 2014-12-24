@@ -30,5 +30,11 @@
             "type": "String",
             "nullable": "false",
         }
+    ],
+    "constraints": [
+        {
+            "name": "unique_url",
+            "definition": "UNIQUE (audio_url) ON CONFLICT REPLACE"
+        },
     ]
 }

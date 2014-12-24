@@ -87,6 +87,7 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
             + AudiosColumns.AUTHOR_LOWERCASE + " TEXT NOT NULL, "
             + AudiosColumns.DURATION + " INTEGER NOT NULL, "
             + AudiosColumns.AUDIO_URL + " TEXT NOT NULL "
+            + ", CONSTRAINT unique_url UNIQUE (audio_url) ON CONFLICT REPLACE"
             + " );";
 
     private static final String SQL_CREATE_TABLE_FOLLOWERS = "CREATE TABLE IF NOT EXISTS "
