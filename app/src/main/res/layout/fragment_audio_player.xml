@@ -23,23 +23,24 @@
         android:id="@+id/play_pause_togglebutton"
         android:textOn=""
         android:textOff=""
-        android:background="@drawable/play_pause_drawable"
+        android:background="@null"
+        android:drawableTop="@drawable/play_pause_drawable"
         android:layout_below="@+id/audio_name_textview"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
 
     <!--playback status block-->
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:id="@+id/current_duration_textview"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/play_pause_togglebutton"
         android:text="0:0"
         android:textColor="@android:color/black"
-        />
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignBottom="@+id/playback_seek_bar"
+        android:paddingRight="@dimen/touchTargetPadding" />
 
     <SeekBar
         android:layout_width="wrap_content"
@@ -49,17 +50,19 @@
         android:layout_toEndOf="@+id/current_duration_textview"
         android:layout_below="@id/play_pause_togglebutton"
         android:layout_toLeftOf="@+id/total_duration_textview"
-        android:layout_toStartOf="@+id/total_duration_textview"/>
+        android:layout_toStartOf="@+id/total_duration_textview"
+        android:indeterminate="false" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:id="@+id/total_duration_textview"
-        android:layout_below="@+id/play_pause_togglebutton"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:text="3:29"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"
+        android:layout_alignBottom="@+id/playback_seek_bar"
+        android:paddingLeft="@dimen/touchTargetPadding" />
     <!--end of block-->
 
     <!--actions block-->
@@ -68,19 +71,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/actions_container"
-        android:layout_below="@+id/playback_seek_bar">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/add_audio_image_view"
-            android:visibility="gone"/>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_weight="1"/>
+        android:layout_below="@+id/playback_seek_bar"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <ToggleButton
             android:layout_width="wrap_content"
@@ -88,7 +80,9 @@
             android:id="@+id/shuffle_toggle_button"
             android:textOn=""
             android:textOff=""
-            android:background="@drawable/shuffle_drawable"/>
+            android:background="@null"
+            android:drawableTop="@drawable/shuffle_drawable"
+            android:layout_marginLeft="@dimen/listContentLeftMargin" />
 
         <Space
             android:layout_width="wrap_content"
@@ -101,7 +95,9 @@
             android:id="@+id/repeat_toggle_button"
             android:textOn=""
             android:textOff=""
-            android:background="@drawable/repeat_drawable"/>
+            android:background="@null"
+            android:drawableTop="@drawable/repeat_drawable"
+            android:layout_marginRight="@dimen/listContentLeftMargin" />
 
     </LinearLayout>
     <!--end of block-->
@@ -113,8 +109,8 @@
         android:id="@+id/previous_audio_image_view"
         android:src="@drawable/previous_audio"
         android:layout_below="@+id/actions_container"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_toLeftOf="@+id/prev_next_spacing"
+        android:layout_toStartOf="@+id/prev_next_spacing"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -122,8 +118,8 @@
         android:id="@+id/next_audio_image_view"
         android:background="@drawable/next_audio"
         android:layout_below="@+id/actions_container"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_toRightOf="@+id/prev_next_spacing"
+        android:layout_toEndOf="@+id/prev_next_spacing"/>
     <!--end of block-->
 
     <!--volume block-->
@@ -134,7 +130,9 @@
         android:src="@drawable/volume_low"
         android:layout_below="@+id/previous_audio_image_view"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_alignBottom="@+id/volume_seek_bar" />
 
     <SeekBar
         android:layout_width="wrap_content"
@@ -145,7 +143,9 @@
         android:layout_below="@+id/next_audio_image_view"
         android:layout_toLeftOf="@+id/volume_high_imageview"
         android:layout_toStartOf="@+id/volume_high_imageview"
-        />
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/touchTargetPadding"
+        android:layout_marginRight="@dimen/touchTargetPadding"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -154,7 +154,16 @@
         android:src="@drawable/volume_high"
         android:layout_below="@+id/next_audio_image_view"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/volume_seek_bar"
+        android:layout_marginTop="@dimen/activity_vertical_margin" />
+
+    <Space
+        android:layout_width="144dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actions_container"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/prev_next_spacing" />
     <!--end of block-->
 
 </RelativeLayout>
