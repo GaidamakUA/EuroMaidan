@@ -22,6 +22,7 @@ public final class SearchProtocol {
         public Integer count; //'5', / null
         public SearchFilters filters;
 
+        // XXX dangerous constructor. Tree arrays of same type. Easy to missplace smth.
         public SearchUsersRequest(SearchCategory content, long[] ids,
                                   long[] music_from_users, long[] music_from_publics,
                                   Integer count, String searchQuery) {

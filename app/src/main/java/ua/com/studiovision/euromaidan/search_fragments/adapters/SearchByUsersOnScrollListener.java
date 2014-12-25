@@ -4,13 +4,13 @@ import android.support.v7.widget.RecyclerView;
 
 import ua.com.studiovision.euromaidan.search_fragments.SearchActivityCallbacks;
 
-public class SearchOnScrollListener extends RecyclerView.OnScrollListener {
+public class SearchByUsersOnScrollListener extends RecyclerView.OnScrollListener {
 
     private static final String TAG = "SearchOnScrollListener";
 
     private SearchActivityCallbacks callbacks;
 
-    public SearchOnScrollListener(SearchActivityCallbacks callbacks) {
+    public SearchByUsersOnScrollListener(SearchActivityCallbacks callbacks) {
         this.callbacks = callbacks;
     }
 

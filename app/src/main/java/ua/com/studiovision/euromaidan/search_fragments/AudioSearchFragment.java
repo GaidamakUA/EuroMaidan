@@ -24,7 +24,7 @@ import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosCursor;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosSelection;
 import ua.com.studiovision.euromaidan.search_fragments.adapters.AudioSearchAdapter;
-import ua.com.studiovision.euromaidan.search_fragments.adapters.SearchOnScrollListener;
+import ua.com.studiovision.euromaidan.search_fragments.adapters.SearchByAudiosOnScrollListener;
 
 @EFragment(R.layout.fragment_audio_search)
 public class AudioSearchFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -78,7 +78,7 @@ public class AudioSearchFragment extends Fragment implements LoaderManager.Loade
                 getLoaderManager().restartLoader(0, null, AudioSearchFragment.this);
             }
         });
-        searchRecyclerView.setOnScrollListener(new SearchOnScrollListener((SearchActivityCallbacks)AudioSearchFragment.this.getActivity()));
+        searchRecyclerView.setOnScrollListener(new SearchByAudiosOnScrollListener((SearchActivityCallbacks)AudioSearchFragment.this.getActivity()));
     }
 
     @Override

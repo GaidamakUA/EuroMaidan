@@ -33,8 +33,8 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
         request = new SearchProtocol.SearchUsersRequest(
                 (SearchCategory) bundle.getSerializable(SearchActivity.CONTENTS),
                 bundle.getLongArray(SearchActivity.USER_IDS),
-                bundle.getLongArray(SearchActivity.MUSIC_FROM_PUBLICS_IDS),
                 bundle.getLongArray(SearchActivity.MUSIC_FROM_USERS_IDS),
+                bundle.getLongArray(SearchActivity.MUSIC_FROM_PUBLICS_IDS),
                 bundle.getInt(SearchActivity.COUNT),
                 bundle.getString(SearchActivity.SEARCH_QUERY));
         this.callbacks = callbacks;
@@ -111,7 +111,8 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
             bundle.putLongArray(SearchActivity.MUSIC_FROM_USERS_IDS,
                     ((SearchProtocol.SearchUsersResponse.MusicResponse) infiniteScrollResponse)
                             .audios_ids.users);
-            bundle.putInt(SearchActivity.MUSIC_COUNT, infiniteScrollResponse.count);
+            bundle.putInt(SearchActivity.MUSIC_COUNT,
+                    infiniteScrollResponse.count == null ? 0 : infiniteScrollResponse.count);
             return;
         } else if (infiniteScrollResponse instanceof SearchProtocol.SearchUsersResponse.VideosResponse) {
             id_key = SearchActivity.VIDEOS_IDS;
