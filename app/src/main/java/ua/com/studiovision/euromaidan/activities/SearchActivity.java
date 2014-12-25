@@ -55,7 +55,7 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
     @ViewById(R.id.search_field_edit_text)
     public EditText searchEditText;
 
-    private final String TAG = "Search activity";
+    private final String TAG = "SearchActivity";
     private final int PAGE_COUNT = 5;
 
     LinearLayout searchActionBar;
@@ -64,13 +64,15 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
     private FragmentPagerAdapter fragmentPagerAdapter;
 
     private HashSet<Long> mUnseenUserIds = new HashSet<Long>();
-    private int mIdCount;
+    private int mUserIdCount;
+    private HashSet<AudioId> mUnseenAudioIds = new HashSet<AudioId>();
+    private int mAudioIdCount;
 
     public static final String CONTENTS = "contents";
     public static final String USER_IDS = "user_ids";
-    public static final String USERS_COUNT = "users_count";
-    public static final String GROUPS_IDS = "groups_ids";
-    public static final String GROUPS_COUNT = "groups_count";
+    public static final String COUNT = "users_count";
+//    public static final String GROUPS_IDS = "groups_ids";
+//    public static final String GROUPS_COUNT = "groups_count";
     public static final String MUSIC_FROM_PUBLICS_IDS = "music_from_publics_ids";
     public static final String MUSIC_FROM_USERS_IDS = "music_from_users_ids";
     public static final String MUSIC_COUNT = "music_count";
@@ -176,14 +178,29 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
                     for (long element : data.getLongArray(USER_IDS)) {
                         mUnseenUserIds.add(element);
                     }
-                    mIdCount = data.getInt(USERS_COUNT);
+                    mUserIdCount = data.getInt(COUNT);
+                }
+                if (mUnseenAudioIds.isEmpty()) {
+                    if (data.getLongArray(MUSIC_FROM_PUBLICS_IDS) != null) {
+                        Log.v(TAG, "Publics=" + Arrays.toString(data.getLongArray(MUSIC_FROM_PUBLICS_IDS)));
+                        for (long l : data.getLongArray(MUSIC_FROM_PUBLICS_IDS)) {
+                            mUnseenAudioIds.add(new AudioId(l, IdType.PUBLICS_AUDIO));
+                        }
+                    }
+                    if (data.getLongArray(MUSIC_FROM_USERS_IDS) != null) {
+                        Log.v(TAG, "Users=" + Arrays.toString(data.getLongArray(MUSIC_FROM_USERS_IDS)));
+                        for (long l : data.getLongArray(MUSIC_FROM_USERS_IDS)) {
+                            mUnseenAudioIds.add(new AudioId(l, IdType.USERS_AUDIO));
+                        }
+                    }
+                    mAudioIdCount = data.getInt(MUSIC_COUNT);
                 }
                 break;
         }
     }
 
     @Override
-    public void loadMoreUserIds() {
+    public void loadMoreUsers() {
         if (mUnseenUserIds.isEmpty()) return;
         Bundle data = new Bundle();
         int counter = mUnseenUserIds.size() > 10 ? 10 : mUnseenUserIds.size();
@@ -199,8 +216,51 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         Log.v(TAG, "idsToRequest=" + Arrays.toString(idsToRequest));
 
         data.putLongArray(USER_IDS, idsToRequest);
-        data.putInt(USERS_COUNT, mIdCount);
+        data.putInt(COUNT, mUserIdCount);
         data.putSerializable(CONTENTS, SearchCategory.PEOPLE);
+
+        Message msg = Message.obtain();
+        msg.what = AppProtocol.SEARCH;
+        msg.setData(data);
+
+        sendMessage(msg);
+    }
+
+    @Override
+    public void loadMoreAudio() {
+        if (mUnseenAudioIds.isEmpty()) return;
+        int counter = mUnseenAudioIds.size() > 10 ? 10 : mUnseenAudioIds.size();
+        ArrayList<Long> publicAudioIdList = new ArrayList<Long>(counter);
+        ArrayList<Long> userAudioIdList = new ArrayList<Long>(counter);
+        for (AudioId audioId : mUnseenAudioIds) {
+            if (--counter < 0) break;
+            switch (audioId.type) {
+                case PUBLICS_AUDIO:
+                    publicAudioIdList.add(audioId.id);
+                    break;
+                case USERS_AUDIO:
+                    userAudioIdList.add(audioId.id);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown type of audio id:" + audioId.type);
+            }
+        }
+        long[] userAudioIds = new long[userAudioIdList.size()];
+        for (int i = userAudioIds.length - 1; i >= 0; i--) {
+            userAudioIds[i] = userAudioIdList.get(i);
+        }
+        long[] publicsAudioIds = new long[publicAudioIdList.size()];
+        for (int i = publicsAudioIds.length - 1; i >= 0; i--) {
+            publicsAudioIds[i] = publicAudioIdList.get(i);
+        }
+
+        Bundle data = new Bundle();
+        data.putSerializable(CONTENTS, SearchCategory.AUDIOS);
+        Log.v(TAG, "PuclicsOut=" + Arrays.toString(publicsAudioIds));
+        data.putLongArray(MUSIC_FROM_PUBLICS_IDS, publicsAudioIds);
+        Log.v(TAG, "UsersOut=" + Arrays.toString(userAudioIds));
+        data.putLongArray(MUSIC_FROM_USERS_IDS, userAudioIds);
+        data.putInt(COUNT, mAudioIdCount);
 
         Message msg = Message.obtain();
         msg.what = AppProtocol.SEARCH;
@@ -272,4 +332,18 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         }
     }
 
+    private class AudioId {
+        long id;
+        IdType type;
+
+        private AudioId(long id, IdType type) {
+            this.id = id;
+            this.type = type;
+        }
+    }
+
+    private enum IdType {
+        USERS_AUDIO,
+        PUBLICS_AUDIO
+    }
 }

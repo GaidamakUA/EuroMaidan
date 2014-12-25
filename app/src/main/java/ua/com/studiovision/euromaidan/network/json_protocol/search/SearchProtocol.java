@@ -1,14 +1,15 @@
 package ua.com.studiovision.euromaidan.network.json_protocol.search;
 
-import android.util.Log;
-
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractRequest;
 import ua.com.studiovision.euromaidan.network.json_protocol.AbstractResponse;
 
 /**
  * Created by gaidamak on 08.12.14.
  */
-public class SearchProtocol {
+public final class SearchProtocol {
+    private SearchProtocol() {
+    }
+
     public static class SearchUsersRequest implements AbstractRequest<SearchUsersRequest> {
         private static final String TAG = "SearchUsersRequest";
         public String key = "search";
@@ -16,29 +17,20 @@ public class SearchProtocol {
         public SearchCategory content;
         // ай-ди по которым вибирать данные
         public long[] ids;
+        public AudioIds audios_ids;
         // количество результатов найденных ранее(при поиске)!
         public Integer count; //'5', / null
         public SearchFilters filters;
 
-        public SearchUsersRequest(long[] ids, Integer count, String search_query, SearchCategory content) {
-            Log.v(TAG, "SearchUsersRequest(" + "ids=" + ids + ", count=" + count + ", search_query=" + search_query + ")");
-            if (ids != null && ids.length > 0) {
-                int length = ids.length;
-                this.ids = ids;
-            }
-            this.count = count;
-            this.filters = new SearchFilters(search_query);
+        // XXX dangerous constructor. Tree arrays of same type. Easy to missplace smth.
+        public SearchUsersRequest(SearchCategory content, long[] ids,
+                                  long[] music_from_users, long[] music_from_publics,
+                                  Integer count, String searchQuery) {
             this.content = content;
-        }
-
-        public SearchUsersRequest(long[] ids, Integer count, String search_query) {
-            Log.v(TAG, "SearchUsersRequest(" + "ids=" + ids + ", count=" + count + ", search_query=" + search_query + ")");
-            if (ids != null && ids.length > 0) {
-                int length = ids.length;
-                this.ids = ids;
-            }
+            this.ids = ids;
+            this.audios_ids = new AudioIds(music_from_users, music_from_publics);
             this.count = count;
-            this.filters = new SearchFilters(search_query);
+            this.filters = new SearchFilters(searchQuery);
         }
 
         public class SearchFilters {
@@ -74,15 +66,20 @@ public class SearchProtocol {
             public MyAudio[] users;
             public MyAudio[] publics;
             public AudioIds audios_ids;
-
-            public class AudioIds {
-                public long[] users;
-                public long[] publics;
-            }
         }
 
         public class VideosResponse extends InfiniteScrollResponse {
             public MyVideo[] videos;
+        }
+    }
+
+    public static class AudioIds {
+        public long[] users;
+        public long[] publics;
+
+        public AudioIds(long[] users, long[] publics) {
+            this.users = users;
+            this.publics = publics;
         }
     }
 }

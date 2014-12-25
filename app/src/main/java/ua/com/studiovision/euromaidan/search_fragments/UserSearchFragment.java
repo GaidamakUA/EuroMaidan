@@ -23,7 +23,7 @@ import ua.com.studiovision.euromaidan.activities.SearchActivity;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersCursor;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersSelection;
-import ua.com.studiovision.euromaidan.search_fragments.adapters.SearchOnScrollListener;
+import ua.com.studiovision.euromaidan.search_fragments.adapters.SearchByUsersOnScrollListener;
 import ua.com.studiovision.euromaidan.search_fragments.adapters.UserSearchAdapter;
 
 @EFragment(R.layout.fragment_search)
@@ -77,7 +77,7 @@ public class UserSearchFragment extends Fragment implements LoaderManager.Loader
                 getLoaderManager().restartLoader(0, null, UserSearchFragment.this);
             }
         });
-        searchRecyclerView.setOnScrollListener(new SearchOnScrollListener((SearchActivityCallbacks) UserSearchFragment.this.getActivity()));
+        searchRecyclerView.setOnScrollListener(new SearchByUsersOnScrollListener((SearchActivityCallbacks) UserSearchFragment.this.getActivity()));
     }
 
     @Override
