@@ -9,16 +9,20 @@ import android.widget.TextView;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosCursor;
-import ua.com.studiovision.euromaidan.search_fragments.SearchActivityCallbacks;
+import ua.com.studiovision.euromaidan.search_fragments.AudioSearchFragment;
 
 public class AudioSearchAdapter extends CursorRecyclerAdapter<AudioSearchAdapter.ViewHolder, AudiosCursor> {
 
-    SearchActivityCallbacks callbacks;
+    AudioSearchFragment.OnAudioClickListener callbacks;
 
-    public AudioSearchAdapter(AudiosCursor cursor, Context context, SearchActivityCallbacks callbacks) {
+    public AudioSearchAdapter(AudiosCursor cursor, Context context, AudioSearchFragment.OnAudioClickListener callbacks) {
         super(cursor, context);
         this.callbacks = callbacks;
     }
+
+//    public AudiosCursor getCursor() {
+//        return mCursor;
+//    }
 
     @Override
     public void onBindViewHolderCursor(ViewHolder holder, AudiosCursor cursor) {
@@ -50,7 +54,8 @@ public class AudioSearchAdapter extends CursorRecyclerAdapter<AudioSearchAdapter
 
         @Override
         public void onClick(View view) {
-            callbacks.playAudio();
+//            callbacks.onAudioClicked(AudioSearchAdapter.this.getItemId(getPosition()));
+            callbacks.onAudioClicked(getPosition());
         }
     }
 

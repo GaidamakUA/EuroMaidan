@@ -99,7 +99,7 @@ public class SchoolFragment extends Fragment {
                 if (str == null || str.length() < 1)
                     return null;
                 firstRunFragmentListener.tryRequestCountries(str.toString());
-                return getCursor(str, CountryColumns.COUNTRY_NAME, CountryColumns.CONTENT_URI, CountryColumns.ALL_COLUMNS);
+                return getCursor(str, CountryColumns.COUNTRY_NAME_LOWERCASE, CountryColumns.CONTENT_URI, CountryColumns.ALL_COLUMNS);
             }
         });
 
@@ -158,7 +158,7 @@ public class SchoolFragment extends Fragment {
                 if (str == null || str.length() < 1 || countryId == -1L)
                     return null;
                 firstRunFragmentListener.tryRequestCities(str.toString(), countryId);
-                return getCursor(str, CityColumns.CITY_NAME, CityColumns.CONTENT_URI, CityColumns.ALL_COLUMNS);
+                return getCursor(str, CityColumns.CITY_NAME_LOWERCASE, CityColumns.CONTENT_URI, CityColumns.ALL_COLUMNS);
             }
         });
 
@@ -197,7 +197,7 @@ public class SchoolFragment extends Fragment {
                     return null;
                 }
                 firstRunFragmentListener.tryRequestSchools(str.toString(), cityId);
-                return getCursor(str, SchoolColumns.SCHOOL_NAME, SchoolColumns.CONTENT_URI, SchoolColumns.ALL_COLUMNS);
+                return getCursor(str, SchoolColumns.SCHOOL_NAME_LOWERCASE, SchoolColumns.CONTENT_URI, SchoolColumns.ALL_COLUMNS);
             }
         });
 
@@ -221,14 +221,10 @@ public class SchoolFragment extends Fragment {
      */
     private Cursor getCursor(CharSequence str, String columnName, Uri columnsContentURI, String[] projection) {
         StringBuilder stringBuilder = new StringBuilder();
+
         stringBuilder.append(columnName);
         stringBuilder.append(" LIKE '%");
-        stringBuilder.append(str.toString());
-        stringBuilder.append("%' OR ");
-        stringBuilder.append(columnName);
-        stringBuilder.append(" LIKE '%");
-        stringBuilder.append(Character.toUpperCase(str.charAt(0)));
-        stringBuilder.append(str.subSequence(1, str.length()));
+        stringBuilder.append(str.toString().toLowerCase());
         stringBuilder.append("%'");
         Log.v(TAG, "str=" + str + "; select=" + stringBuilder.toString());
         Cursor cursor = getActivity().getBaseContext().getContentResolver()

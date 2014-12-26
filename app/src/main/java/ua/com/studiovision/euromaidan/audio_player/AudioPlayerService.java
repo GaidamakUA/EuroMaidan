@@ -1,49 +1,43 @@
-package ua.com.studiovision.euromaidan.network.audio_player;
+package ua.com.studiovision.euromaidan.audio_player;
 
-import android.app.Service;
-import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.os.Binder;
-import android.os.IBinder;
+import android.os.Message;
 import android.os.PowerManager;
 import android.util.Log;
 
+import com.softevol.activity_service_communication.ActivityServiceCommunicationService;
+
 import org.androidannotations.annotations.EService;
 
-import java.util.ArrayList;
-
-import ua.com.studiovision.euromaidan.network.json_protocol.search.MyAudio;
-
 @EService
-public class AudioPlayerService extends Service
+public class AudioPlayerService extends ActivityServiceCommunicationService
         implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
 
     private static final String TAG = "AudioPlayerService";
 
     MediaPlayer mMediaPlayer = null;
-    private ArrayList<MyAudio> playlist;
     private int currentAudioPosition;
 
-    private final IBinder musicBind = new AudioBinder();
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return musicBind;
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        mMediaPlayer.stop();
-        mMediaPlayer.release();
-        return false;
-    }
+    // TODO remove after final implementation
+    String audioUrl;
 
     @Override
     public void onCreate() {
-        super.onCreate();
+        Log.v(TAG, "onCreate(" + ")");
         mMediaPlayer = new MediaPlayer();
         initMediaPlayer();
+
+        super.onCreate();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.v(TAG, "onDestroy(" + ")");
+        mMediaPlayer.stop();
+        mMediaPlayer.release();
+//        mMediaPlayer = null;
     }
 
     public void initMediaPlayer() {
@@ -56,21 +50,26 @@ public class AudioPlayerService extends Service
 
     public void playSong() {
         mMediaPlayer.reset();
-        MyAudio audio = playlist.get(currentAudioPosition);
+//        MyAudio audio = playlist.get(currentAudioPosition);
         try {
-            mMediaPlayer.setDataSource(audio.url);
+//            mMediaPlayer.setDataSource(audio.url);
+            mMediaPlayer.setDataSource(audioUrl);
         } catch (Exception e) {
             Log.e(TAG, "Error setting data source", e);
         }
         mMediaPlayer.prepareAsync();
     }
 
-    public void setList(ArrayList<MyAudio> playlist) {
-        this.playlist = playlist;
+    public void setAudio(String audioUrl) {
+        this.audioUrl = audioUrl;
     }
 
-    public void setAudio(int position) {
-        this.currentAudioPosition = position;
+    public void play() {
+        mMediaPlayer.start();
+    }
+
+    public void pause() {
+        mMediaPlayer.pause();
     }
 
     @Override
@@ -80,9 +79,11 @@ public class AudioPlayerService extends Service
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        if (++currentAudioPosition <= playlist.size()) {
-            playSong();
-        }
+        Log.v(TAG, "onCompletion(" + "mediaPlayer=" + mediaPlayer + ")");
+//        if (++currentAudioPosition <= playlist.size()) {
+//            playSong();
+//        }
+        // TODO notify activity
     }
 
     @Override
@@ -90,9 +91,11 @@ public class AudioPlayerService extends Service
         return false;
     }
 
-    public class AudioBinder extends Binder {
-        public AudioPlayerService getService() {
-            return AudioPlayerService.this;
+    @Override
+    protected void handleMessage(Message msg) {
+        switch (msg.what) {
+            case MusicProtocol.START_PLAYBACK:
+
         }
     }
 }

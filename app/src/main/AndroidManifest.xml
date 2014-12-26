@@ -44,7 +44,7 @@
             android:name="ua.com.studiovision.euromaidan.network.MainService_"
             android:enabled="true"
             android:exported="false"/>
-        <service android:name="ua.com.studiovision.euromaidan.network.audio_player.AudioPlayerService_"
+        <service android:name=".audio_player.AudioPlayerService_"
             android:enabled="true"
             android:exported="false"/>
         <provider

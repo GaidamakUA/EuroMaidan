@@ -281,11 +281,6 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         sendMessage(msg);
     }
 
-    @Override
-    public void playAudio() {
-        AudioActivity_.intent(this).start();
-    }
-
     private class SearchFragmentPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
 
         private int[] ICONS = new int[]{

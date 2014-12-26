@@ -19,6 +19,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import ua.com.studiovision.euromaidan.R;
+import ua.com.studiovision.euromaidan.activities.AudioActivity_;
 import ua.com.studiovision.euromaidan.activities.SearchActivity;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosCursor;
@@ -32,6 +33,8 @@ public class AudioSearchFragment extends Fragment implements LoaderManager.Loade
     RecyclerView searchRecyclerView;
     AudioSearchAdapter audioSearchAdapter;
     AudiosSelection filter;
+
+    AudiosCursor mCursor;
 
     private final String TAG = "AudioSearchFragment";
 
@@ -49,7 +52,19 @@ public class AudioSearchFragment extends Fragment implements LoaderManager.Loade
 
     @AfterViews
     void init() {
-        audioSearchAdapter = new AudioSearchAdapter(null,getActivity().getBaseContext(), (SearchActivityCallbacks) AudioSearchFragment.this.getActivity());
+        audioSearchAdapter = new AudioSearchAdapter(null,getActivity().getBaseContext(), new OnAudioClickListener() {
+            @Override
+            public void onAudioClicked(int initPosition) {
+                Log.v(TAG, "onAudioClicked(" + "itemId=" + initPosition + ")");
+                mCursor.moveToPosition(-1);
+                long[] audioIds = new long[mCursor.getCount()];
+                int counter = 0;
+                while (mCursor.moveToNext()) {
+                    audioIds[counter++] = mCursor.getId();
+                }
+                AudioActivity_.intent(getActivity()).audioIds(audioIds).initialPosition(initPosition).start();
+            }
+        });
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
         searchRecyclerView.setAdapter(audioSearchAdapter);
@@ -99,10 +114,15 @@ public class AudioSearchFragment extends Fragment implements LoaderManager.Loade
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.v(TAG, "onLoadFinished(" + "loader=" + loader + ", cursor=" + cursor + ")");
         audioSearchAdapter.changeCursor(new AudiosCursor(cursor));
+        this.mCursor = new AudiosCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         audioSearchAdapter.changeCursor(null);
+    }
+
+    public interface OnAudioClickListener {
+        void onAudioClicked(int itemId);
     }
 }
