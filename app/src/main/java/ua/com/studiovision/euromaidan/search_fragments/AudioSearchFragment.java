@@ -19,8 +19,8 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import ua.com.studiovision.euromaidan.R;
-import ua.com.studiovision.euromaidan.activities.AudioActivity_;
 import ua.com.studiovision.euromaidan.activities.SearchActivity;
+import ua.com.studiovision.euromaidan.audio_player.AudioActivity_;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosCursor;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosSelection;
