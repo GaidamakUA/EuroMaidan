@@ -132,10 +132,17 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
         sendMessage(msg);
     }
 
-//    @CheckedChange(R.id.repeat_toggle_button)
-//    void onSeekFinished(SeekBar seekBar) {
-//
-//    }
+    @CheckedChange(R.id.repeat_toggle_button)
+    void onRepeatChanged(boolean repeat) {
+        Log.v(TAG, "onRepeatChanged(" + "repeat=" + repeat + ")");
+        Message msg = Message.obtain();
+        if(repeat) {
+            msg.what = MusicProtocol.ENABLE_REPEAT;
+        } else {
+            msg.what = MusicProtocol.DISABLE_REPEAT;
+        }
+        sendMessage(msg);
+    }
 
     @Override
     protected void handleMessage(Message msg) {

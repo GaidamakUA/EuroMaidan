@@ -124,6 +124,13 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
                 break;
             case MusicProtocol.SEEK_TO:
                 mMediaPlayer.seekTo(msg.getData().getInt(AudioActivity.SEEK_TO));
+                break;
+            case MusicProtocol.ENABLE_REPEAT:
+                mMediaPlayer.setLooping(true);
+                break;
+            case MusicProtocol.DISABLE_REPEAT:
+                mMediaPlayer.setLooping(false);
+                break;
         }
     }
 }

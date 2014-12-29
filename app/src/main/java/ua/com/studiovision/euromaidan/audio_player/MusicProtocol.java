@@ -13,4 +13,6 @@ public class MusicProtocol extends Protocol {
     public static final int VOLUME_CHANGED = 5;
     public static final int CURRENT_POSITION = 6;
     public static final int SEEK_TO = 7;
+    public static final int ENABLE_REPEAT = 8;
+    public static final int DISABLE_REPEAT = 9;
 }
