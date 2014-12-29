@@ -9,4 +9,8 @@ public class MusicProtocol extends Protocol {
     public static final int START_PLAYBACK = 0;
     public static final int PAUSE_PLAYBACK = 1;
     public static final int RESUME_PLAYBACK = 2;
+    public static final int STOP_PLAYBACK = 4;
+    public static final int VOLUME_CHANGED = 5;
+    public static final int CURRENT_POSITION = 6;
+    public static final int SEEK_TO = 7;
 }

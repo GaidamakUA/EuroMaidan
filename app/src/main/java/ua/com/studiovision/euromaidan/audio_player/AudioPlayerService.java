@@ -2,6 +2,7 @@ package ua.com.studiovision.euromaidan.audio_player;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.Message;
 import android.os.PowerManager;
 import android.util.Log;
@@ -9,6 +10,10 @@ import android.util.Log;
 import com.softevol.activity_service_communication.ActivityServiceCommunicationService;
 
 import org.androidannotations.annotations.EService;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @EService
 public class AudioPlayerService extends ActivityServiceCommunicationService
@@ -22,22 +27,22 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     // TODO remove after final implementation
     String audioUrl;
 
+    ScheduledExecutorService mScheduledExecutorService;
+
     @Override
     public void onCreate() {
+        super.onCreate();
         Log.v(TAG, "onCreate(" + ")");
         mMediaPlayer = new MediaPlayer();
         initMediaPlayer();
 
-        super.onCreate();
+        mScheduledExecutorService = Executors.newScheduledThreadPool(1);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.v(TAG, "onDestroy(" + ")");
-        mMediaPlayer.stop();
-        mMediaPlayer.release();
-//        mMediaPlayer = null;
     }
 
     public void initMediaPlayer() {
@@ -54,22 +59,21 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
         try {
 //            mMediaPlayer.setDataSource(audio.url);
             mMediaPlayer.setDataSource(audioUrl);
+            mScheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    Message msg = Message.obtain();
+                    msg.what = MusicProtocol.CURRENT_POSITION;
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(AudioActivity.CURRENT_POSITION, mMediaPlayer.getCurrentPosition()/1000);
+                    msg.setData(bundle);
+                    sendMessage(msg);
+                }
+            }, 1, 1, TimeUnit.SECONDS);
         } catch (Exception e) {
             Log.e(TAG, "Error setting data source", e);
         }
         mMediaPlayer.prepareAsync();
-    }
-
-    public void setAudio(String audioUrl) {
-        this.audioUrl = audioUrl;
-    }
-
-    public void play() {
-        mMediaPlayer.start();
-    }
-
-    public void pause() {
-        mMediaPlayer.pause();
     }
 
     @Override
@@ -83,6 +87,8 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
 //        if (++currentAudioPosition <= playlist.size()) {
 //            playSong();
 //        }
+//            default:
+//                throw  new IllegalArgumentException("Unexpected message to audio service");
         // TODO notify activity
     }
 
@@ -93,9 +99,31 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
 
     @Override
     protected void handleMessage(Message msg) {
+        Log.v(TAG, "handleMessage(" + "msg=" + msg.what + ")");
         switch (msg.what) {
             case MusicProtocol.START_PLAYBACK:
-
+                Log.v(TAG, "START_PLAYBACK");
+                audioUrl = msg.getData().getString(AudioActivity.SONG_URL);
+                playSong();
+                break;
+            case MusicProtocol.STOP_PLAYBACK:
+                Log.v(TAG, "STOP_PLAYBACK");
+                mMediaPlayer.stop();
+                mMediaPlayer.release();
+                stopSelf();
+                break;
+            case MusicProtocol.PAUSE_PLAYBACK:
+                mMediaPlayer.pause();
+                break;
+            case MusicProtocol.RESUME_PLAYBACK:
+                mMediaPlayer.start();
+                break;
+            case MusicProtocol.VOLUME_CHANGED:
+                float volumeLevel = msg.getData().getFloat(AudioActivity.VOLUME_LEVEL);
+                mMediaPlayer.setVolume(volumeLevel, volumeLevel);
+                break;
+            case MusicProtocol.SEEK_TO:
+                mMediaPlayer.seekTo(msg.getData().getInt(AudioActivity.SEEK_TO));
         }
     }
 }
