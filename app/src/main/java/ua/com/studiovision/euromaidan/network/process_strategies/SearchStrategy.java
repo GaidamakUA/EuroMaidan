@@ -55,6 +55,7 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
         }
         if (response.result.audios != null) {
             AudiosContentValues audioContentValues = new AudiosContentValues();
+            if (response.result.audios.publics != null)
             for (MyAudio audio : response.result.audios.publics) {
                 audioContentValues
                         .putName(audio.name)
@@ -63,6 +64,7 @@ public class SearchStrategy extends AbstractProcessResponseStrategy
                         .putAudioUrl(audio.url);
                 audioContentValues.insert(context.getContentResolver());
             }
+            if (response.result.audios.users != null)
             for (MyAudio audio : response.result.audios.users) {
                 audioContentValues
                         .putName(audio.name)
