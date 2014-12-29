@@ -132,10 +132,10 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
         sendMessage(msg);
     }
 
-    @CheckedChange(R.id.repeat_toggle_button)
-    void onSeekFinished(SeekBar seekBar) {
-
-    }
+//    @CheckedChange(R.id.repeat_toggle_button)
+//    void onSeekFinished(SeekBar seekBar) {
+//
+//    }
 
     @Override
     protected void handleMessage(Message msg) {
