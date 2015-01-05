@@ -30,7 +30,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     MyAudio[] playlist;
 
     // TODO remove after final implementation
-    String audioUrl;
+    //String audioUrl;
 
     ScheduledExecutorService mScheduledExecutorService;
 
@@ -78,6 +78,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     public void onCompletion(MediaPlayer mediaPlayer) {
         Log.v(TAG, "onCompletion(" + "mediaPlayer=" + mediaPlayer + ")");
         if (++currentAudioPosition <= playlist.length) {
+            sendCurrentTrackInfo();
             playSong();
             startUpdatingTimeInActivity();
         }
@@ -102,6 +103,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
                 Parcelable[] audiosParcelable = msg.getData().getParcelableArray(AudioActivity.AUDIOS_ARRAY);
                 playlist = Arrays.copyOf(audiosParcelable,audiosParcelable.length,MyAudio[].class);
                // Log.v(TAG, "audioUrl=" + audioUrl);
+                sendCurrentTrackInfo();
                 playSong();
                 startUpdatingTimeInActivity();
                 break;
@@ -156,5 +158,14 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     }
     private void stopUpdatingTimeInActivity() {
         mScheduledExecutorService.shutdown();
+    }
+
+    private void sendCurrentTrackInfo(){
+        Message msg = Message.obtain();
+        msg.what = MusicProtocol.CURRENT_TRACK_INFO;
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(AudioActivity.CURRENT_TRACK_INFO,playlist[currentAudioPosition]);
+        msg.setData(bundle);
+        sendMessage(msg);
     }
 }
