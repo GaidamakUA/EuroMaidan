@@ -15,4 +15,6 @@ public class MusicProtocol extends Protocol {
     public static final int SEEK_TO = 7;
     public static final int ENABLE_REPEAT = 8;
     public static final int DISABLE_REPEAT = 9;
+    public static final int START_UPDATING_TIME = 10;
+    public static final int STOP_UPDATING_TIME = 11;
 }

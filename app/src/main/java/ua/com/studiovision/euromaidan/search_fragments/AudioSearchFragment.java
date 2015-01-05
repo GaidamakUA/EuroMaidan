@@ -69,7 +69,7 @@ public class AudioSearchFragment extends Fragment implements LoaderManager.Loade
                     audio.url = mCursor.getAudioUrl();
                     audios[counter++] = audio;
                 }
-                AudioActivity_.intent(getActivity()).audios(audios).initialPosition(initPosition).start();
+                AudioActivity_.intent(getActivity()).audiosTemp(audios).initialPosition(initPosition).start();
             }
         });
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));

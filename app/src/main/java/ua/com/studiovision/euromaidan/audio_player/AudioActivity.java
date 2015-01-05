@@ -2,6 +2,7 @@ package ua.com.studiovision.euromaidan.audio_player;
 
 import android.os.Bundle;
 import android.os.Message;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -16,13 +17,10 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.SeekBarProgressChange;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.network.json_protocol.search.MyAudio;
-import ua.com.studiovision.euromaidan.network.provider.audios.AudiosCursor;
-import ua.com.studiovision.euromaidan.network.provider.audios.AudiosSelection;
 
 @EActivity(R.layout.activity_audio_player)
 public class AudioActivity extends ActivityServiceCommunicationFragmentActivity {
@@ -43,6 +41,7 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
     TextView totalDurationTextView;
 
     @Extra
+    Parcelable[] audiosTemp = null;
     MyAudio[] audios = null;
     @Extra
     int initialPosition;
@@ -64,6 +63,9 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
         Message msg = Message.obtain();
         msg.what = MusicProtocol.STOP_PLAYBACK;
         sendMessage(msg);
+
+        stopUpdatingTime();
+
         super.onBackPressed();
     }
 
@@ -80,17 +82,21 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                stopUpdatingTime();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                Log.v(TAG, "onStopTrackingTouch(" + "seekBar=" + seekBar + ")");
+
                 Message msg = Message.obtain();
                 Bundle data = new Bundle();
                 data.putInt(SEEK_TO, seekBar.getProgress() * 1000);
                 msg.setData(data);
                 msg.what = MusicProtocol.SEEK_TO;
                 sendMessage(msg);
+
+                startUpdatingTime();
             }
         });
 
@@ -100,7 +106,8 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
     @AfterExtras
     void startPlaying() {
         position = initialPosition;
-        Log.v(TAG, "LENGTH ------> "+audios.length);
+        audios = Arrays.copyOf(audiosTemp, audiosTemp.length, MyAudio[].class);
+//        Log.v(TAG, "LENGTH ------> "+audios.length);
 //        AudiosSelection selection = new AudiosSelection();
 //        AudiosCursor cursor = selection.id(audioIds[position]).query(getContentResolver());
 //        cursor.moveToFirst();
@@ -117,10 +124,13 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
 
     @CheckedChange(R.id.play_pause_togglebutton)
     void playPause(boolean checked) {
+        Log.v(TAG, "playPause(" + "checked=" + checked + ")");
         Message msg = Message.obtain();
         if (checked) {
+            startUpdatingTime();
             msg.what = MusicProtocol.RESUME_PLAYBACK;
         } else {
+            stopUpdatingTime();
             msg.what = MusicProtocol.PAUSE_PLAYBACK;
         }
         sendMessage(msg);
@@ -141,7 +151,7 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
     void onRepeatChanged(boolean repeat) {
         Log.v(TAG, "onRepeatChanged(" + "repeat=" + repeat + ")");
         Message msg = Message.obtain();
-        if(repeat) {
+        if (repeat) {
             msg.what = MusicProtocol.ENABLE_REPEAT;
         } else {
             msg.what = MusicProtocol.DISABLE_REPEAT;
@@ -162,9 +172,24 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
                 sendMessage(msg);
                 break;
             case MusicProtocol.CURRENT_POSITION:
-//                Log.v(TAG, "CURRENT_POSITION=" + msg.getData().getInt(CURRENT_POSITION));
+                Log.v(TAG, "CURRENT_POSITION=" + msg.getData().getInt(CURRENT_POSITION));
                 playbackSeekBar.setProgress(msg.getData().getInt(CURRENT_POSITION));
                 break;
         }
+    }
+
+    private void startUpdatingTime() {
+        Message msg;
+        msg = Message.obtain();
+        msg.what = MusicProtocol.START_UPDATING_TIME;
+        sendMessage(msg);
+    }
+
+
+    private void stopUpdatingTime() {
+        Message msg;
+        msg = Message.obtain();
+        msg.what = MusicProtocol.STOP_UPDATING_TIME;
+        sendMessage(msg);
     }
 }

@@ -11,7 +11,6 @@ import com.softevol.activity_service_communication.ActivityServiceCommunicationS
 
 import org.androidannotations.annotations.EService;
 
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,21 +29,20 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
 
     ScheduledExecutorService mScheduledExecutorService;
 
-    //private List<String> playlist =
-
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.v(TAG, "onCreate(" + ")");
         mMediaPlayer = new MediaPlayer();
         initMediaPlayer();
-
+        startUpdatingTimeInActivity();
         mScheduledExecutorService = Executors.newScheduledThreadPool(1);
+        Log.v(TAG, "onCreate(" + ")");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        stopUpdatingTimeInActivity();
         Log.v(TAG, "onDestroy(" + ")");
     }
 
@@ -58,21 +56,9 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
 
     public void playSong() {
         mMediaPlayer.reset();
-//        MyAudio audio = playlist.get(currentAudioPosition);
         try {
-//            mMediaPlayer.setDataSource(audio.url);
             mMediaPlayer.setDataSource(audioUrl);
-            mScheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-                @Override
-                public void run() {
-                    Message msg = Message.obtain();
-                    msg.what = MusicProtocol.CURRENT_POSITION;
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(AudioActivity.CURRENT_POSITION, mMediaPlayer.getCurrentPosition()/1000);
-                    msg.setData(bundle);
-                    sendMessage(msg);
-                }
-            }, 1, 1, TimeUnit.SECONDS);
+
         } catch (Exception e) {
             Log.e(TAG, "Error setting data source", e);
         }
@@ -108,6 +94,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
                 Log.v(TAG, "START_PLAYBACK");
                 audioUrl = msg.getData().getString(AudioActivity.SONG_URL);
                 playSong();
+                startUpdatingTimeInActivity();
                 break;
             case MusicProtocol.STOP_PLAYBACK:
                 Log.v(TAG, "STOP_PLAYBACK");
@@ -117,6 +104,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
                 break;
             case MusicProtocol.PAUSE_PLAYBACK:
                 mMediaPlayer.pause();
+                mScheduledExecutorService.shutdown();
                 break;
             case MusicProtocol.RESUME_PLAYBACK:
                 mMediaPlayer.start();
@@ -134,6 +122,30 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
             case MusicProtocol.DISABLE_REPEAT:
                 mMediaPlayer.setLooping(false);
                 break;
+            case MusicProtocol.START_UPDATING_TIME:
+                startUpdatingTimeInActivity();
+                break;
+            case MusicProtocol.STOP_UPDATING_TIME:
+                stopUpdatingTimeInActivity();
+                break;
         }
+    }
+
+    private void startUpdatingTimeInActivity() {
+        Log.v(TAG, "startUpdatingTimeInActivity(" + ")");
+        mScheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                Message msg = Message.obtain();
+                msg.what = MusicProtocol.CURRENT_POSITION;
+                Bundle bundle = new Bundle();
+                bundle.putInt(AudioActivity.CURRENT_POSITION, mMediaPlayer.getCurrentPosition()/1000);
+                msg.setData(bundle);
+                sendMessage(msg);
+            }
+        }, 1, 1, TimeUnit.SECONDS);
+    }
+    private void stopUpdatingTimeInActivity() {
+        mScheduledExecutorService.shutdown();
     }
 }
