@@ -21,6 +21,7 @@ import org.androidannotations.annotations.ViewById;
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.activities.SearchActivity;
 import ua.com.studiovision.euromaidan.audio_player.AudioActivity_;
+import ua.com.studiovision.euromaidan.network.json_protocol.search.MyAudio;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosCursor;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosSelection;
@@ -58,11 +59,17 @@ public class AudioSearchFragment extends Fragment implements LoaderManager.Loade
                 Log.v(TAG, "onAudioClicked(" + "itemId=" + initPosition + ")");
                 mCursor.moveToPosition(-1);
                 long[] audioIds = new long[mCursor.getCount()];
+                MyAudio[] audios = new MyAudio[mCursor.getCount()];
                 int counter = 0;
                 while (mCursor.moveToNext()) {
-                    audioIds[counter++] = mCursor.getId();
+                    MyAudio audio = new MyAudio();
+                    audio.author = mCursor.getAuthor();
+                    audio.name = mCursor.getName();
+                    audio.duration = mCursor.getDuration();
+                    audio.url = mCursor.getAudioUrl();
+                    audios[counter++] = audio;
                 }
-                AudioActivity_.intent(getActivity()).audioIds(audioIds).initialPosition(initPosition).start();
+                AudioActivity_.intent(getActivity()).audios(audios).initialPosition(initPosition).start();
             }
         });
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));

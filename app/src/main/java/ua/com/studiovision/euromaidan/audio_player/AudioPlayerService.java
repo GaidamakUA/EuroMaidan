@@ -11,6 +11,7 @@ import com.softevol.activity_service_communication.ActivityServiceCommunicationS
 
 import org.androidannotations.annotations.EService;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +29,8 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     String audioUrl;
 
     ScheduledExecutorService mScheduledExecutorService;
+
+    //private List<String> playlist =
 
     @Override
     public void onCreate() {

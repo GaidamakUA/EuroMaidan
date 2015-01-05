@@ -16,7 +16,11 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.SeekBarProgressChange;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ua.com.studiovision.euromaidan.R;
+import ua.com.studiovision.euromaidan.network.json_protocol.search.MyAudio;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosCursor;
 import ua.com.studiovision.euromaidan.network.provider.audios.AudiosSelection;
 
@@ -39,7 +43,7 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
     TextView totalDurationTextView;
 
     @Extra
-    long[] audioIds = null;
+    MyAudio[] audios = null;
     @Extra
     int initialPosition;
     int position;
@@ -96,18 +100,19 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
     @AfterExtras
     void startPlaying() {
         position = initialPosition;
-        AudiosSelection selection = new AudiosSelection();
-        AudiosCursor cursor = selection.id(audioIds[position]).query(getContentResolver());
-        cursor.moveToFirst();
-        Log.v(TAG, "audio name=" + cursor.getName());
-
-        mSongName = cursor.getAuthor() + " - " + cursor.getName();
-
-        // XXX potentially concurrently unsafe
-        mSongUrl = cursor.getAudioUrl();
-
-        totalDuration = cursor.getDuration();
-        cursor.close();
+        Log.v(TAG, "LENGTH ------> "+audios.length);
+//        AudiosSelection selection = new AudiosSelection();
+//        AudiosCursor cursor = selection.id(audioIds[position]).query(getContentResolver());
+//        cursor.moveToFirst();
+//        Log.v(TAG, "audio name=" + cursor.getName());
+//
+//        mSongName = cursor.getAuthor() + " - " + cursor.getName();
+//
+//        // XXX potentially concurrently unsafe
+//        mSongUrl = cursor.getAudioUrl();
+//
+//        totalDuration = cursor.getDuration();
+//        cursor.close();
     }
 
     @CheckedChange(R.id.play_pause_togglebutton)

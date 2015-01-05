@@ -44,6 +44,7 @@ public class AudioSearchAdapter extends CursorRecyclerAdapter<AudioSearchAdapter
         TextView audioAuthor;
         TextView duration;
 
+
         public ViewHolder(View itemView) {
             super(itemView);
             audioName = (TextView) itemView.findViewById(R.id.audio_name_textview);
