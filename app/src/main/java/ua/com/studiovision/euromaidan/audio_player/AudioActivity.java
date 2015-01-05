@@ -26,10 +26,14 @@ import ua.com.studiovision.euromaidan.network.json_protocol.search.MyAudio;
 public class AudioActivity extends ActivityServiceCommunicationFragmentActivity {
     private static final String TAG = "AudioActivity";
 
-    public static final String SONG_URL = "song_url";
+    public static final String INITIAL_POSITION = "initial_position";
+    public static final String AUDIOS_ARRAY = "audios_array";
+
     public static final String VOLUME_LEVEL = "volume_level";
     public static final String CURRENT_POSITION = "current_position";
     public static final String SEEK_TO = "seek_to";
+
+    public static final String CURRENT_TRACK_INFO = "current_track_info";
 
     @ViewById(R.id.audio_name_textview)
     TextView audioNameTextView;
@@ -47,9 +51,6 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
     int initialPosition;
     int position;
     int totalDuration;
-
-    private String mSongName;
-    private String mSongUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,27 +100,12 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
                 startUpdatingTime();
             }
         });
-
-        audioNameTextView.setText(mSongName);
     }
 
     @AfterExtras
     void startPlaying() {
         position = initialPosition;
         audios = Arrays.copyOf(audiosTemp, audiosTemp.length, MyAudio[].class);
-//        Log.v(TAG, "LENGTH ------> "+audios.length);
-//        AudiosSelection selection = new AudiosSelection();
-//        AudiosCursor cursor = selection.id(audioIds[position]).query(getContentResolver());
-//        cursor.moveToFirst();
-//        Log.v(TAG, "audio name=" + cursor.getName());
-//
-//        mSongName = cursor.getAuthor() + " - " + cursor.getName();
-//
-//        // XXX potentially concurrently unsafe
-//        mSongUrl = cursor.getAudioUrl();
-//
-//        totalDuration = cursor.getDuration();
-//        cursor.close();
     }
 
     @CheckedChange(R.id.play_pause_togglebutton)
@@ -167,13 +153,20 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
                 msg = Message.obtain();
                 msg.what = MusicProtocol.START_PLAYBACK;
                 Bundle bundle = new Bundle();
-                bundle.putString(SONG_URL, audios[initialPosition].url);
+                bundle.putParcelableArray(AUDIOS_ARRAY, audios);
+                bundle.putInt(INITIAL_POSITION, initialPosition);
                 msg.setData(bundle);
                 sendMessage(msg);
                 break;
             case MusicProtocol.CURRENT_POSITION:
                 Log.v(TAG, "CURRENT_POSITION=" + msg.getData().getInt(CURRENT_POSITION));
                 playbackSeekBar.setProgress(msg.getData().getInt(CURRENT_POSITION));
+                break;
+            case MusicProtocol.CURRENT_TRACK_INFO:
+                MyAudio audio = msg.getData().getParcelable(CURRENT_TRACK_INFO);
+                audioNameTextView.setText(audio.author + " - " + audio.name);
+                playbackSeekBar.setMax(audio.duration);
+                totalDurationTextView.setText(audio.duration);
                 break;
         }
     }
