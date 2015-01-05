@@ -4,6 +4,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Message;
+import android.os.Parcelable;
 import android.os.PowerManager;
 import android.util.Log;
 
@@ -11,9 +12,12 @@ import com.softevol.activity_service_communication.ActivityServiceCommunicationS
 
 import org.androidannotations.annotations.EService;
 
+import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import ua.com.studiovision.euromaidan.network.json_protocol.search.MyAudio;
 
 @EService
 public class AudioPlayerService extends ActivityServiceCommunicationService
@@ -23,6 +27,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
 
     MediaPlayer mMediaPlayer = null;
     private int currentAudioPosition;
+    MyAudio[] playlist;
 
     // TODO remove after final implementation
     String audioUrl;
@@ -35,7 +40,6 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
         mMediaPlayer = new MediaPlayer();
         initMediaPlayer();
         mScheduledExecutorService = Executors.newScheduledThreadPool(1);
-        startUpdatingTimeInActivity();
         Log.v(TAG, "onCreate(" + ")");
     }
 
@@ -57,11 +61,11 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     public void playSong() {
         mMediaPlayer.reset();
         try {
-            mMediaPlayer.setDataSource(audioUrl);
-
+            mMediaPlayer.setDataSource(playlist[currentAudioPosition].url);
         } catch (Exception e) {
             Log.e(TAG, "Error setting data source", e);
         }
+
         mMediaPlayer.prepareAsync();
     }
 
@@ -73,9 +77,10 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         Log.v(TAG, "onCompletion(" + "mediaPlayer=" + mediaPlayer + ")");
-//        if (++currentAudioPosition <= playlist.size()) {
-//            playSong();
-//        }
+        if (++currentAudioPosition <= playlist.length) {
+            playSong();
+            startUpdatingTimeInActivity();
+        }
 //            default:
 //                throw  new IllegalArgumentException("Unexpected message to audio service");
         // TODO notify activity
@@ -92,8 +97,11 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
         switch (msg.what) {
             case MusicProtocol.START_PLAYBACK:
                 Log.v(TAG, "START_PLAYBACK");
-                audioUrl = msg.getData().getString(AudioActivity.SONG_URL);
-                Log.v(TAG, "audioUrl=" + audioUrl);
+                //audioUrl = msg.getData().getString(AudioActivity.SONG_URL);
+                currentAudioPosition = msg.getData().getInt(AudioActivity.CURRENT_POSITION);
+                Parcelable[] audiosParcelable = msg.getData().getParcelableArray(AudioActivity.AUDIOS_ARRAY);
+                playlist = Arrays.copyOf(audiosParcelable,audiosParcelable.length,MyAudio[].class);
+               // Log.v(TAG, "audioUrl=" + audioUrl);
                 playSong();
                 startUpdatingTimeInActivity();
                 break;
