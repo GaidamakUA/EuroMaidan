@@ -34,8 +34,8 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
         super.onCreate();
         mMediaPlayer = new MediaPlayer();
         initMediaPlayer();
-        startUpdatingTimeInActivity();
         mScheduledExecutorService = Executors.newScheduledThreadPool(1);
+        startUpdatingTimeInActivity();
         Log.v(TAG, "onCreate(" + ")");
     }
 
@@ -93,6 +93,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
             case MusicProtocol.START_PLAYBACK:
                 Log.v(TAG, "START_PLAYBACK");
                 audioUrl = msg.getData().getString(AudioActivity.SONG_URL);
+                Log.v(TAG, "audioUrl=" + audioUrl);
                 playSong();
                 startUpdatingTimeInActivity();
                 break;

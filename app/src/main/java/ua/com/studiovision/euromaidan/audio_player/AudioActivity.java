@@ -167,7 +167,7 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
                 msg = Message.obtain();
                 msg.what = MusicProtocol.START_PLAYBACK;
                 Bundle bundle = new Bundle();
-                bundle.putString(SONG_URL, mSongUrl);
+                bundle.putString(SONG_URL, audios[initialPosition].url);
                 msg.setData(bundle);
                 sendMessage(msg);
                 break;
