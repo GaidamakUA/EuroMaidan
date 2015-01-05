@@ -61,7 +61,6 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
         } catch (Exception e) {
             Log.e(TAG, "Error setting data source", e);
         }
-
         mMediaPlayer.prepareAsync();
     }
 
@@ -77,8 +76,11 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
             sendCurrentTrackInfo();
             playSong();
             startUpdatingTimeInActivity();
+        } else {
+            stopUpdatingTimeInActivity();
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
         }
-        // TODO notify activity
     }
 
     @Override
@@ -97,7 +99,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
                 Log.v(TAG, "currentAudioPosition=" + currentAudioPosition);
                 Parcelable[] audiosParcelable = msg.getData().getParcelableArray(AudioActivity.AUDIOS_ARRAY);
                 playlist = Arrays.copyOf(audiosParcelable,audiosParcelable.length,MyAudio[].class);
-               // Log.v(TAG, "audioUrl=" + audioUrl);
+                Log.v(TAG, "audioUrl=" + playlist[currentAudioPosition].url);
                 sendCurrentTrackInfo();
                 playSong();
                 startUpdatingTimeInActivity();

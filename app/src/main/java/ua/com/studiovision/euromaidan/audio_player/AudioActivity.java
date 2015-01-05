@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.softevol.activity_service_communication.ActivityServiceCommunicationActivity;
 import com.softevol.activity_service_communication.ActivityServiceCommunicationFragmentActivity;
 
 import org.androidannotations.annotations.AfterViews;
@@ -20,7 +21,7 @@ import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.network.json_protocol.search.MyAudio;
 
 @EActivity(R.layout.activity_audio_player)
-public class AudioActivity extends ActivityServiceCommunicationFragmentActivity {
+public class AudioActivity extends ActivityServiceCommunicationActivity {
     private static final String TAG = "AudioActivity";
 
     public static final String INITIAL_POSITION = "initial_position";
