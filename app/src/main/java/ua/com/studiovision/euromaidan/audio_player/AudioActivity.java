@@ -9,15 +9,12 @@ import android.widget.TextView;
 
 import com.softevol.activity_service_communication.ActivityServiceCommunicationFragmentActivity;
 
-import org.androidannotations.annotations.AfterExtras;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.SeekBarProgressChange;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.Arrays;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.network.json_protocol.search.MyAudio;
@@ -46,11 +43,11 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
 
     @Extra
     Parcelable[] audiosTemp = null;
-    MyAudio[] audios = null;
+//    MyAudio[] audios = null;
     @Extra
     int initialPosition;
-    int position;
-    int totalDuration;
+//    int position;
+//    int totalDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +69,6 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
 
     @AfterViews
     void init() {
-        totalDurationTextView.setText(totalDuration / 60 + ":" + totalDuration % 60);
-        playbackSeekBar.setMax(totalDuration);
         playbackSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -100,12 +95,6 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
                 startUpdatingTime();
             }
         });
-    }
-
-    @AfterExtras
-    void startPlaying() {
-        position = initialPosition;
-        audios = Arrays.copyOf(audiosTemp, audiosTemp.length, MyAudio[].class);
     }
 
     @CheckedChange(R.id.play_pause_togglebutton)
@@ -153,7 +142,7 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
                 msg = Message.obtain();
                 msg.what = MusicProtocol.START_PLAYBACK;
                 Bundle bundle = new Bundle();
-                bundle.putParcelableArray(AUDIOS_ARRAY, audios);
+                bundle.putParcelableArray(AUDIOS_ARRAY, audiosTemp);
                 bundle.putInt(INITIAL_POSITION, initialPosition);
                 msg.setData(bundle);
                 sendMessage(msg);
@@ -166,7 +155,7 @@ public class AudioActivity extends ActivityServiceCommunicationFragmentActivity 
                 MyAudio audio = msg.getData().getParcelable(CURRENT_TRACK_INFO);
                 audioNameTextView.setText(audio.author + " - " + audio.name);
                 playbackSeekBar.setMax(audio.duration);
-                totalDurationTextView.setText(audio.duration);
+                totalDurationTextView.setText(audio.duration / 60 + ":" + audio.duration % 60);
                 break;
         }
     }

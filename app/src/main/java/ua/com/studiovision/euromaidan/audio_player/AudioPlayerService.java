@@ -29,9 +29,6 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     private int currentAudioPosition;
     MyAudio[] playlist;
 
-    // TODO remove after final implementation
-    //String audioUrl;
-
     ScheduledExecutorService mScheduledExecutorService;
 
     @Override
@@ -39,7 +36,6 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
         super.onCreate();
         mMediaPlayer = new MediaPlayer();
         initMediaPlayer();
-        mScheduledExecutorService = Executors.newScheduledThreadPool(1);
         Log.v(TAG, "onCreate(" + ")");
     }
 
@@ -82,8 +78,6 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
             playSong();
             startUpdatingTimeInActivity();
         }
-//            default:
-//                throw  new IllegalArgumentException("Unexpected message to audio service");
         // TODO notify activity
     }
 
@@ -99,7 +93,8 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
             case MusicProtocol.START_PLAYBACK:
                 Log.v(TAG, "START_PLAYBACK");
                 //audioUrl = msg.getData().getString(AudioActivity.SONG_URL);
-                currentAudioPosition = msg.getData().getInt(AudioActivity.CURRENT_POSITION);
+                currentAudioPosition = msg.getData().getInt(AudioActivity.INITIAL_POSITION);
+                Log.v(TAG, "currentAudioPosition=" + currentAudioPosition);
                 Parcelable[] audiosParcelable = msg.getData().getParcelableArray(AudioActivity.AUDIOS_ARRAY);
                 playlist = Arrays.copyOf(audiosParcelable,audiosParcelable.length,MyAudio[].class);
                // Log.v(TAG, "audioUrl=" + audioUrl);
@@ -115,7 +110,6 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
                 break;
             case MusicProtocol.PAUSE_PLAYBACK:
                 mMediaPlayer.pause();
-                mScheduledExecutorService.shutdown();
                 break;
             case MusicProtocol.RESUME_PLAYBACK:
                 mMediaPlayer.start();
@@ -144,6 +138,9 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
 
     private void startUpdatingTimeInActivity() {
         Log.v(TAG, "startUpdatingTimeInActivity(" + ")");
+        if (mScheduledExecutorService == null) {
+            mScheduledExecutorService = Executors.newScheduledThreadPool(1);
+        }
         mScheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
@@ -158,6 +155,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     }
     private void stopUpdatingTimeInActivity() {
         mScheduledExecutorService.shutdown();
+        mScheduledExecutorService = null;
     }
 
     private void sendCurrentTrackInfo(){
