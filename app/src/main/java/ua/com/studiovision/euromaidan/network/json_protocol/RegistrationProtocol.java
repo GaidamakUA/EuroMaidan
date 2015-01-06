@@ -7,8 +7,7 @@ public final class RegistrationProtocol {
     }
 
     public static class RegistrationRequest implements AbstractRequest<RegistrationRequest> {
-        // TODO make final
-        public String key = "user_registration";
+        public final String key = "user_registration";
         public String name; // min 2
         public String surname; // min 2
         public String password; // min 6

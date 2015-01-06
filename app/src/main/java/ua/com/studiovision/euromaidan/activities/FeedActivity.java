@@ -18,6 +18,7 @@ import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +36,6 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import ua.com.studiovision.euromaidan.AppProtocol;
 import ua.com.studiovision.euromaidan.ImageProcessor;
@@ -77,7 +77,7 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     @Pref
     SharedPrefs_ preferences;
 
-    HashMap<Integer, Fragment> fragments = new HashMap<Integer, Fragment>();
+    SparseArray<Fragment> fragments = new SparseArray<Fragment>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -279,7 +279,7 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
                 }
             }, 250);
 
-            if (fragments.containsKey(position))
+            if (fragments.indexOfKey(position) > 0)
                 if (getSupportFragmentManager().getBackStackEntryCount() == 1 && position == 0)
                     getSupportFragmentManager().popBackStack();
                 else

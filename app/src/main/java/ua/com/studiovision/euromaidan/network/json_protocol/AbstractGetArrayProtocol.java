@@ -1,15 +1,12 @@
 package ua.com.studiovision.euromaidan.network.json_protocol;
 
 import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsContent;
-import ua.com.studiovision.euromaidan.network.process_strategies.AbstractGetArrayStrategy;
 
 public class AbstractGetArrayProtocol {
 
     public static class AbstractArrayRequest implements AbstractRequest<AbstractArrayRequest> {
         public String key;
         public String lotName;
-        // not in all request, may be dangerous
-        // TODO review maybe replace with anonymous or named child class
         public Long id_country;
         public Long id_city;
         public Long id_user;

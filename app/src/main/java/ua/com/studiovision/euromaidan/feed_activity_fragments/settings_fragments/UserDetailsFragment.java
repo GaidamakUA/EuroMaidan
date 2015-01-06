@@ -11,7 +11,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -51,9 +50,6 @@ public class UserDetailsFragment extends Fragment {
 
     private final String TAG = "User details fragment";
 
-//    SettingsFragmentListener settingsFragmentListener;
-
-    // TODO Button should be updated with value from calendar to fallow MVC pattern
     final static Calendar calendar = Calendar.getInstance();
     SimpleDateFormat sendDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -62,24 +58,18 @@ public class UserDetailsFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-//        settingsFragmentListener = (SettingsFragmentListener) activity;
-    }
-
-    @AfterViews
-    void init() {
-        femaleRadioButton.setTextColor(getActivity().getBaseContext().getResources().getColorStateList(R.color.sex_rb_text_colors));
-        maleRadioButton.setTextColor(getActivity().getBaseContext().getResources().getColorStateList(R.color.sex_rb_text_colors));
     }
 
     @Click(R.id.birthday_button)
     void pickBirthDate() {
         Log.v(TAG, "Pick date pressed");
         DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-
             public void onDateSet(DatePicker view, int year,
                                   int monthOfYear, int dayOfMonth) {
                 calendar.set(year, monthOfYear, dayOfMonth);
-                birthdayButton.setText(dayOfMonth + "  " + calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()) + "  " + year);
+                birthdayButton.setText(dayOfMonth + "  "
+                        + calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+                        + "  " + year);
             }
         };
 

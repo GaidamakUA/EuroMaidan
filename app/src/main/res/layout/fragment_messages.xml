@@ -36,7 +36,7 @@
             android:layout_marginRight="@dimen/listImageLeftRightMargin"
             android:layout_marginEnd="@dimen/listImageLeftRightMargin"
             android:singleLine="true"
-            android:text="Отправить"
+            android:text="@string/send"
             android:ellipsize="end"
             android:layout_weight="0.18"
             android:textColor="@color/darker_grey"/>

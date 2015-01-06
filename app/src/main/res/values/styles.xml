@@ -8,6 +8,10 @@
         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
     </style>
 
+    <style name="SearchActivityTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/darker_grey</item>
+    </style>
+
     <style name="ButtonStyle">
         <item name="android:background">@drawable/button_login_bg</item>
         <item name="android:textColor">@android:color/white</item>

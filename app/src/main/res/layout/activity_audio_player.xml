@@ -136,7 +136,8 @@
         android:layout_toLeftOf="@+id/volume_high_imageview"
         android:layout_toRightOf="@id/volume_low_imageview"
         android:layout_toStartOf="@id/volume_high_imageview"
-        android:max="100" />
+        android:max="100"
+        android:progress="100"/>
 
     <ImageView
         android:id="@id/volume_high_imageview"

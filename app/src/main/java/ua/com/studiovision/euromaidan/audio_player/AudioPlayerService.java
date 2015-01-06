@@ -13,6 +13,7 @@ import com.softevol.activity_service_communication.ActivityServiceCommunicationS
 import org.androidannotations.annotations.EService;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +31,9 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     MyAudio[] playlist;
 
     ScheduledExecutorService mScheduledExecutorService;
+    private boolean shouldShuffle;
+
+    private Random mRandom = new Random();
 
     @Override
     public void onCreate() {
@@ -42,7 +46,6 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopUpdatingTimeInActivity();
         Log.v(TAG, "onDestroy(" + ")");
     }
 
@@ -71,15 +74,21 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        Log.v(TAG, "onCompletion(" + "mediaPlayer=" + mediaPlayer + ")");
-        if (++currentAudioPosition <= playlist.length) {
+        Log.v(TAG, "onCompletion(" + "mediaPlayer=" + mediaPlayer + ") currentAudioPosition="
+                + currentAudioPosition + "; playlist.length=" + playlist.length);
+        if (shouldShuffle) {
+            currentAudioPosition = mRandom.nextInt(playlist.length) - 1;
+        }
+        if (++currentAudioPosition < playlist.length) {
             sendCurrentTrackInfo();
             playSong();
             startUpdatingTimeInActivity();
         } else {
             stopUpdatingTimeInActivity();
-            mMediaPlayer.stop();
-            mMediaPlayer.release();
+
+            Message msg = Message.obtain();
+            msg.what = MusicProtocol.ON_PLAYBACK_FINISHED;
+            sendMessage(msg);
         }
     }
 
@@ -108,6 +117,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
                 Log.v(TAG, "STOP_PLAYBACK");
                 mMediaPlayer.stop();
                 mMediaPlayer.release();
+                mMediaPlayer = null;
                 stopSelf();
                 break;
             case MusicProtocol.PAUSE_PLAYBACK:
@@ -135,6 +145,35 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
             case MusicProtocol.STOP_UPDATING_TIME:
                 stopUpdatingTimeInActivity();
                 break;
+            case MusicProtocol.ENABLE_SHUFFLE:
+                shouldShuffle = true;
+                break;
+            case MusicProtocol.DISABLE_SHUFFLE:
+                shouldShuffle = false;
+                break;
+            case MusicProtocol.NEXT_TRACK:
+                if (++currentAudioPosition < playlist.length) {
+                    stopUpdatingTimeInActivity();
+                    sendCurrentTrackInfo();
+                    playSong();
+                    startUpdatingTimeInActivity();
+                } else {
+                    --currentAudioPosition;
+                }
+                break;
+            case MusicProtocol.PREVIOUS_TRACK:
+                if (--currentAudioPosition >= 0) {
+                    stopUpdatingTimeInActivity();
+                    sendCurrentTrackInfo();
+                    playSong();
+                    startUpdatingTimeInActivity();
+                } else {
+                    ++currentAudioPosition;
+                }
+                break;
+            case MusicProtocol.ON_PAUSE:
+                stopUpdatingTimeInActivity();
+                break;
         }
     }
 
@@ -143,6 +182,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
         if (mScheduledExecutorService == null) {
             mScheduledExecutorService = Executors.newScheduledThreadPool(1);
         }
+
         mScheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
@@ -156,6 +196,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
         }, 1, 1, TimeUnit.SECONDS);
     }
     private void stopUpdatingTimeInActivity() {
+        if (mScheduledExecutorService == null) return;
         mScheduledExecutorService.shutdown();
         mScheduledExecutorService = null;
     }

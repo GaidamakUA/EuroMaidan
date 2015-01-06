@@ -40,7 +40,6 @@ public abstract class AbstractProcessResponseStrategy<T extends AbstractRequest,
      */
     protected void onError(S response) {
         String errorText = "text that no one will ever see";
-        // TODO write string resources
         switch (response.message) {
             case NAME_SHOULD_BE_LONGER_THAN_2_CHARS:
             case TOKEN_IS_MISSING:
@@ -51,16 +50,11 @@ public abstract class AbstractProcessResponseStrategy<T extends AbstractRequest,
             case WRITING_TO_DB_ERROR:
             case DATA_IS_NOT_VALID:
             case OPERATION_IN_NOT_POSSIBLE:
-                //TODO review toast context
                 Log.v(TAG,response.message.toString());
-//                Toast.makeText(context, response.message.toString(), Toast.LENGTH_SHORT).show();
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected error message");
         }
-        /* XXX Test only
-        errorText = response.message.toString();
-        Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show();*/
     }
 
     /**

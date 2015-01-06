@@ -12,7 +12,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import ua.com.studiovision.euromaidan.R;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FriendsFragmentCallbacks;
-import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.UserFriendsFragment;
 import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsContent;
 import ua.com.studiovision.euromaidan.network.provider.friends.FriendsCursor;
 import ua.com.studiovision.euromaidan.search_fragments.adapters.CursorRecyclerAdapter;
@@ -44,7 +43,7 @@ public class UserFriendsAdapter extends CursorRecyclerAdapter<UserFriendsAdapter
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.friends_and_followers_list_row, viewGroup, false);
-        return new UserFriendsAdapter.ViewHolder(v, callbacks);
+        return new UserFriendsAdapter.ViewHolder(v);
     }
 
     public long getFriendId(int position) {
@@ -64,14 +63,11 @@ public class UserFriendsAdapter extends CursorRecyclerAdapter<UserFriendsAdapter
         long friendId;
         ImageView avatar;
         TextView friendFullName;
-        // TODO refactor duplicate callbacks
-        FriendsFragmentCallbacks callbacks;
 
-        public ViewHolder(View itemView, FriendsFragmentCallbacks callbacks) {
+        public ViewHolder(View itemView) {
             super(itemView);
             avatar = (ImageView) itemView.findViewById(R.id.user_avatar_imageview);
             friendFullName = (TextView) itemView.findViewById(R.id.user_name_textview);
-            this.callbacks = callbacks;
             itemView.setOnClickListener(this);
         }
 

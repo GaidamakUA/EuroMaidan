@@ -18,4 +18,9 @@ public class MusicProtocol extends Protocol {
     public static final int START_UPDATING_TIME = 10;
     public static final int STOP_UPDATING_TIME = 11;
     public static final int CURRENT_TRACK_INFO = 12;
+    public static final int ENABLE_SHUFFLE = 13;
+    public static final int DISABLE_SHUFFLE = 14;
+    public static final int ON_PLAYBACK_FINISHED = 15;
+    public static final int NEXT_TRACK = 16;
+    public static final int PREVIOUS_TRACK = 17;
 }

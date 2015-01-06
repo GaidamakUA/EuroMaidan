@@ -20,7 +20,7 @@ import ua.com.studiovision.euromaidan.first_run_fragments.SchoolFragment_;
 import ua.com.studiovision.euromaidan.first_run_fragments.UniversityFragment_;
 import ua.com.studiovision.euromaidan.network.MainService_;
 
-@EActivity
+@EActivity(R.layout.activity_holder_only)
 public class FirstRunActivity extends ActivityServiceCommunicationActivity
         implements FirstRunFragmentListener {
     private static final String TAG = "FirstRunActivity";
@@ -42,7 +42,7 @@ public class FirstRunActivity extends ActivityServiceCommunicationActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mServiceClass = MainService_.class;
-        setContentView(R.layout.activity_holder_only);
+//        setContentView(R.layout.activity_holder_only);
         Log.v(TAG, "First run activity");
         if (savedInstanceState == null) {
             SchoolFragment_ schoolFragment = new SchoolFragment_();

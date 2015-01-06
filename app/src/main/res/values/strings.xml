@@ -57,5 +57,10 @@
 
     <string name="add_user">Добавить</string>
     <string name="subscribers">Подписчики</string>
+    <string name="upload_photo">Upload photo</string>
+    <string name="avatar_zone">Avatar zone</string>
+    <string name="background_zone">Background zone</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="send">Отправить</string>
 
 </resources>

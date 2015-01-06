@@ -41,7 +41,7 @@ import ua.com.studiovision.euromaidan.network.process_strategies.SendUniversityS
 import ua.com.studiovision.euromaidan.network.process_strategies.StrategyCallbacks;
 
 @EService
-public class MainService extends ActivityServiceCommunicationService implements StrategyCallbacks {
+public class MainService extends ActivityServiceCommunicationService implements StrategyCallbacks, UserInterfaceCallbacks {
     private static final String TAG = "MainService";
     private static final String BASE_URL = "http://e-m.com.ua/api";
     private static final Gson gson = new Gson();
@@ -144,7 +144,6 @@ public class MainService extends ActivityServiceCommunicationService implements 
         urlConnection.setDoOutput(true);
         urlConnection.setRequestMethod("POST");
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
-        // TODO probably wrap with Buffered writer
         Log.v(TAG, "parameters=\"" + parameters + "\"");
         writer.write(parameters);
         writer.close();
@@ -164,10 +163,11 @@ public class MainService extends ActivityServiceCommunicationService implements 
         sendMessage(message);
     }
 
-    // TODO make toast
+    @Override
     public void executeOnUiThread(Runnable runnable) {
         if (UiThreadHandler == null) {
             UiThreadHandler = new Handler();
         }
+        UiThreadHandler.post(runnable);
     }
 }

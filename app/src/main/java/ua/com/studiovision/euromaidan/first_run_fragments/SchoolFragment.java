@@ -258,7 +258,6 @@ public class SchoolFragment extends Fragment {
             return;
 
         firstRunFragmentListener.sendSchoolDataToServer(country, city, school);
-        // TODO check whether request was successful
         skip();
     }
 

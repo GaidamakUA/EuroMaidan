@@ -274,7 +274,6 @@ public class UniversityFragment extends Fragment {
             return;
         firstRunFragmentListener
                 .sendUniversityDataToServer(country, city, university);
-        // TODO check whether request was successful
         skip();
     }
 

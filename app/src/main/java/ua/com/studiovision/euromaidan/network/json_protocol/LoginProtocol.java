@@ -5,8 +5,7 @@ public class LoginProtocol {
     }
 
     public static class LogInRequest implements AbstractRequest<LogInRequest> {
-        // TODO make final
-        public String key = "user_authorization";
+        public final String key = "user_authorization";
         public String email;
         public String password;
 

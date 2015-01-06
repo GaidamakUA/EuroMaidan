@@ -6,12 +6,13 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.softevol.activity_service_communication.ActivityServiceCommunicationActivity;
-import com.softevol.activity_service_communication.ActivityServiceCommunicationFragmentActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.CheckedChange;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.SeekBarProgressChange;
@@ -33,6 +34,13 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
 
     public static final String CURRENT_TRACK_INFO = "current_track_info";
 
+    public static final String IS_OLD_INSTANCE = "is_old_instance";
+    public static final String AUDIO_STATE = "audio_state";
+
+    private boolean mIsOldInstance = false;
+
+    private MyAudio audioState;
+
     @ViewById(R.id.audio_name_textview)
     TextView audioNameTextView;
     @ViewById(R.id.playback_seek_bar)
@@ -41,12 +49,15 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
     TextView currentDuration;
     @ViewById(R.id.total_duration_textview)
     TextView totalDurationTextView;
+    @ViewById(R.id.play_pause_togglebutton)
+    ToggleButton playPauseToggleButton;
 
     @Extra
     Parcelable[] audiosTemp = null;
-//    MyAudio[] audios = null;
+
     @Extra
     int initialPosition;
+    private boolean playbackFinished;
 //    int position;
 //    int totalDuration;
 
@@ -54,18 +65,28 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mServiceClass = AudioPlayerService_.class;
+        if (savedInstanceState != null) {
+            mIsOldInstance = savedInstanceState.getBoolean(IS_OLD_INSTANCE, mIsOldInstance);
+            audioState = savedInstanceState.getParcelable(AUDIO_STATE);
+        }
     }
 
     @Override
     public void onBackPressed() {
-        // Because activity is disconnecting from service onPause
-        Message msg = Message.obtain();
-        msg.what = MusicProtocol.STOP_PLAYBACK;
-        sendMessage(msg);
-
-        stopUpdatingTime();
+        if (!playPauseToggleButton.isChecked()) {
+            Message msg = Message.obtain();
+            msg.what = MusicProtocol.STOP_PLAYBACK;
+            sendMessage(msg);
+        }
 
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(IS_OLD_INSTANCE, mIsOldInstance);
+        outState.putParcelable(AUDIO_STATE, audioState);
+        super.onSaveInstanceState(outState);
     }
 
     @AfterViews
@@ -96,6 +117,11 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
                 startUpdatingTime();
             }
         });
+        if (audioState != null) {
+            audioNameTextView.setText(audioState.author + " - " + audioState.name);
+            playbackSeekBar.setMax(audioState.duration);
+            totalDurationTextView.setText(audioState.duration / 60 + ":" + audioState.duration % 60);
+        }
     }
 
     @CheckedChange(R.id.play_pause_togglebutton)
@@ -114,7 +140,6 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
 
     @SeekBarProgressChange(R.id.volume_seek_bar)
     void onVolumeChanged(SeekBar seekBar, int progress) {
-//        Log.v(TAG, "onVolumeChanged(" + "seekBar=" + seekBar + ", progress=" + progress + ")");
         Message msg = Message.obtain();
         Bundle data = new Bundle();
         data.putFloat(VOLUME_LEVEL, progress / 100.0f);
@@ -135,11 +160,37 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
         sendMessage(msg);
     }
 
+    @CheckedChange(R.id.shuffle_toggle_button)
+    void onShuffleChanged(boolean repeat) {
+        Message msg = Message.obtain();
+        if (repeat) {
+            msg.what = MusicProtocol.ENABLE_SHUFFLE;
+        } else {
+            msg.what = MusicProtocol.DISABLE_SHUFFLE;
+        }
+        sendMessage(msg);
+    }
+
+    @Click(R.id.next_audio_image_view)
+    void nextTrack() {
+        Message msg = Message.obtain();
+        msg.what = MusicProtocol.NEXT_TRACK;
+        sendMessage(msg);
+    }
+
+    @Click(R.id.previous_audio_image_view)
+    void previoustTrack() {
+        Message msg = Message.obtain();
+        msg.what = MusicProtocol.PREVIOUS_TRACK;
+        sendMessage(msg);
+    }
+
     @Override
     protected void handleMessage(Message msg) {
         switch (msg.what) {
             case MusicProtocol.ON_SERVICE_CONNECTED:
-                // TODO Prevent playback from restarting
+                Log.v(TAG, "ON_SERVICE_CONNECTED: mIsOldInstance=" + mIsOldInstance);
+                if (mIsOldInstance) break;
                 msg = Message.obtain();
                 msg.what = MusicProtocol.START_PLAYBACK;
                 Bundle bundle = new Bundle();
@@ -147,16 +198,21 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
                 bundle.putInt(INITIAL_POSITION, initialPosition);
                 msg.setData(bundle);
                 sendMessage(msg);
+                mIsOldInstance = true;
                 break;
             case MusicProtocol.CURRENT_POSITION:
                 Log.v(TAG, "CURRENT_POSITION=" + msg.getData().getInt(CURRENT_POSITION));
                 playbackSeekBar.setProgress(msg.getData().getInt(CURRENT_POSITION));
                 break;
             case MusicProtocol.CURRENT_TRACK_INFO:
-                MyAudio audio = msg.getData().getParcelable(CURRENT_TRACK_INFO);
-                audioNameTextView.setText(audio.author + " - " + audio.name);
-                playbackSeekBar.setMax(audio.duration);
-                totalDurationTextView.setText(audio.duration / 60 + ":" + audio.duration % 60);
+                audioState = msg.getData().getParcelable(CURRENT_TRACK_INFO);
+                audioNameTextView.setText(audioState.author + " - " + audioState.name);
+                playbackSeekBar.setMax(audioState.duration);
+                totalDurationTextView.setText(audioState.duration / 60 + ":" + audioState.duration % 60);
+                break;
+            case MusicProtocol.ON_PLAYBACK_FINISHED:
+                playPauseToggleButton.setChecked(false);
+                playbackFinished = true;
                 break;
         }
     }
