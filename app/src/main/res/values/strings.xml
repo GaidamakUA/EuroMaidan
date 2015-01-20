@@ -20,7 +20,6 @@
     <string name="family_status">Семейное положение</string>
     <string name="native_city">Родной город</string>
     <string name="pickBirthDate">Дата рождения</string>
-
     <string name="single">Не замужем</string>
     <string name="dating">Встречаюсь</string>
     <string name="engaged">Помолвлена</string>
@@ -62,5 +61,9 @@
     <string name="background_zone">Background zone</string>
     <string name="new_password">Новый пароль</string>
     <string name="send">Отправить</string>
+    <string name="player_notification_title_template">Player: %1$s</string>
+    <string name="player_notification_placeholder_text_template">You said %1$s and lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam non enim magna. Morbi dictum, velit vel semper venenatis, magna odio volutpat velit, at ullamcorper nulla lacus sed turpis. Pellentesque vitae metus elit, nec tincidunt tellus. Integer sed nisl sem, ullamcorper ornare lacus. Duis ac mauris sed massa congue volutpat. Donec sed erat sit amet turpis viverra rhoncus sit amet nec magna. Donec lacinia ligula at libero volutpat volutpat nec nec tortor.</string>
+    <string name="action_share">Share</string>
+    <string name="action_reply">Reply</string>
 
 </resources>

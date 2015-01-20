@@ -1,5 +1,6 @@
 package ua.com.studiovision.euromaidan.audio_player;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -26,6 +27,11 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
 
     private static final String TAG = "AudioPlayerService";
 
+    public static final String ACTION_PREVIOUS = "ua.com.studiovision.euromaidan.audio_player.action_previous";
+    public static final String ACTION_PLAY = "ua.com.studiovision.euromaidan.audio_player.action_play";
+    public static final String ACTION_PAUSE = "ua.com.studiovision.euromaidan.audio_player.action_pause";
+    public static final String ACTION_NEXT = "ua.com.studiovision.euromaidan.audio_player.action_next";
+
     MediaPlayer mMediaPlayer = null;
     private int currentAudioPosition;
     MyAudio[] playlist;
@@ -34,6 +40,52 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     private boolean shouldShuffle;
 
     private Random mRandom = new Random();
+
+    private ActionsState state = ActionsState.BPAUSE_TO_BPLAY;
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        String action = intent.getAction();
+        if (action != null)
+        switch (action) {
+            case ACTION_PLAY:
+                mMediaPlayer.start();
+                PlayerNotification.notify(this, playlist[currentAudioPosition].author,
+                        playlist[currentAudioPosition].name, PlayerNotification.PlayerActionState.PAUSE);
+                startUpdatingTimeInActivity();
+                sendMessageWithWhat(MusicProtocol.RESUME_PLAYBACK);
+                return START_NOT_STICKY;
+            case ACTION_PAUSE:
+                mMediaPlayer.pause();
+                PlayerNotification.notify(this, playlist[currentAudioPosition].author,
+                        playlist[currentAudioPosition].name, PlayerNotification.PlayerActionState.PLAY);
+                stopUpdatingTimeInActivity();
+                sendMessageWithWhat(MusicProtocol.PAUSE_PLAYBACK);
+                return START_NOT_STICKY;
+            case ACTION_NEXT:
+                if (++currentAudioPosition < playlist.length) {
+                    stopUpdatingTimeInActivity();
+                    sendCurrentTrackInfo();
+                    playSong();
+                    startUpdatingTimeInActivity();
+                } else {
+                    --currentAudioPosition;
+                }
+                return START_NOT_STICKY;
+            case ACTION_PREVIOUS:
+                if (--currentAudioPosition >= 0) {
+                    stopUpdatingTimeInActivity();
+                    sendCurrentTrackInfo();
+                    playSong();
+                    startUpdatingTimeInActivity();
+                } else {
+                    ++currentAudioPosition;
+                }
+                return START_NOT_STICKY;
+        }
+
+        return super.onStartCommand(intent, flags, startId);
+    }
 
     @Override
     public void onCreate() {
@@ -65,6 +117,9 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
             Log.e(TAG, "Error setting data source", e);
         }
         mMediaPlayer.prepareAsync();
+
+        PlayerNotification.notify(this, playlist[currentAudioPosition].author,
+                playlist[currentAudioPosition].name, PlayerNotification.PlayerActionState.PAUSE);
     }
 
     @Override
@@ -84,11 +139,15 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
             playSong();
             startUpdatingTimeInActivity();
         } else {
+            currentAudioPosition--;
             stopUpdatingTimeInActivity();
 
             Message msg = Message.obtain();
             msg.what = MusicProtocol.ON_PLAYBACK_FINISHED;
             sendMessage(msg);
+
+            PlayerNotification.notify(this, playlist[currentAudioPosition].author,
+                    playlist[currentAudioPosition].name, PlayerNotification.PlayerActionState.PLAY);
         }
     }
 
@@ -102,15 +161,32 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
         Log.v(TAG, "handleMessage(" + "msg=" + msg.what + ")");
         switch (msg.what) {
             case MusicProtocol.START_PLAYBACK:
-                Log.v(TAG, "START_PLAYBACK");
-                //audioUrl = msg.getData().getString(AudioActivity.SONG_URL);
-                currentAudioPosition = msg.getData().getInt(AudioActivity.INITIAL_POSITION);
-                Log.v(TAG, "currentAudioPosition=" + currentAudioPosition);
                 Parcelable[] audiosParcelable = msg.getData().getParcelableArray(AudioActivity.AUDIOS_ARRAY);
-                playlist = Arrays.copyOf(audiosParcelable,audiosParcelable.length,MyAudio[].class);
-                Log.v(TAG, "audioUrl=" + playlist[currentAudioPosition].url);
+                MyAudio[] tempPlaylist = Arrays.copyOf(audiosParcelable, audiosParcelable.length, MyAudio[].class);
+
+                boolean isPlaylistChanged = false;
+                if (playlist == null) {
+                    isPlaylistChanged = true;
+                } else {
+                    for (int i = 0; i < tempPlaylist.length; i++) {
+                        if (!playlist[i].url.equals(tempPlaylist[i].url)) {
+                            isPlaylistChanged = true;
+                            break;
+                        }
+                    }
+                }
+                if (isPlaylistChanged) {
+                    playlist = tempPlaylist;
+                    currentAudioPosition = msg.getData().getInt(AudioActivity.INITIAL_POSITION);
+                    playSong();
+                } else {
+                    if (currentAudioPosition != msg.getData().getInt(AudioActivity.INITIAL_POSITION)) {
+                        currentAudioPosition = msg.getData().getInt(AudioActivity.INITIAL_POSITION);
+                        playSong();
+                    }
+                }
+
                 sendCurrentTrackInfo();
-                playSong();
                 startUpdatingTimeInActivity();
                 break;
             case MusicProtocol.STOP_PLAYBACK:
@@ -122,9 +198,13 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
                 break;
             case MusicProtocol.PAUSE_PLAYBACK:
                 mMediaPlayer.pause();
+                PlayerNotification.notify(this, playlist[currentAudioPosition].author,
+                        playlist[currentAudioPosition].name, PlayerNotification.PlayerActionState.PLAY);
                 break;
             case MusicProtocol.RESUME_PLAYBACK:
                 mMediaPlayer.start();
+                PlayerNotification.notify(this, playlist[currentAudioPosition].author,
+                        playlist[currentAudioPosition].name, PlayerNotification.PlayerActionState.PAUSE);
                 break;
             case MusicProtocol.VOLUME_CHANGED:
                 float volumeLevel = msg.getData().getFloat(AudioActivity.VOLUME_LEVEL);
@@ -174,6 +254,31 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
             case MusicProtocol.ON_PAUSE:
                 stopUpdatingTimeInActivity();
                 break;
+            case MusicProtocol.REQUEST_SYNC:
+                sendCurrentTrackInfo();
+                if (mMediaPlayer.isPlaying()) {
+                    startUpdatingTimeInActivity();
+                }
+                break;
+        }
+    }
+
+    private void onActivityStateChanged(ActionsState newState) {
+        switch (newState) {
+            case PLAY_TO_PAUSE:
+                break;
+            case PLAY_TO_BPLAY:
+                break;
+            case PAUSE_TO_PLAY:
+                break;
+            case BPAUSE_TO_PAUSE:
+                break;
+            case BPAUSE_TO_BPLAY:
+                break;
+            case BPLAY_TO_PLAY:
+                break;
+            case BPLAY_TO_BPAUSE:
+                break;
         }
     }
 
@@ -206,7 +311,17 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
         msg.what = MusicProtocol.CURRENT_TRACK_INFO;
         Bundle bundle = new Bundle();
         bundle.putParcelable(AudioActivity.CURRENT_TRACK_INFO,playlist[currentAudioPosition]);
+        // For convenience.
+        if (mMediaPlayer != null) {
+            bundle.putBoolean(AudioActivity.IS_PLAYING, mMediaPlayer.isPlaying());
+        }
         msg.setData(bundle);
+        sendMessage(msg);
+    }
+
+    private void sendMessageWithWhat (int what) {
+        Message msg = Message.obtain();
+        msg.what = what;
         sendMessage(msg);
     }
 }

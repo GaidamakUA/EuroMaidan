@@ -7,7 +7,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ToggleButton;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -34,7 +33,6 @@ public class MessagesFragment extends Fragment {
         ActionBar actionBar = getActivity().getActionBar();
         assert actionBar != null;
         actionBar.setDisplayShowCustomEnabled(true);
-//        actionBar.setCustomView(pagerSlidingTabStrip);
     }
 
     @AfterViews

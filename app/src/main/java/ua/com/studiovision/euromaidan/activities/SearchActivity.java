@@ -3,10 +3,12 @@ package ua.com.studiovision.euromaidan.activities;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,6 +24,7 @@ import com.softevol.activity_service_communication.ActivityServiceCommunicationA
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -89,7 +92,9 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
         LayoutInflater inflater = getLayoutInflater();
         searchActionBar = (LinearLayout) inflater.inflate(R.layout.search_action_bar, null);
 
-        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        ActionBar.LayoutParams layoutParams =
+                new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
+                        ActionBar.LayoutParams.WRAP_CONTENT);
 
         ActionBar actionBar = getActionBar();
         assert actionBar != null;
@@ -197,6 +202,13 @@ public class SearchActivity extends ActivityServiceCommunicationActivity impleme
                 }
                 break;
         }
+    }
+
+    @OptionsItem(android.R.id.home)
+    void upNavigation() {
+        Intent upIntent = NavUtils.getParentActivityIntent(this);
+        startActivity(upIntent);
+        finish();
     }
 
     @Override

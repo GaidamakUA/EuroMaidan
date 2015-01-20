@@ -23,4 +23,5 @@ public class MusicProtocol extends Protocol {
     public static final int ON_PLAYBACK_FINISHED = 15;
     public static final int NEXT_TRACK = 16;
     public static final int PREVIOUS_TRACK = 17;
+    public static final int REQUEST_SYNC = 18;
 }

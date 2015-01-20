@@ -1,8 +1,10 @@
 package ua.com.studiovision.euromaidan.audio_player;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Parcelable;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.SeekBarProgressChange;
 import org.androidannotations.annotations.ViewById;
 
@@ -27,17 +30,15 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
 
     public static final String INITIAL_POSITION = "initial_position";
     public static final String AUDIOS_ARRAY = "audios_array";
-
     public static final String VOLUME_LEVEL = "volume_level";
     public static final String CURRENT_POSITION = "current_position";
     public static final String SEEK_TO = "seek_to";
-
     public static final String CURRENT_TRACK_INFO = "current_track_info";
-
     public static final String IS_OLD_INSTANCE = "is_old_instance";
     public static final String AUDIO_STATE = "audio_state";
+    public static final String IS_PLAYING = "is_playing";
 
-    private boolean mIsOldInstance = false;
+    boolean mIsOldInstance = false;
 
     private MyAudio audioState;
 
@@ -57,13 +58,18 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
 
     @Extra
     int initialPosition;
-    private boolean playbackFinished;
-//    int position;
-//    int totalDuration;
+
+//    @Extra
+//    int command;
+//
+
+    @Extra
+    boolean mIsStartedFromNotification = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         mServiceClass = AudioPlayerService_.class;
         if (savedInstanceState != null) {
             mIsOldInstance = savedInstanceState.getBoolean(IS_OLD_INSTANCE, mIsOldInstance);
@@ -74,12 +80,16 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
     @Override
     public void onBackPressed() {
         if (!playPauseToggleButton.isChecked()) {
-            Message msg = Message.obtain();
-            msg.what = MusicProtocol.STOP_PLAYBACK;
-            sendMessage(msg);
+            sendMessageWithWhat(MusicProtocol.STOP_PLAYBACK);
         }
-
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.v(TAG, "onNewIntent(" + "intent=" + intent + ")");
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 
     @Override
@@ -124,18 +134,32 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
         }
     }
 
+    @OptionsItem(android.R.id.home)
+    void upNavigation() {
+//        NavUtils.navigateUpFromSameTask(this);
+        Intent upIntent = NavUtils.getParentActivityIntent(this);
+        startActivity(upIntent);
+        finish();
+//        Log.v(TAG, "upNavigation(" + "); upIntent=" + upIntent);
+//        if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+//            TaskStackBuilder.create(this)
+//                    .addNextIntentWithParentStack(upIntent)
+//                    .startActivities();
+//        } else {
+//            NavUtils.navigateUpTo(this, upIntent);
+//        }
+    }
+
     @CheckedChange(R.id.play_pause_togglebutton)
     void playPause(boolean checked) {
         Log.v(TAG, "playPause(" + "checked=" + checked + ")");
-        Message msg = Message.obtain();
         if (checked) {
             startUpdatingTime();
-            msg.what = MusicProtocol.RESUME_PLAYBACK;
+            sendMessageWithWhat(MusicProtocol.RESUME_PLAYBACK);
         } else {
             stopUpdatingTime();
-            msg.what = MusicProtocol.PAUSE_PLAYBACK;
+            sendMessageWithWhat(MusicProtocol.PAUSE_PLAYBACK);
         }
-        sendMessage(msg);
     }
 
     @SeekBarProgressChange(R.id.volume_seek_bar)
@@ -150,53 +174,61 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
 
     @CheckedChange(R.id.repeat_toggle_button)
     void onRepeatChanged(boolean repeat) {
-        Log.v(TAG, "onRepeatChanged(" + "repeat=" + repeat + ")");
-        Message msg = Message.obtain();
         if (repeat) {
-            msg.what = MusicProtocol.ENABLE_REPEAT;
+            sendMessageWithWhat(MusicProtocol.ENABLE_REPEAT);
         } else {
-            msg.what = MusicProtocol.DISABLE_REPEAT;
+            sendMessageWithWhat(MusicProtocol.DISABLE_REPEAT);
         }
-        sendMessage(msg);
     }
 
     @CheckedChange(R.id.shuffle_toggle_button)
     void onShuffleChanged(boolean repeat) {
-        Message msg = Message.obtain();
         if (repeat) {
-            msg.what = MusicProtocol.ENABLE_SHUFFLE;
+            sendMessageWithWhat(MusicProtocol.ENABLE_SHUFFLE);
         } else {
-            msg.what = MusicProtocol.DISABLE_SHUFFLE;
+            sendMessageWithWhat(MusicProtocol.DISABLE_SHUFFLE);
         }
-        sendMessage(msg);
     }
 
     @Click(R.id.next_audio_image_view)
     void nextTrack() {
-        Message msg = Message.obtain();
-        msg.what = MusicProtocol.NEXT_TRACK;
-        sendMessage(msg);
+        changeTrack(MusicProtocol.NEXT_TRACK);
     }
 
     @Click(R.id.previous_audio_image_view)
     void previoustTrack() {
+        changeTrack(MusicProtocol.PREVIOUS_TRACK);
+    }
+
+    private void changeTrack(int what) {
+        playPauseToggleButton.setChecked(true);
+        sendMessageWithWhat(what);
+    }
+
+    private void sendMessageWithWhat (int what) {
         Message msg = Message.obtain();
-        msg.what = MusicProtocol.PREVIOUS_TRACK;
+        msg.what = what;
         sendMessage(msg);
     }
 
     @Override
     protected void handleMessage(Message msg) {
+        Log.v(TAG, "handleMessage(" + "msg=" + msg + ")");
         switch (msg.what) {
             case MusicProtocol.ON_SERVICE_CONNECTED:
-                Log.v(TAG, "ON_SERVICE_CONNECTED: mIsOldInstance=" + mIsOldInstance);
-                if (mIsOldInstance) break;
+                Log.v(TAG, "ON_SERVICE_CONNECTED: mIsOldInstance=" + mIsOldInstance
+                        + "; mIsStartedFromNotification=" + mIsStartedFromNotification
+                        + "; command=");
                 msg = Message.obtain();
-                msg.what = MusicProtocol.START_PLAYBACK;
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArray(AUDIOS_ARRAY, audiosTemp);
-                bundle.putInt(INITIAL_POSITION, initialPosition);
-                msg.setData(bundle);
+                if (!mIsStartedFromNotification) {
+                    msg.what = MusicProtocol.START_PLAYBACK;
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArray(AUDIOS_ARRAY, audiosTemp);
+                    bundle.putInt(INITIAL_POSITION, initialPosition);
+                    msg.setData(bundle);
+                } else {
+                    msg.what = MusicProtocol.REQUEST_SYNC;
+                }
                 sendMessage(msg);
                 mIsOldInstance = true;
                 break;
@@ -205,30 +237,32 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
                 playbackSeekBar.setProgress(msg.getData().getInt(CURRENT_POSITION));
                 break;
             case MusicProtocol.CURRENT_TRACK_INFO:
-                audioState = msg.getData().getParcelable(CURRENT_TRACK_INFO);
+                Bundle data = msg.getData();
+                audioState = data.getParcelable(CURRENT_TRACK_INFO);
                 audioNameTextView.setText(audioState.author + " - " + audioState.name);
                 playbackSeekBar.setMax(audioState.duration);
                 totalDurationTextView.setText(audioState.duration / 60 + ":" + audioState.duration % 60);
+                boolean isPlaying = data.getBoolean(IS_PLAYING, false);
+                playPauseToggleButton.setChecked(!isPlaying);
                 break;
             case MusicProtocol.ON_PLAYBACK_FINISHED:
                 playPauseToggleButton.setChecked(false);
-                playbackFinished = true;
+                break;
+            case MusicProtocol.PAUSE_PLAYBACK:
+                playPauseToggleButton.setChecked(false);
+                break;
+            case MusicProtocol.RESUME_PLAYBACK:
+                playPauseToggleButton.setChecked(true);
                 break;
         }
     }
 
     private void startUpdatingTime() {
-        Message msg;
-        msg = Message.obtain();
-        msg.what = MusicProtocol.START_UPDATING_TIME;
-        sendMessage(msg);
+        sendMessageWithWhat(MusicProtocol.START_UPDATING_TIME);
     }
 
 
     private void stopUpdatingTime() {
-        Message msg;
-        msg = Message.obtain();
-        msg.what = MusicProtocol.STOP_UPDATING_TIME;
-        sendMessage(msg);
+        sendMessageWithWhat(MusicProtocol.STOP_UPDATING_TIME);
     }
 }

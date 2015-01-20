@@ -1,52 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ua.com.studiovision.euromaidan">
+    package="ua.com.studiovision.euromaidan" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
-            android:name="ua.com.studiovision.euromaidan.activities.LoginActivity_"
+            android:name=".activities.LoginActivity_"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".activities.RegisterActivity_"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.FirstRunActivity_"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.FeedActivity_"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance" >
+        </activity>
+        <activity
+            android:name=".activities.SearchActivity_"
+            android:label="@string/app_name"
+            android:theme="@style/SearchActivityTheme"
+            android:launchMode="singleInstance"
+            android:parentActivityName="ua.com.studiovision.euromaidan.activities.FeedActivity_">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ua.com.studiovision.euromaidan.activities.FeedActivity_" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="ua.com.studiovision.euromaidan.activities.RegisterActivity_"
+            android:name=".audio_player.AudioActivity_"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme"/>
-        <activity
-            android:name="ua.com.studiovision.euromaidan.activities.FirstRunActivity_"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme"/>
-        <activity
-            android:name=".activities.FeedActivity_"
-            android:label="@string/app_name">
+            android:launchMode="singleInstance"
+            android:parentActivityName="ua.com.studiovision.euromaidan.activities.SearchActivity_">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ua.com.studiovision.euromaidan.activities.SearchActivity_" />
         </activity>
 
-        <activity android:name="ua.com.studiovision.euromaidan.activities.SearchActivity_"
-            android:label="@string/app_name"
-            android:theme="@style/SearchActivityTheme"/>
-        <activity android:name="ua.com.studiovision.euromaidan.audio_player.AudioActivity_"
-            android:label="@string/app_name"/>
         <service
-            android:name="ua.com.studiovision.euromaidan.network.MainService_"
+            android:name=".network.MainService_"
             android:enabled="true"
-            android:exported="false"/>
-        <service android:name="ua.com.studiovision.euromaidan.audio_player.AudioPlayerService_"
+            android:exported="false" />
+        <service
+            android:name=".audio_player.AudioPlayerService_"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false" />
+
         <provider
             android:name=".network.provider.EmContentProvider"
             android:authorities="ua.com.studiovision.euromaidan.network.provider"
