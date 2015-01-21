@@ -31,6 +31,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     public static final String ACTION_PLAY = "ua.com.studiovision.euromaidan.audio_player.action_play";
     public static final String ACTION_PAUSE = "ua.com.studiovision.euromaidan.audio_player.action_pause";
     public static final String ACTION_NEXT = "ua.com.studiovision.euromaidan.audio_player.action_next";
+    public static final String ACTION_DIE = "ua.com.studiovision.euromaidan.audio_player.action_die";
 
     MediaPlayer mMediaPlayer = null;
     private int currentAudioPosition;
@@ -41,48 +42,48 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
 
     private Random mRandom = new Random();
 
-    private ActionsState state = ActionsState.BPAUSE_TO_BPLAY;
+    private ActionsState state = ActionsState.PLAY;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = intent.getAction();
         if (action != null)
-        switch (action) {
-            case ACTION_PLAY:
-                mMediaPlayer.start();
-                PlayerNotification.notify(this, playlist[currentAudioPosition].author,
-                        playlist[currentAudioPosition].name, PlayerNotification.PlayerActionState.PAUSE);
-                startUpdatingTimeInActivity();
-                sendMessageWithWhat(MusicProtocol.RESUME_PLAYBACK);
-                return START_NOT_STICKY;
-            case ACTION_PAUSE:
-                mMediaPlayer.pause();
-                PlayerNotification.notify(this, playlist[currentAudioPosition].author,
-                        playlist[currentAudioPosition].name, PlayerNotification.PlayerActionState.PLAY);
-                stopUpdatingTimeInActivity();
-                sendMessageWithWhat(MusicProtocol.PAUSE_PLAYBACK);
-                return START_NOT_STICKY;
-            case ACTION_NEXT:
-                if (++currentAudioPosition < playlist.length) {
-                    stopUpdatingTimeInActivity();
-                    sendCurrentTrackInfo();
-                    playSong();
-                    startUpdatingTimeInActivity();
-                } else {
-                    --currentAudioPosition;
-                }
-                return START_NOT_STICKY;
-            case ACTION_PREVIOUS:
-                if (--currentAudioPosition >= 0) {
-                    stopUpdatingTimeInActivity();
-                    sendCurrentTrackInfo();
-                    playSong();
-                    startUpdatingTimeInActivity();
-                } else {
-                    ++currentAudioPosition;
-                }
-                return START_NOT_STICKY;
-        }
+            switch (action) {
+                case ACTION_PLAY:
+                    if (!state.isPlaying())
+                        onPlaybackStateChanged(state.playbackChanged());
+                    return START_NOT_STICKY;
+                case ACTION_PAUSE:
+                    if (state.isPlaying())
+                        onPlaybackStateChanged(state.playbackChanged());
+                    return START_NOT_STICKY;
+                case ACTION_NEXT:
+                    if (++currentAudioPosition < playlist.length) {
+                        stopUpdatingTimeInActivity();
+                        playSong();
+                        startUpdatingTimeInActivity();
+                        sendCurrentTrackInfo();
+                    } else {
+                        --currentAudioPosition;
+                    }
+                    return START_NOT_STICKY;
+                case ACTION_PREVIOUS:
+                    if (--currentAudioPosition >= 0) {
+                        stopUpdatingTimeInActivity();
+                        playSong();
+                        startUpdatingTimeInActivity();
+                        sendCurrentTrackInfo();
+                    } else {
+                        ++currentAudioPosition;
+                    }
+                    return START_NOT_STICKY;
+                case ACTION_DIE:
+                    sendMessageWithWhat(MusicProtocol.DIE);
+                    mMediaPlayer.stop();
+                    mMediaPlayer.release();
+                    mMediaPlayer = null;
+                    stopSelf();
+            }
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -98,6 +99,7 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
     @Override
     public void onDestroy() {
         super.onDestroy();
+        PlayerNotification.cancel(this);
         Log.v(TAG, "onDestroy(" + ")");
     }
 
@@ -135,10 +137,12 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
             currentAudioPosition = mRandom.nextInt(playlist.length) - 1;
         }
         if (++currentAudioPosition < playlist.length) {
-            sendCurrentTrackInfo();
             playSong();
             startUpdatingTimeInActivity();
+            resetPlaybackState();
+            sendCurrentTrackInfo();
         } else {
+            resetPlaybackState();
             currentAudioPosition--;
             stopUpdatingTimeInActivity();
 
@@ -178,16 +182,18 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
                 if (isPlaylistChanged) {
                     playlist = tempPlaylist;
                     currentAudioPosition = msg.getData().getInt(AudioActivity.INITIAL_POSITION);
+                    resetPlaybackState();
                     playSong();
                 } else {
                     if (currentAudioPosition != msg.getData().getInt(AudioActivity.INITIAL_POSITION)) {
                         currentAudioPosition = msg.getData().getInt(AudioActivity.INITIAL_POSITION);
+                        resetPlaybackState();
                         playSong();
                     }
                 }
 
-                sendCurrentTrackInfo();
                 startUpdatingTimeInActivity();
+                sendCurrentTrackInfo();
                 break;
             case MusicProtocol.STOP_PLAYBACK:
                 Log.v(TAG, "STOP_PLAYBACK");
@@ -197,14 +203,12 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
                 stopSelf();
                 break;
             case MusicProtocol.PAUSE_PLAYBACK:
-                mMediaPlayer.pause();
-                PlayerNotification.notify(this, playlist[currentAudioPosition].author,
-                        playlist[currentAudioPosition].name, PlayerNotification.PlayerActionState.PLAY);
+                if (state.isPlaying())
+                    onPlaybackStateChanged(state.playbackChanged());
                 break;
             case MusicProtocol.RESUME_PLAYBACK:
-                mMediaPlayer.start();
-                PlayerNotification.notify(this, playlist[currentAudioPosition].author,
-                        playlist[currentAudioPosition].name, PlayerNotification.PlayerActionState.PAUSE);
+                if (!state.isPlaying())
+                    onPlaybackStateChanged(state.playbackChanged());
                 break;
             case MusicProtocol.VOLUME_CHANGED:
                 float volumeLevel = msg.getData().getFloat(AudioActivity.VOLUME_LEVEL);
@@ -234,9 +238,9 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
             case MusicProtocol.NEXT_TRACK:
                 if (++currentAudioPosition < playlist.length) {
                     stopUpdatingTimeInActivity();
-                    sendCurrentTrackInfo();
                     playSong();
                     startUpdatingTimeInActivity();
+                    sendCurrentTrackInfo();
                 } else {
                     --currentAudioPosition;
                 }
@@ -244,9 +248,9 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
             case MusicProtocol.PREVIOUS_TRACK:
                 if (--currentAudioPosition >= 0) {
                     stopUpdatingTimeInActivity();
-                    sendCurrentTrackInfo();
                     playSong();
                     startUpdatingTimeInActivity();
+                    sendCurrentTrackInfo();
                 } else {
                     ++currentAudioPosition;
                 }
@@ -255,31 +259,41 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
                 stopUpdatingTimeInActivity();
                 break;
             case MusicProtocol.REQUEST_SYNC:
-                sendCurrentTrackInfo();
-                if (mMediaPlayer.isPlaying()) {
+                if (state.isPlaying()) {
                     startUpdatingTimeInActivity();
                 }
+                sendCurrentTrackInfo();
                 break;
+            default:
+                Log.v(TAG, "Unhandled Message=" + msg.what);
         }
     }
 
-    private void onActivityStateChanged(ActionsState newState) {
+    private void onPlaybackStateChanged(ActionsState newState) {
+        Log.v(TAG, "onPlaybackStateChanged(oldState=" + state + "; newState=" + newState + ")");
+        state = newState;
         switch (newState) {
-            case PLAY_TO_PAUSE:
+            case PAUSE:
+                mMediaPlayer.pause();
+                PlayerNotification.notify(this, playlist[currentAudioPosition].author,
+                        playlist[currentAudioPosition].name, PlayerNotification.PlayerActionState.PLAY);
+                stopUpdatingTimeInActivity();
+                sendCurrentTrackInfo();
                 break;
-            case PLAY_TO_BPLAY:
+            case PLAY:
+                mMediaPlayer.start();
+                PlayerNotification.notify(this, playlist[currentAudioPosition].author,
+                        playlist[currentAudioPosition].name, PlayerNotification.PlayerActionState.PAUSE);
+                startUpdatingTimeInActivity();
+                sendCurrentTrackInfo();
                 break;
-            case PAUSE_TO_PLAY:
-                break;
-            case BPAUSE_TO_PAUSE:
-                break;
-            case BPAUSE_TO_BPLAY:
-                break;
-            case BPLAY_TO_PLAY:
-                break;
-            case BPLAY_TO_BPAUSE:
-                break;
+            default:
+                throw new IllegalStateException("State=" + newState);
         }
+    }
+
+    void resetPlaybackState() {
+        state = ActionsState.PLAY;
     }
 
     private void startUpdatingTimeInActivity() {
@@ -294,32 +308,34 @@ public class AudioPlayerService extends ActivityServiceCommunicationService
                 Message msg = Message.obtain();
                 msg.what = MusicProtocol.CURRENT_POSITION;
                 Bundle bundle = new Bundle();
-                bundle.putInt(AudioActivity.CURRENT_POSITION, mMediaPlayer.getCurrentPosition()/1000);
+                bundle.putInt(AudioActivity.CURRENT_POSITION, mMediaPlayer.getCurrentPosition() / 1000);
                 msg.setData(bundle);
                 sendMessage(msg);
             }
         }, 1, 1, TimeUnit.SECONDS);
     }
+
     private void stopUpdatingTimeInActivity() {
         if (mScheduledExecutorService == null) return;
         mScheduledExecutorService.shutdown();
         mScheduledExecutorService = null;
     }
 
-    private void sendCurrentTrackInfo(){
+    private void sendCurrentTrackInfo() {
+        Log.v(TAG, "sendCurrentTrackInfo(Playing=" + state.isPlaying() + ")");
         Message msg = Message.obtain();
         msg.what = MusicProtocol.CURRENT_TRACK_INFO;
         Bundle bundle = new Bundle();
-        bundle.putParcelable(AudioActivity.CURRENT_TRACK_INFO,playlist[currentAudioPosition]);
+        bundle.putParcelable(AudioActivity.CURRENT_TRACK_INFO, playlist[currentAudioPosition]);
         // For convenience.
         if (mMediaPlayer != null) {
-            bundle.putBoolean(AudioActivity.IS_PLAYING, mMediaPlayer.isPlaying());
+            bundle.putBoolean(AudioActivity.IS_PLAYING, state.isPlaying());
         }
         msg.setData(bundle);
         sendMessage(msg);
     }
 
-    private void sendMessageWithWhat (int what) {
+    private void sendMessageWithWhat(int what) {
         Message msg = Message.obtain();
         msg.what = what;
         sendMessage(msg);

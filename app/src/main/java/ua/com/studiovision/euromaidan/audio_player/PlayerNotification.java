@@ -118,14 +118,6 @@ public class PlayerNotification {
                                 context,
                                 0,
                                 AudioPlayerService_.intent(context).get().setAction(AudioPlayerService.ACTION_PREVIOUS),
-                                PendingIntent.FLAG_UPDATE_CURRENT))
-                .addAction(
-                        android.R.drawable.ic_media_next,
-                        null,
-                        PendingIntent.getService(
-                                context,
-                                0,
-                                AudioPlayerService_.intent(context).get().setAction(AudioPlayerService.ACTION_NEXT),
                                 PendingIntent.FLAG_UPDATE_CURRENT));
         switch (playerActionState) {
             case PLAY:
@@ -150,6 +142,19 @@ public class PlayerNotification {
 
                 break;
         }
+        builder.addAction(
+                android.R.drawable.ic_media_next,
+                null,
+                PendingIntent.getService(
+                        context,
+                        0,
+                        AudioPlayerService_.intent(context).get().setAction(AudioPlayerService.ACTION_NEXT),
+                        PendingIntent.FLAG_UPDATE_CURRENT))
+                .setDeleteIntent(PendingIntent.getService(
+                        context,
+                        0,
+                        AudioPlayerService_.intent(context).get().setAction(AudioPlayerService.ACTION_DIE),
+                        PendingIntent.FLAG_UPDATE_CURRENT));
 
         notify(context, builder.build());
     }

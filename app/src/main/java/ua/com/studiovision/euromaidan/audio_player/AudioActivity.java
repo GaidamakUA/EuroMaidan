@@ -59,10 +59,6 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
     @Extra
     int initialPosition;
 
-//    @Extra
-//    int command;
-//
-
     @Extra
     boolean mIsStartedFromNotification = false;
 
@@ -136,28 +132,17 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
 
     @OptionsItem(android.R.id.home)
     void upNavigation() {
-//        NavUtils.navigateUpFromSameTask(this);
         Intent upIntent = NavUtils.getParentActivityIntent(this);
         startActivity(upIntent);
         finish();
-//        Log.v(TAG, "upNavigation(" + "); upIntent=" + upIntent);
-//        if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-//            TaskStackBuilder.create(this)
-//                    .addNextIntentWithParentStack(upIntent)
-//                    .startActivities();
-//        } else {
-//            NavUtils.navigateUpTo(this, upIntent);
-//        }
     }
 
     @CheckedChange(R.id.play_pause_togglebutton)
     void playPause(boolean checked) {
         Log.v(TAG, "playPause(" + "checked=" + checked + ")");
         if (checked) {
-            startUpdatingTime();
             sendMessageWithWhat(MusicProtocol.RESUME_PLAYBACK);
         } else {
-            stopUpdatingTime();
             sendMessageWithWhat(MusicProtocol.PAUSE_PLAYBACK);
         }
     }
@@ -192,17 +177,12 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
 
     @Click(R.id.next_audio_image_view)
     void nextTrack() {
-        changeTrack(MusicProtocol.NEXT_TRACK);
+        sendMessageWithWhat(MusicProtocol.NEXT_TRACK);
     }
 
     @Click(R.id.previous_audio_image_view)
     void previoustTrack() {
-        changeTrack(MusicProtocol.PREVIOUS_TRACK);
-    }
-
-    private void changeTrack(int what) {
-        playPauseToggleButton.setChecked(true);
-        sendMessageWithWhat(what);
+        sendMessageWithWhat(MusicProtocol.PREVIOUS_TRACK);
     }
 
     private void sendMessageWithWhat (int what) {
@@ -213,7 +193,7 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
 
     @Override
     protected void handleMessage(Message msg) {
-        Log.v(TAG, "handleMessage(" + "msg=" + msg + ")");
+        Log.v(TAG, "handleMessage(" + "msg=" + msg.what + "; data=" + msg.getData() + ")");
         switch (msg.what) {
             case MusicProtocol.ON_SERVICE_CONNECTED:
                 Log.v(TAG, "ON_SERVICE_CONNECTED: mIsOldInstance=" + mIsOldInstance
@@ -237,30 +217,28 @@ public class AudioActivity extends ActivityServiceCommunicationActivity {
                 playbackSeekBar.setProgress(msg.getData().getInt(CURRENT_POSITION));
                 break;
             case MusicProtocol.CURRENT_TRACK_INFO:
+                Log.v(TAG, "CURRENT_TRACK_INFO=" + msg.getData());
                 Bundle data = msg.getData();
                 audioState = data.getParcelable(CURRENT_TRACK_INFO);
                 audioNameTextView.setText(audioState.author + " - " + audioState.name);
                 playbackSeekBar.setMax(audioState.duration);
                 totalDurationTextView.setText(audioState.duration / 60 + ":" + audioState.duration % 60);
                 boolean isPlaying = data.getBoolean(IS_PLAYING, false);
-                playPauseToggleButton.setChecked(!isPlaying);
+                playPauseToggleButton.setChecked(isPlaying);
                 break;
             case MusicProtocol.ON_PLAYBACK_FINISHED:
                 playPauseToggleButton.setChecked(false);
                 break;
-            case MusicProtocol.PAUSE_PLAYBACK:
-                playPauseToggleButton.setChecked(false);
-                break;
-            case MusicProtocol.RESUME_PLAYBACK:
-                playPauseToggleButton.setChecked(true);
-                break;
+            case MusicProtocol.DIE:
+                finish();
+            default:
+                Log.v(TAG, "Unhandled Message=" + msg.what);
         }
     }
 
     private void startUpdatingTime() {
         sendMessageWithWhat(MusicProtocol.START_UPDATING_TIME);
     }
-
 
     private void stopUpdatingTime() {
         sendMessageWithWhat(MusicProtocol.STOP_UPDATING_TIME);
