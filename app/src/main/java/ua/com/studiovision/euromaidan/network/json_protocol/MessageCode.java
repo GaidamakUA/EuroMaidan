@@ -37,7 +37,32 @@ public enum MessageCode {
     FRIEND_HAS_BEEN_DELETED,
     @SerializedName("13")
     OPERATION_IN_NOT_POSSIBLE,
-
+    @SerializedName("14")
+    YOU_ARE_FRIEND_ALREADY,
+    @SerializedName("15")
+    USER_ID_DOES_NOT_EXIST,
+    @SerializedName("16")
+    FILL_ALL_FIELDS,
+    @SerializedName("17")
+    TYPE_CORRECT_NAME,
+    @SerializedName("18")
+    TYPE_CORRECT_SURNAME,
+    @SerializedName("19")
+    PASSWORD_SHOULD_BE_LONGER_THAN_6_CHARS,
+    @SerializedName("20")
+    INVALID_EMAIL,
+    @SerializedName("21")
+    SUCH_EMAIL_IS_REGISTRED_ALLREADY,
+    @SerializedName("22")
+    PASSWORDS_DOES_NOT_MATHC,
+    @SerializedName("23")
+    INCORRECT_LOGIN,
+    @SerializedName("24")
+    INCORRECT_PASSWORD,
+    // For universities, probably does not working
+    @SerializedName("25")
+    OKAY,
     @SerializedName("666")
-    WRITING_TO_DB_ERROR
+    WRITING_TO_DB_ERROR,
+    UNKNOWN
 }

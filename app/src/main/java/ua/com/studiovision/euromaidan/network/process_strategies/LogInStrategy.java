@@ -28,7 +28,11 @@ public class LogInStrategy extends AbstractProcessResponseStrategy
 
     @Override
     public void onResponse(LoginProtocol.LogInResponse response) {
+        Bundle userData = new Bundle();
+        userData.putString(LoginActivity.TOKEN, response.token);
+        userData.putLong(LoginActivity.USER_ID, response.id_user);
         Message msg = Message.obtain();
+        msg.setData(userData);
         msg.what = AppProtocol.LOG_IN_SUCCESSFUL;
         callbacks.sendMessageToActivity(msg);
     }

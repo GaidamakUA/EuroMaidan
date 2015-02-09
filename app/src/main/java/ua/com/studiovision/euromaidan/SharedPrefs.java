@@ -4,7 +4,7 @@ import org.androidannotations.annotations.sharedpreferences.DefaultLong;
 import org.androidannotations.annotations.sharedpreferences.DefaultString;
 import org.androidannotations.annotations.sharedpreferences.SharedPref;
 
-@SharedPref(value = SharedPref.Scope.APPLICATION_DEFAULT)
+@SharedPref(value = SharedPref.Scope.UNIQUE)
 public interface SharedPrefs {
     @DefaultString("DEADBEEF")
     String getToken();

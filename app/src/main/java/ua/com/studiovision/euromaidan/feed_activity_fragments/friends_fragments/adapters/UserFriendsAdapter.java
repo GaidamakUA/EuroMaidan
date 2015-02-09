@@ -73,7 +73,8 @@ public class UserFriendsAdapter extends CursorRecyclerAdapter<UserFriendsAdapter
 
         @Override
         public void onClick(View view) {
-            callbacks.deleteFriend(UserFriendsAdapter.this.getFriendId(getPosition()));
+//            callbacks.deleteFriend(UserFriendsAdapter.this.getFriendId(getPosition()));
+            callbacks.openChat(UserFriendsAdapter.this.getFriendId(getPosition()));
             callbacks.loadFriends(currentUserId, FriendsContent.FRIENDS);
         }
     }

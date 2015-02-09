@@ -48,6 +48,7 @@ import ua.com.studiovision.euromaidan.feed_activity_fragments.FriendsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.SettingsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.friends_fragments.FriendsFragmentCallbacks;
+import ua.com.studiovision.euromaidan.feed_activity_fragments.inbox_fragments.DialogsFragment;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.inbox_fragments.DialogsFragment_;
 import ua.com.studiovision.euromaidan.feed_activity_fragments.settings_fragments.SettingsFragmentListener;
 import ua.com.studiovision.euromaidan.network.MainService_;
@@ -60,7 +61,7 @@ import ua.com.studiovision.euromaidan.network.json_protocol.settings.SettingsPar
 
 @EActivity(R.layout.activity_feed)
 public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
-        implements SettingsFragmentListener, FriendsFragmentCallbacks {
+        implements SettingsFragmentListener, FriendsFragmentCallbacks, DialogsFragment.DialogsFragmentCallbacks {
     private static final String TAG = "FeedActivity";
 
     @ViewById(R.id.avatar)
@@ -257,6 +258,11 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
     }
 
     @Override
+    public void openChat(long userId) {
+        Log.v(TAG, "openChat(" + "userId=" + userId + ")");
+    }
+
+    @Override
     public void addFriend(long userId) {
         Log.v(TAG, "addFriend(" + "userId=" + userId + ")");
         Bundle data = new Bundle();
@@ -265,6 +271,14 @@ public class FeedActivity extends ActivityServiceCommunicationFragmentActivity
         Message msg = Message.obtain();
         msg.what = AppProtocol.ADD_FRIEND;
         msg.setData(data);
+        sendMessage(msg);
+    }
+
+    @Override
+    public void getDialogs() {
+        Log.v(TAG, "getDialogs(" + ")");
+        Message msg = Message.obtain();
+        msg.what = AppProtocol.ADD_FRIEND;
         sendMessage(msg);
     }
 

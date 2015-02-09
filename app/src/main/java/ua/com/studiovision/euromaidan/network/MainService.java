@@ -2,7 +2,6 @@ package ua.com.studiovision.euromaidan.network;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -10,24 +9,22 @@ import com.softevol.activity_service_communication.ActivityServiceCommunicationS
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EService;
-import org.androidannotations.annotations.SupposeBackground;
+import org.androidannotations.annotations.sharedpreferences.Pref;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import ua.com.studiovision.euromaidan.AppProtocol;
-import ua.com.studiovision.euromaidan.network.json_protocol.AbstractRequest;
-import ua.com.studiovision.euromaidan.network.json_protocol.AbstractResponse;
+import ua.com.studiovision.euromaidan.SharedPrefs_;
+import ua.com.studiovision.euromaidan.network.json_protocol.socket_messaging.SocketLoginProtocol;
 import ua.com.studiovision.euromaidan.network.process_strategies.AbstractProcessResponseStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.AddFriendStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.DeleteFriendStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetCitiesStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetCountriesStrategy;
+import ua.com.studiovision.euromaidan.network.process_strategies.GetDialogsStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetFriendsStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetSchoolsStrategy;
 import ua.com.studiovision.euromaidan.network.process_strategies.GetSettingsStrategy;
@@ -43,10 +40,22 @@ import ua.com.studiovision.euromaidan.network.process_strategies.StrategyCallbac
 @EService
 public class MainService extends ActivityServiceCommunicationService implements StrategyCallbacks, UserInterfaceCallbacks {
     private static final String TAG = "MainService";
-    private static final String BASE_URL = "http://e-m.com.ua/api";
-    private static final Gson gson = new Gson();
 
     private Handler UiThreadHandler;
+    @Pref
+    SharedPrefs_ sharedPrefs;
+    WebSocketHandler webSocketHandler;
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        webSocketHandler = new WebSocketHandler(sharedPrefs.getToken().get(), this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        webSocketHandler.closeWebSocket();
+    }
 
     @Override
     protected void handleMessage(Message msg) {
@@ -107,55 +116,16 @@ public class MainService extends ActivityServiceCommunicationService implements 
                 Log.v(TAG, "Get friends");
                 doRequest(new GetFriendsStrategy(getApplicationContext(), msg));
                 break;
+            case AppProtocol.GET_DIALOGS:
+                Log.v(TAG, "Get dialogs");
+                doRequest(new GetDialogsStrategy(getApplicationContext(), sharedPrefs.getToken().get()));
+                break;
         }
     }
 
     @Background
     void doRequest(AbstractProcessResponseStrategy strategy) {
-        Log.v(TAG, "MainService.doRequest(strategy=" + strategy + ")");
-        try {
-            strategy.handleResponse(
-                    executeRequest(strategy.getRequest(), strategy.getResponseClass()));
-        } catch (IOException e) {
-            Log.e(TAG, "", e);
-        }
-    }
-
-    @SupposeBackground
-    <T extends AbstractResponse<T>> T executeRequest(AbstractRequest request, Class<T> tClass) throws IOException {
-        String requestString = gson.toJson(request);
-        Log.v(TAG, "beforeEncode=" + requestString);
-        requestString = "data=" + URLEncoder.encode(
-                Base64.encodeToString(requestString.getBytes("UTF-8"), Base64.DEFAULT), "UTF-8")
-                .replaceAll("\\%28", "(")
-                .replaceAll("\\%29", ")")
-                .replaceAll("\\+", "%20")
-                .replaceAll("\\%27", "'")
-                .replaceAll("\\%21", "!")
-                .replaceAll("\\%7E", "~");
-//        requestString = URLEncoder.encode(requestString, "UTF-8");
-        return gson.fromJson(doPost(requestString), tClass);
-    }
-
-    @SupposeBackground
-    String doPost(String parameters) throws IOException {
-        URL url = new URL(BASE_URL);
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setDoOutput(true);
-        urlConnection.setRequestMethod("POST");
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
-        Log.v(TAG, "parameters=\"" + parameters + "\"");
-        writer.write(parameters);
-        writer.close();
-        urlConnection.connect();
-        String responseString = readIt(urlConnection.getInputStream());
-        Log.v(TAG, "response=" + responseString);
-        return responseString;
-    }
-
-    private String readIt(InputStream stream) throws IOException {
-        java.util.Scanner s = new java.util.Scanner(stream, "UTF-8").useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
+        StaticRequestUtils.doRequest(strategy);
     }
 
     @Override

@@ -8,4 +8,5 @@ import ua.com.studiovision.euromaidan.network.json_protocol.friends.FriendsConte
 public interface FriendsFragmentCallbacks extends UserActionsCallbacks{
     void loadFriends(long userId, FriendsContent content);
     void deleteFriend(long userId);
+    void openChat(long userId);
 }

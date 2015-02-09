@@ -18,6 +18,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import ua.com.studiovision.euromaidan.BuildConfig;
+import ua.com.studiovision.euromaidan.network.provider.dialogs.DialogsColumns;
 import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
 import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
 import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
@@ -28,6 +29,7 @@ import ua.com.studiovision.euromaidan.network.provider.followers.FollowersColumn
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
 import ua.com.studiovision.euromaidan.network.provider.applicant.ApplicantColumns;
 import ua.com.studiovision.euromaidan.network.provider.videos.VideosColumns;
+import ua.com.studiovision.euromaidan.network.provider.messages.MessagesColumns;
 
 public class EmContentProvider extends ContentProvider {
     private static final String TAG = EmContentProvider.class.getSimpleName();
@@ -43,41 +45,49 @@ public class EmContentProvider extends ContentProvider {
     public static final String QUERY_NOTIFY = "QUERY_NOTIFY";
     public static final String QUERY_GROUP_BY = "QUERY_GROUP_BY";
 
-    private static final int URI_TYPE_SCHOOL = 0;
-    private static final int URI_TYPE_SCHOOL_ID = 1;
+    private static final int URI_TYPE_DIALOGS = 0;
+    private static final int URI_TYPE_DIALOGS_ID = 1;
 
-    private static final int URI_TYPE_FRIENDS = 2;
-    private static final int URI_TYPE_FRIENDS_ID = 3;
+    private static final int URI_TYPE_SCHOOL = 2;
+    private static final int URI_TYPE_SCHOOL_ID = 3;
 
-    private static final int URI_TYPE_UNIVERSITY = 4;
-    private static final int URI_TYPE_UNIVERSITY_ID = 5;
+    private static final int URI_TYPE_FRIENDS = 4;
+    private static final int URI_TYPE_FRIENDS_ID = 5;
 
-    private static final int URI_TYPE_COUNTRY = 6;
-    private static final int URI_TYPE_COUNTRY_ID = 7;
+    private static final int URI_TYPE_UNIVERSITY = 6;
+    private static final int URI_TYPE_UNIVERSITY_ID = 7;
 
-    private static final int URI_TYPE_CITY = 8;
-    private static final int URI_TYPE_CITY_ID = 9;
+    private static final int URI_TYPE_COUNTRY = 8;
+    private static final int URI_TYPE_COUNTRY_ID = 9;
 
-    private static final int URI_TYPE_AUDIOS = 10;
-    private static final int URI_TYPE_AUDIOS_ID = 11;
+    private static final int URI_TYPE_CITY = 10;
+    private static final int URI_TYPE_CITY_ID = 11;
 
-    private static final int URI_TYPE_FOLLOWERS = 12;
-    private static final int URI_TYPE_FOLLOWERS_ID = 13;
+    private static final int URI_TYPE_AUDIOS = 12;
+    private static final int URI_TYPE_AUDIOS_ID = 13;
 
-    private static final int URI_TYPE_USERS = 14;
-    private static final int URI_TYPE_USERS_ID = 15;
+    private static final int URI_TYPE_FOLLOWERS = 14;
+    private static final int URI_TYPE_FOLLOWERS_ID = 15;
 
-    private static final int URI_TYPE_APPLICANT = 16;
-    private static final int URI_TYPE_APPLICANT_ID = 17;
+    private static final int URI_TYPE_USERS = 16;
+    private static final int URI_TYPE_USERS_ID = 17;
 
-    private static final int URI_TYPE_VIDEOS = 18;
-    private static final int URI_TYPE_VIDEOS_ID = 19;
+    private static final int URI_TYPE_APPLICANT = 18;
+    private static final int URI_TYPE_APPLICANT_ID = 19;
+
+    private static final int URI_TYPE_VIDEOS = 20;
+    private static final int URI_TYPE_VIDEOS_ID = 21;
+
+    private static final int URI_TYPE_MESSAGES = 22;
+    private static final int URI_TYPE_MESSAGES_ID = 23;
 
 
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
+        URI_MATCHER.addURI(AUTHORITY, DialogsColumns.TABLE_NAME, URI_TYPE_DIALOGS);
+        URI_MATCHER.addURI(AUTHORITY, DialogsColumns.TABLE_NAME + "/#", URI_TYPE_DIALOGS_ID);
         URI_MATCHER.addURI(AUTHORITY, SchoolColumns.TABLE_NAME, URI_TYPE_SCHOOL);
         URI_MATCHER.addURI(AUTHORITY, SchoolColumns.TABLE_NAME + "/#", URI_TYPE_SCHOOL_ID);
         URI_MATCHER.addURI(AUTHORITY, FriendsColumns.TABLE_NAME, URI_TYPE_FRIENDS);
@@ -98,6 +108,8 @@ public class EmContentProvider extends ContentProvider {
         URI_MATCHER.addURI(AUTHORITY, ApplicantColumns.TABLE_NAME + "/#", URI_TYPE_APPLICANT_ID);
         URI_MATCHER.addURI(AUTHORITY, VideosColumns.TABLE_NAME, URI_TYPE_VIDEOS);
         URI_MATCHER.addURI(AUTHORITY, VideosColumns.TABLE_NAME + "/#", URI_TYPE_VIDEOS_ID);
+        URI_MATCHER.addURI(AUTHORITY, MessagesColumns.TABLE_NAME, URI_TYPE_MESSAGES);
+        URI_MATCHER.addURI(AUTHORITY, MessagesColumns.TABLE_NAME + "/#", URI_TYPE_MESSAGES_ID);
     }
 
     protected EmSQLiteOpenHelper mEmSQLiteOpenHelper;
@@ -129,6 +141,11 @@ public class EmContentProvider extends ContentProvider {
     public String getType(Uri uri) {
         int match = URI_MATCHER.match(uri);
         switch (match) {
+            case URI_TYPE_DIALOGS:
+                return TYPE_CURSOR_DIR + DialogsColumns.TABLE_NAME;
+            case URI_TYPE_DIALOGS_ID:
+                return TYPE_CURSOR_ITEM + DialogsColumns.TABLE_NAME;
+
             case URI_TYPE_SCHOOL:
                 return TYPE_CURSOR_DIR + SchoolColumns.TABLE_NAME;
             case URI_TYPE_SCHOOL_ID:
@@ -178,6 +195,11 @@ public class EmContentProvider extends ContentProvider {
                 return TYPE_CURSOR_DIR + VideosColumns.TABLE_NAME;
             case URI_TYPE_VIDEOS_ID:
                 return TYPE_CURSOR_ITEM + VideosColumns.TABLE_NAME;
+
+            case URI_TYPE_MESSAGES:
+                return TYPE_CURSOR_DIR + MessagesColumns.TABLE_NAME;
+            case URI_TYPE_MESSAGES_ID:
+                return TYPE_CURSOR_ITEM + MessagesColumns.TABLE_NAME;
 
         }
         return null;
@@ -312,6 +334,13 @@ public class EmContentProvider extends ContentProvider {
         String id = null;
         int matchedId = URI_MATCHER.match(uri);
         switch (matchedId) {
+            case URI_TYPE_DIALOGS:
+            case URI_TYPE_DIALOGS_ID:
+                res.table = DialogsColumns.TABLE_NAME;
+                res.tablesWithJoins = DialogsColumns.TABLE_NAME;
+                res.orderBy = DialogsColumns.DEFAULT_ORDER;
+                break;
+
             case URI_TYPE_SCHOOL:
             case URI_TYPE_SCHOOL_ID:
                 res.table = SchoolColumns.TABLE_NAME;
@@ -382,11 +411,19 @@ public class EmContentProvider extends ContentProvider {
                 res.orderBy = VideosColumns.DEFAULT_ORDER;
                 break;
 
+            case URI_TYPE_MESSAGES:
+            case URI_TYPE_MESSAGES_ID:
+                res.table = MessagesColumns.TABLE_NAME;
+                res.tablesWithJoins = MessagesColumns.TABLE_NAME;
+                res.orderBy = MessagesColumns.DEFAULT_ORDER;
+                break;
+
             default:
                 throw new IllegalArgumentException("The uri '" + uri + "' is not supported by this ContentProvider");
         }
 
         switch (matchedId) {
+            case URI_TYPE_DIALOGS_ID:
             case URI_TYPE_SCHOOL_ID:
             case URI_TYPE_FRIENDS_ID:
             case URI_TYPE_UNIVERSITY_ID:
@@ -397,6 +434,7 @@ public class EmContentProvider extends ContentProvider {
             case URI_TYPE_USERS_ID:
             case URI_TYPE_APPLICANT_ID:
             case URI_TYPE_VIDEOS_ID:
+            case URI_TYPE_MESSAGES_ID:
                 id = uri.getLastPathSegment();
         }
         if (id != null) {

@@ -61,7 +61,7 @@ public class UserFriendsFragment extends Fragment implements LoaderManager.Loade
 
     @AfterViews
     void init() {
-        userFriendsAdapter = new UserFriendsAdapter(null, getActivity().getBaseContext(), callbacks,mSharedPrefs.getUserId().get());
+        userFriendsAdapter = new UserFriendsAdapter(null, getActivity().getBaseContext(), callbacks, mSharedPrefs.getUserId().get());
         userFriendsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
         userFriendsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         userFriendsRecyclerView.setAdapter(userFriendsAdapter);

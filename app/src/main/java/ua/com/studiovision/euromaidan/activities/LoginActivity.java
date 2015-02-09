@@ -13,9 +13,12 @@ import com.softevol.activity_service_communication.ActivityServiceCommunicationA
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
+import org.androidannotations.annotations.sharedpreferences.SharedPref;
 
 import ua.com.studiovision.euromaidan.AppProtocol;
 import ua.com.studiovision.euromaidan.R;
+import ua.com.studiovision.euromaidan.SharedPrefs_;
 import ua.com.studiovision.euromaidan.network.MainService_;
 
 @EActivity(R.layout.activity_login)
@@ -24,10 +27,16 @@ public class LoginActivity extends ActivityServiceCommunicationActivity {
     public static final String LOGIN = "login";
     public static final String PASSWORD = "password";
 
+    public static final String TOKEN = "token";
+    public static final String USER_ID = "user_id";
+
     @ViewById(R.id.email_edittext)
     TextView emailEditText;
     @ViewById(R.id.password_edittext)
     TextView passwordEditText;
+
+    @Pref
+    SharedPrefs_ sharedPrefs;
 
     private Animation shake;
 
@@ -45,7 +54,13 @@ public class LoginActivity extends ActivityServiceCommunicationActivity {
                 Log.v(TAG, "Service connected");
                 break;
             case AppProtocol.LOG_IN_SUCCESSFUL:
-                Log.v(TAG, "LOG_IN_SUCCESSFUL");
+                Bundle bundle = msg.getData();
+                Log.v(TAG, "LOG_IN_SUCCESSFUL(TOKEN=" + bundle.getString(TOKEN)
+                        + "; USER_ID=" + bundle.getLong(USER_ID));
+                sharedPrefs.edit()
+                        .getToken().put(bundle.getString(TOKEN))
+                        .getUserId().put(bundle.getLong(USER_ID))
+                        .apply();
                 FirstRunActivity_.intent(this).start();
                 finish();
                 break;

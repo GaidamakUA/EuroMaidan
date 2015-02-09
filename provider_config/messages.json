@@ -1,0 +1,26 @@
+{
+    "fields": [
+        {
+            "name": "user_id",
+            "type": "Integer",
+            "nullable": "false",
+        },
+        {
+            "name": "timestamp",
+            "type": "Date",
+            "nullable": "false",
+        },
+        {
+            "name": "message",
+            "type": "String",
+            "nullable": "false",
+        }
+    ],
+
+    "constraints": [
+        {
+            "name": "unique_name",
+            "definition": "UNIQUE (user_id, timestamp) ON CONFLICT REPLACE"
+        },
+    ]
+}

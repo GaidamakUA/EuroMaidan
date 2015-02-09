@@ -21,9 +21,5 @@ public class GetSettingProtocol {
 
     public static class GetSettingsResponse extends AbstractResponse<GetSettingsResponse> {
         public GetSettingsResponseContent content;
-
-        public GetSettingsResponse(GetSettingsResponseContent content) {
-            this.content = content;
-        }
     }
 }

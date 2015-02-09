@@ -37,4 +37,6 @@ public class AppProtocol extends Protocol {
     public static final int DELETE_FRIEND = 18;
     public static final int GET_FRIENDS = 19;
 
+    // Messages
+    public static final int GET_DIALOGS = 20;
 }

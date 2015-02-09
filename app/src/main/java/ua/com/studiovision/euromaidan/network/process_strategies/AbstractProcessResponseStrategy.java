@@ -50,10 +50,21 @@ public abstract class AbstractProcessResponseStrategy<T extends AbstractRequest,
             case WRITING_TO_DB_ERROR:
             case DATA_IS_NOT_VALID:
             case OPERATION_IN_NOT_POSSIBLE:
-                Log.v(TAG,response.message.toString());
+            case YOU_ARE_FRIEND_ALREADY:
+            case USER_ID_DOES_NOT_EXIST:
+            case FILL_ALL_FIELDS:
+            case TYPE_CORRECT_NAME:
+            case TYPE_CORRECT_SURNAME:
+            case PASSWORD_SHOULD_BE_LONGER_THAN_6_CHARS:
+            case INVALID_EMAIL:
+            case SUCH_EMAIL_IS_REGISTRED_ALLREADY:
+            case PASSWORDS_DOES_NOT_MATHC:
+            case INCORRECT_LOGIN:
+            case INCORRECT_PASSWORD:
+                Log.v(TAG, response.message.toString());
                 break;
             default:
-                throw new IllegalArgumentException("Unexpected error message");
+                throw new IllegalArgumentException("Unexpected error message=" + response.message);
         }
     }
 

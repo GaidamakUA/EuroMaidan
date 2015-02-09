@@ -11,16 +11,18 @@ import android.os.Build;
 import android.util.Log;
 
 import ua.com.studiovision.euromaidan.BuildConfig;
-import ua.com.studiovision.euromaidan.network.provider.applicant.ApplicantColumns;
-import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
-import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
-import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
-import ua.com.studiovision.euromaidan.network.provider.followers.FollowersColumns;
-import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
+import ua.com.studiovision.euromaidan.network.provider.dialogs.DialogsColumns;
 import ua.com.studiovision.euromaidan.network.provider.school.SchoolColumns;
+import ua.com.studiovision.euromaidan.network.provider.friends.FriendsColumns;
 import ua.com.studiovision.euromaidan.network.provider.university.UniversityColumns;
+import ua.com.studiovision.euromaidan.network.provider.country.CountryColumns;
+import ua.com.studiovision.euromaidan.network.provider.city.CityColumns;
+import ua.com.studiovision.euromaidan.network.provider.audios.AudiosColumns;
+import ua.com.studiovision.euromaidan.network.provider.followers.FollowersColumns;
 import ua.com.studiovision.euromaidan.network.provider.users.UsersColumns;
+import ua.com.studiovision.euromaidan.network.provider.applicant.ApplicantColumns;
 import ua.com.studiovision.euromaidan.network.provider.videos.VideosColumns;
+import ua.com.studiovision.euromaidan.network.provider.messages.MessagesColumns;
 
 public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = EmSQLiteOpenHelper.class.getSimpleName();
@@ -32,6 +34,17 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
     private final EmSQLiteOpenHelperCallbacks mOpenHelperCallbacks;
 
     // @formatter:off
+    private static final String SQL_CREATE_TABLE_DIALOGS = "CREATE TABLE IF NOT EXISTS "
+            + DialogsColumns.TABLE_NAME + " ( "
+            + DialogsColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + DialogsColumns.MESSAGE + " TEXT NOT NULL, "
+            + DialogsColumns.MINE + " INTEGER NOT NULL, "
+            + DialogsColumns.NEW_COUNT + " INTEGER NOT NULL, "
+            + DialogsColumns.TIME + " INTEGER NOT NULL, "
+            + DialogsColumns.USER_ID + " INTEGER NOT NULL "
+            + ", CONSTRAINT unique_name UNIQUE (user_id) ON CONFLICT REPLACE"
+            + " );";
+
     private static final String SQL_CREATE_TABLE_SCHOOL = "CREATE TABLE IF NOT EXISTS "
             + SchoolColumns.TABLE_NAME + " ( "
             + SchoolColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -130,6 +143,15 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
             + VideosColumns.VIDEO_URL + " TEXT NOT NULL "
             + " );";
 
+    private static final String SQL_CREATE_TABLE_MESSAGES = "CREATE TABLE IF NOT EXISTS "
+            + MessagesColumns.TABLE_NAME + " ( "
+            + MessagesColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + MessagesColumns.USER_ID + " INTEGER NOT NULL, "
+            + MessagesColumns.TIMESTAMP + " INTEGER NOT NULL, "
+            + MessagesColumns.MESSAGE + " TEXT NOT NULL "
+            + ", CONSTRAINT unique_name UNIQUE (user_id, timestamp) ON CONFLICT REPLACE"
+            + " );";
+
     // @formatter:on
 
     public static EmSQLiteOpenHelper getInstance(Context context) {
@@ -186,6 +208,7 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
         mOpenHelperCallbacks.onPreCreate(mContext, db);
+        db.execSQL(SQL_CREATE_TABLE_DIALOGS);
         db.execSQL(SQL_CREATE_TABLE_SCHOOL);
         db.execSQL(SQL_CREATE_TABLE_FRIENDS);
         db.execSQL(SQL_CREATE_TABLE_UNIVERSITY);
@@ -196,6 +219,7 @@ public class EmSQLiteOpenHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TABLE_USERS);
         db.execSQL(SQL_CREATE_TABLE_APPLICANT);
         db.execSQL(SQL_CREATE_TABLE_VIDEOS);
+        db.execSQL(SQL_CREATE_TABLE_MESSAGES);
         mOpenHelperCallbacks.onPostCreate(mContext, db);
     }
 
